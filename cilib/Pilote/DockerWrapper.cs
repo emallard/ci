@@ -102,7 +102,7 @@ public class DockerWrapper {
         using (var client = GetClient())
         {
             var parameters = new ImagesCreateParameters();
-            var split = repoTag.Split(":");
+            var split = repoTag.Split(':');
             parameters.FromImage = split[0];
             parameters.Repo = split[0];
             parameters.Tag = split[1];

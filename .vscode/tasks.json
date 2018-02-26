@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/ci.csproj"
+                "${workspaceFolder}/ciexe/ciexe.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 public class ConfigDev : IConfig 
 {
-    public string DomainName => "mycompany.local";
-    public string PiloteDomainName => "pilote.mycompany.local";
+    public string DomainName => "mynetwork.local";
+    public string PiloteDomainName => "pilote.mynetwork.local";
     
     private IPAddress piloteIp = null;
     public IPAddress PiloteIp {
