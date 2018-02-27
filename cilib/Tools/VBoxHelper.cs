@@ -15,6 +15,6 @@ public class VBoxHelper {
     public static void CheckVmStarted(string vmName)
     {
         if (!IsVmStarted(vmName))
-            throw new Exception($"VBox {vmName} not started, use : VBoxHeadless --startvm \"{vmName}\"");
+            throw new Exception($"VBox {vmName} not started, use : vboxmanage startvm \"{vmName}\" --type headless");
     }
 }

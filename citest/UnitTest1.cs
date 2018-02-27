@@ -16,7 +16,7 @@ namespace citest
         [Fact]
         public void CreateVmPilote()
         {
-            // Follow README.md
+            // VBoxClone.sh
         }
 
         [Fact]
