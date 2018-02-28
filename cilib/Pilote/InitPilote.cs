@@ -7,24 +7,21 @@ using System.Threading.Tasks;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 
-public class Init {
+public class InitPilote {
     private readonly InitVault initVault;
     private readonly InitCA initCA;
     private readonly InitRegistry initRegistry;
-    private readonly IConfig config;
     private readonly IConfigInit configInit;
 
-    public Init(
+    public InitPilote(
         InitVault initVault,
         InitCA initCA, 
         InitRegistry initRepository,
-        IConfig config,
         IConfigInit configInit) 
     {
         this.initVault = initVault;
         this.initCA = initCA;
         this.initRegistry = initRepository;
-        this.config = config;
         this.configInit = configInit;
     }
 

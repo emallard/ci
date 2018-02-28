@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 
-public interface IPaasProvider  {
+public interface IInfrastructure {
 
-    void CreateVm(string name, string login, string password);
+    void CreateVmPilote();
+    IVmPilote GetVmPilote();
 }

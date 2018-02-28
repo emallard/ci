@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="autofac" Version="4.6.2" />
     <PackageReference Include="Docker.Dotnet" Version="3.125.1" />
+    <PackageReference Include="ssh.net" Version="2016.1.0" />
     <PackageReference Include="VaultSharp" Version="0.6.4" />
   </ItemGroup>
 
@@ -14,7 +15,9 @@
     <Content Remove="Infrastructure\InstallPilote.sh" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Infrastructure\InstallPilote.sh" />
+    <EmbeddedResource Include="Infrastructure\VBox\VBoxClone.sh" />
+    <EmbeddedResource Include="Infrastructure\InstallPilote_1.sh" />
+    <EmbeddedResource Include="Infrastructure\InstallPilote_2.sh" />
   </ItemGroup>
 
 </Project>

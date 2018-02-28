@@ -9,7 +9,14 @@ public class Injection {
 
     public void Configure(ContainerBuilder builder)
     {
-        builder.RegisterType<ConfigDev>().As<IConfig>();
+        builder.RegisterType<ConfigInitDev>().As<IConfigInit>();
+
+        builder.RegisterAssemblyTypes(this.GetType().Assembly);
+    }
+
+
+    public void ConfigureProd(ContainerBuilder builder)
+    {
         builder.RegisterType<ConfigInitDev>().As<IConfigInit>();
 
         builder.RegisterAssemblyTypes(this.GetType().Assembly);

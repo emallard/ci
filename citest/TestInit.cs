@@ -11,9 +11,8 @@ public class TestInit {
     {
         var builder = new ContainerBuilder();
         
-        builder.RegisterType<ConfigDev>().As<IConfig>();
         builder.RegisterType<ConfigInitDev>().As<IConfigInit>();
-        builder.RegisterAssemblyTypes(new ConfigDev().GetType().Assembly);
+        builder.RegisterAssemblyTypes(new Lanceur().GetType().Assembly);
 
         var container = builder.Build();
         return container;

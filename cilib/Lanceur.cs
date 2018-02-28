@@ -4,15 +4,15 @@ using System.Net;
 using System.Threading.Tasks;
 using Autofac;
 
-public class RunDevelopment 
+public class Lanceur 
 {
-    public async Task Run()
+    public async Task InitPilote()
     {
         //HttpWebRequest.DefaultWebProxy = null;
         var container = getDI();
         using (var scope = container.BeginLifetimeScope())
         {
-            var init = scope.Resolve<Init>();
+            var init = scope.Resolve<InitPilote>();
             await init.Run();
         }
     }
@@ -33,7 +33,6 @@ public class RunDevelopment
     {
         var builder = new ContainerBuilder();
         
-        builder.RegisterType<ConfigDev>().As<IConfig>();
         builder.RegisterType<ConfigInitDev>().As<IConfigInit>();
 
         builder.RegisterAssemblyTypes(this.GetType().Assembly);

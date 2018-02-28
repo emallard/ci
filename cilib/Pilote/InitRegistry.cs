@@ -14,7 +14,7 @@ using Docker.DotNet.Models;
 
 public class InitRegistry
 {
-    private readonly IConfig config;
+    private readonly IConfigInit config;
     private readonly DockerWrapper dockerWrapper;
 
     private string repoTag = "registry:0.9.4";
@@ -22,13 +22,11 @@ public class InitRegistry
 
 
     public InitRegistry(
-        IConfig config,
+        IConfigInit config,
         DockerWrapper dockerWrapper)
     {
         this.config = config;
         this.dockerWrapper = dockerWrapper;
-        var ip = config.PiloteIp;
-        Console.WriteLine(ip);
     }
 
     public async Task CleanRegistryImage()

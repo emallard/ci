@@ -7,9 +7,9 @@ using VaultSharp.Backends.Secret.Models;
 
 public class InitCA
 {
-    private readonly IConfig config;
-
-    public InitCA(IConfig config)
+    
+    IConfigInit config;
+    public InitCA(IConfigInit config)
     {
         this.config = config;
     }

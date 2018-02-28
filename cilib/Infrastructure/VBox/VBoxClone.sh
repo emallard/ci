@@ -1,3 +1,6 @@
+#!/bin/sh
+
+# export VMDIR=/media/etienne/LinuxData/vm
 # export CLONABLEVM=clonable
 # export NEWVM=pilote
 # export IP=10.0.2.5
@@ -5,9 +8,11 @@
 # vboxmanage unregistervm pilote --delete 
 
 # get options with:
-# VBoxManage import "/media/etienne/LinuxData/vm/$CLONABLEVM.ovf" -n
+# VBoxManage import "$VMDIR/$CLONABLEVM.ovf" -n
 
-VBoxManage import "/media/etienne/LinuxData/vm/$CLONABLEVM.ovf" --vsys 0 --vmname "$NEWVM" --unit 9 --disk "/media/etienne/LinuxData/vm/$NEWVM.vmdk"
+set -e
+
+VBoxManage import "$VMDIR/$CLONABLEVM.ovf" --vsys 0 --vmname "$NEWVM" --unit 9 --disk "$VMDIR/$NEWVM.vmdk"
 
 # Not needed if correctly done
 # vboxmanage natnetwork add --netname natnet --network "10.0.2.0/24" --enable --dhcp off

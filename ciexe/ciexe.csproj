@@ -5,4 +5,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../cilib/cilib.csproj" />
+    <PackageReference Include="autofac" Version="4.6.2" />
+  </ItemGroup>
+
 </Project>

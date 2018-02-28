@@ -16,16 +16,42 @@ namespace citest
         [Fact]
         public void CreateVmPilote()
         {
-            // VBoxClone.sh
+            var infrastructure = this.container.Resolve<VBoxInfrastructure>();
+            infrastructure.DeleteVmPilote();
+            infrastructure.CreateVmPilote();
+            var vmPilote = infrastructure.GetVmPilote();
+            using (var client = vmPilote.Connect())
+            {
+                var cmd = client.RunCommand("echo coucou");
+                Assert.Equal("coucou", cmd.Result);
+            }
         }
 
-        [Fact]
-        public void InstallPilote()
+        // PiloteVm is already created
+        // Install script : docker, dotnetcore images, ciexe
+        //[Fact]
+        public void TestInstallPilote()
         {
-            VBoxHelper.CheckVmStarted("pilote");
-            var install = this.container.Resolve<InstallPilote>();
-            //install.Install();
-            install.CheckInstall();
-        }        
+            var infrastructure = this.container.Resolve<VBoxInfrastructure>();
+            var vmPilote = infrastructure.GetVmPilote();
+            vmPilote.Install();
+
+            using (var client = vmPilote.Connect())
+            {
+                var cmd = client.RunCommand("docker run hello-world");
+                Assert.Contains("ok", cmd.Result);
+
+                cmd = client.RunCommand("docker run ciexe hello");
+                Assert.Contains("hello", cmd.Result);
+            }
+        }
+
+        // Pilote is installed with docker, dotnetcore images (and registry, vault ?)
+        [Fact]
+        public void TestRun()
+        {
+            var infrastructure = this.container.Resolve<VBoxInfrastructure>();
+            var vmPilote = infrastructure.GetVmPilote();
+        }
     }
 }

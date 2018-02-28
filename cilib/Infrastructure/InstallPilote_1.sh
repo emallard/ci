@@ -22,24 +22,3 @@ sudo apt-get install docker-ce -y
 sudo usermod -aG docker $USER
 
 sudo reboot
-
-#docker run hello-world
-
-#recupérer les sources du programme d'init
-sudo apt-get install git
-
-cd ~/
-git clone https://github.com/emallard/ci.git
-cd ~/ci
-git pull
-cd ~/ci/ciexe
-docker build -t ciexe .
-
-
-# récuperer le runtime
-# microsoft/dotnet:2.0-sdk
-# microsoft/dotnet
-
-
-
-
