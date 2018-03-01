@@ -56,9 +56,21 @@ public class VBoxVmPilote : IVmPilote {
         var outputInstall2 = RunEmbeddedResourceWithSudo(EmbeddedResources.InstallPilote_2);
     }
 
-    public void CheckInstall()
-    {
 
+    public void InstallRegistry()
+    {
+        using (var client = Connect())
+        {
+            var cmd = client.RunCommand("docker run ciexe install-registry");
+        }
+    }
+
+    public void InstallVault()
+    {
+        using (var client = Connect())
+        {
+            var cmd = client.RunCommand("docker run ciexe install-vault");
+        }
     }
 
     private string RunEmbeddedResourceWithSudo(EmbeddedResource resource) 

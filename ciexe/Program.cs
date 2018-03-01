@@ -25,10 +25,17 @@ namespace ciexe
                 Console.WriteLine("hello");
                 return;
             }
-            if (args[0] == "InitPilote")
-            {
-                Task.WaitAll(new Lanceur().InitPilote());
-            }
+            
+            if (args[0] == "install-registry")
+                new Lanceur().RunSync<InitRegistry>(r => r.Init());
+            
+            else if (args[0] == "install-vault")
+                new Lanceur().RunSync<InitVault>(r => r.Init());
+
+            /*
+            else if (args[0] == "install-ca")
+                new Lanceur().RunSync<InitCA>(r => r.InitNewHost());
+            */  
         }
     }
 }

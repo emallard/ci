@@ -1,22 +1,27 @@
 
 
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Autofac;
 
 public class Lanceur 
 {
-    public async Task InitPilote()
+    public async Task Run<T>(Func<T, Task> action)
     {
         //HttpWebRequest.DefaultWebProxy = null;
         var container = getDI();
         using (var scope = container.BeginLifetimeScope())
         {
-            var init = scope.Resolve<InitPilote>();
-            await init.Run();
+            var instance = scope.Resolve<T>();
+            await action(instance);
         }
     }
 
+    public void RunSync<T>(Func<T, Task> action)
+    {
+        Task.WaitAll(Run<T>(action));
+    }
 
     public async Task RunWorker()
     {
