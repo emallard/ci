@@ -1,3 +1,8 @@
+# export VMDIR=/media/etienne/LinuxData/vm
+# export CLONABLEVM=clonable
+# export IMAGENAME=../ubuntu-16.04.3-server-amd64.iso
+
+
 #
 # Create a clonable vm with static IP 10.0.2.200 under natnetwork named "natnet"
 #
@@ -10,10 +15,10 @@ VBoxManage unregistervm "$CLONABLEVM" --delete
 VBoxManage createvm --name "$CLONABLEVM" --register
 VBoxManage modifyvm "$CLONABLEVM" --memory 2048 --acpi on --boot1 dvd
 vboxmanage modifyvm "$CLONABLEVM" --nic1 natnetwork --nat-network1 natnet
-VBoxManage createhd --filename "/media/etienne/LinuxData/vm/$CLONABLEVM.vdi" --size 10000
+VBoxManage createhd --filename "$VMDIR/$CLONABLEVM.vdi" --size 10000
 VBoxManage storagectl "$CLONABLEVM" --name "IDE Controller" --add ide
-VBoxManage storageattach "$CLONABLEVM" --storagectl "IDE Controller" --port 0 --device 0 --type hdd --medium "/media/etienne/LinuxData/vm/$CLONABLEVM.vdi"
-VBoxManage storageattach "$CLONABLEVM" --storagectl "IDE Controller" --port 1 --device 0 --type dvddrive --medium "/media/etienne/LinuxData/ubuntu-16.04.3-server-amd64.iso"
+VBoxManage storageattach "$CLONABLEVM" --storagectl "IDE Controller" --port 0 --device 0 --type hdd --medium "$VMDIR/$CLONABLEVM.vdi"
+VBoxManage storageattach "$CLONABLEVM" --storagectl "IDE Controller" --port 1 --device 0 --type dvddrive --medium "$VMDIR/$IMAGENAME"
 
 VBoxManage modifyvm "$CLONABLEVM" --vrde on
 VBoxManage startvm "$CLONABLEVM" --type headless
@@ -49,4 +54,4 @@ sudo nano /etc/resolvconf/resolv.conf.d/base
 nameserver "10.0.2.1"
 
 # Export
-VBoxManage export "$CLONABLEVM" --output "/media/etienne/LinuxData/vm/$CLONABLEVM.ovf"
+VBoxManage export "$CLONABLEVM" --output "$VMDIR/$CLONABLEVM.ovf"
