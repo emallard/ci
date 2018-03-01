@@ -8,6 +8,7 @@ using Renci.SshNet;
 public interface IVmPilote {
 
     SshClient Connect();
-    void Install();
+    void InstallDocker();
+    void InstallCi();
     void CheckInstall();
 }

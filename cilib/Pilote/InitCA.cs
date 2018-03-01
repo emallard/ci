@@ -8,17 +8,22 @@ using VaultSharp.Backends.Secret.Models;
 public class InitCA
 {
     
-    IConfigInit config;
-    public InitCA(IConfigInit config)
+    private readonly IConfigInit config;
+    private readonly ShellHelper shellHelper;
+
+    public InitCA(
+        IConfigInit config,
+        ShellHelper shellHelper)
     {
         this.config = config;
+        this.shellHelper = shellHelper;
     }
 
     public async Task CreateRootCA() 
     {
-        var myCAKey = ShellHelper.Bash("openssl genrsa 2048");
+        var myCAKey = shellHelper.Bash("openssl genrsa 2048");
         
-        var myCAPem =  ShellHelper.BashAndStdIn(
+        var myCAPem =  shellHelper.BashAndStdIn(
             "openssl req -x509 -new -nodes -key /dev/stdin -sha256 -days 1825"
             +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + config.DomainName + "' ", myCAKey);
         

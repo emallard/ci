@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 
-public static class ShellHelper
+public class ShellHelper
 {
-    public static string Bash(this string cmd)
+    public string Bash(string cmd)
     {
         var escapedArgs = cmd.Replace("\"", "\\\"");
         
@@ -24,7 +24,7 @@ public static class ShellHelper
         return result;
     }
 
-    public static string BashAndStdErr(this string cmd, out string stdErr)
+    public string BashAndStdErr(string cmd, out string stdErr)
     {
         var escapedArgs = cmd.Replace("\"", "\\\"");
         
@@ -47,7 +47,7 @@ public static class ShellHelper
         return result;
     }
 
-    public static string BashAndStdIn(this string cmd, string stdIn)
+    public string BashAndStdIn(string cmd, string stdIn)
     {
         var escapedArgs = cmd.Replace("\"", "\\\"");
         

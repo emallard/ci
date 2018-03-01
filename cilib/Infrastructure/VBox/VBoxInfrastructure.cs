@@ -4,10 +4,12 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Threading;
+using Renci.SshNet;
 
 public class VBoxInfrastructure : IInfrastructure
 {
-
+    private readonly VBoxHelper vBoxHelper;
     VBoxVmPilote vmPilote;
 
     string vmDir = "/media/etienne/LinuxData/vm/";
@@ -15,37 +17,69 @@ public class VBoxInfrastructure : IInfrastructure
     string clonableVm = "clonable";
     string clonableVmOvf => Path.Combine(vmDir, clonableVm + ".ovf");
 
-    public VBoxInfrastructure(VBoxVmPilote vmPilote)
+    string PiloteVmName = "pilote";
+    string PiloteIp = "10.0.2.5";
+    int PilotePortForward = 22005;
+
+    public VBoxInfrastructure(
+        VBoxHelper vBoxHelper,
+        VBoxVmPilote vmPilote)
     {
+        this.vBoxHelper = vBoxHelper;
         this.vmPilote = vmPilote;
-        this.vmPilote.Configure(new Uri("tcp://127.0.0.1:22005"), "10.0.2.5");
+        this.vmPilote.Configure(new Uri($"tcp://127.0.0.1:{PilotePortForward}"), PiloteIp);
+
+        // Check that directory with vms exists 
+        CheckVmDirExists();
     }
 
     public void DeleteVmPilote()
     {
-        "VBoxManage controlvm pilote poweroff".Bash();
-        "VBoxManage unregistervm pilote --delete".Bash();
+        vBoxHelper.DeleteVm(PiloteVmName);
     }
 
     public void CreateVmPilote()
     {
+        
         CheckClonableVm();
         CheckVmDoesNotExists();
-        var bashArgs = 
-          $"export VMDIR={vmDir} \n"
-        + $"export CLONABLEVM={clonableVm} \n"
-        + $"export NEWVM=pilote \n"
-        + $"export IP=10.0.2.5 \n"
-        + $"export PORTFORWARD=22005 \n";
 
-        var output = ShellHelper.Bash(bashArgs + EmbeddedResources.VBoxClone.ReadAsText());
-        Console.WriteLine(output);
+        // Clone clonableVm
+        vBoxHelper.CloneVm(vmDir, clonableVm, PiloteVmName);
+
+        // Start pilote, it has been cloned from an image that runs on IP 10.0.2.200
+        vBoxHelper.StartVm(PiloteVmName);
+        Thread.Sleep(20000);
+        
+        vBoxHelper.NatLocalSshPortForwarding("10.0.2.200", $"{PilotePortForward}");
+        var connectionInfo = new ConnectionInfo(
+            "127.0.0.1", 22200, "test",
+            new PasswordAuthenticationMethod("test", "test"));
+        using (var sshClient = new SshClient(connectionInfo))
+        {
+            sshClient.Connect();
+            var command = $"sed 's/10.0.2.200/{PiloteIp}/g' /etc/network/interfaces > sed.tmp && cat sed.tmp > /etc/network/interfaces";
+            Console.WriteLine(command);
+            var cmd = sshClient.RunCommand(command);
+            Console.WriteLine("result : " + cmd.Result);
+        }
+
+        Console.WriteLine("restart vm");
+        vBoxHelper.RestartVm(PiloteVmName);
+        Thread.Sleep(20000);
+        vBoxHelper.NatLocalSshPortForwarding(PiloteIp, $"{PilotePortForward}");
     }
 
     public IVmPilote GetVmPilote()
     {
         CheckVmExists();
         return this.vmPilote;
+    }
+
+    private void CheckVmDirExists()
+    {
+        if (!Directory.Exists(vmDir))
+            throw new Exception($"VM directory doesn't exists : {vmDir}. Mount it or create it");
     }
 
     private void CheckClonableVm()
@@ -57,16 +91,12 @@ public class VBoxInfrastructure : IInfrastructure
 
     private void CheckVmExists()
     {
-        var list = "VBoxManage list vms".Bash();
-        if (!list.Contains("\"pilote\""))
-            throw new Exception("Vm pilote doesn't exists");  
+        vBoxHelper.CheckVmExists(PiloteVmName);
     }
 
     private void CheckVmDoesNotExists()
     {
-        var list = "VBoxManage list vms".Bash();
-        if (list.Contains("\"pilote\""))
-            throw new Exception("Vm pilote already exists");  
+        vBoxHelper.CheckVmDoesNotExists(PiloteVmName);
     }
 
 }

@@ -16,9 +16,9 @@ public class EmbeddedResource
         Name = name;
     }
 
-    public Stream Read()
+    public Stream Stream()
     {
-        return this.GetType().Assembly.GetManifestResourceStream("EmbeddedResource." + Name);
+        return this.GetType().Assembly.GetManifestResourceStream("cilib." + Name);
     }
 
     public string ReadAsText()
@@ -56,30 +56,6 @@ public class ResourceHelper
             var fvalue = (EmbeddedResource) f.GetValue(null);
             if (!names.Any(n => n == "cilib." + fvalue.Name))
                 throw new Exception($"Resource not found : {fvalue}");
-        }
-    }
-
-    public Stream Read(EmbeddedResource res)
-    {
-        return this.GetType().Assembly.GetManifestResourceStream("EmbeddedResource." + res.Name);
-    }
-
-    public async Task<string> ReadAsTextAsync(Assembly assembly, string name)
-    {
-        
-        var resourceStream = assembly.GetManifestResourceStream("EmbeddedResource." + name);
-        using (var reader = new StreamReader(resourceStream, Encoding.UTF8))
-        {
-            return await reader.ReadToEndAsync();
-        }
-    }
-
-    public string ReadAsText(Assembly assembly, string name)
-    {
-        var resourceStream = assembly.GetManifestResourceStream("EmbeddedResource." + name);
-        using (var reader = new StreamReader(resourceStream, Encoding.UTF8))
-        {
-            return reader.ReadToEnd();
         }
     }
 }

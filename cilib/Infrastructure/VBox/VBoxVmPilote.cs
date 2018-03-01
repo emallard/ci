@@ -6,17 +6,15 @@ using System.Linq;
 using Renci.SshNet;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.IO;
 
 public class VBoxVmPilote : IVmPilote {
 
-    
-    private readonly ResourceHelper resourceHelper;
     Uri sshUri;
     string ip;
 
-    public VBoxVmPilote(ResourceHelper resourceHelper)
+    public VBoxVmPilote()
     {
-        this.resourceHelper = resourceHelper;
     }
 
     public void Configure(Uri sshUri, string ip)
@@ -27,20 +25,35 @@ public class VBoxVmPilote : IVmPilote {
 
     public SshClient Connect()
     {
-        return new SshClient(GetConnectionInfo());
+        var sshClient = new SshClient(GetConnectionInfo());
+        sshClient.Connect();
+        return sshClient;
     }
 
-    public void Install()
+    public ScpClient ScpConnect()
+    {
+        var scpClient = new ScpClient(GetConnectionInfo());
+        scpClient.Connect();
+        return scpClient;
+    }
+
+    public void InstallDocker()
     {
         // How to run sudo commands
         // https://stackoverflow.com/questions/41555597/how-to-run-commands-by-sudo-and-enter-password-by-ssh-net-c-sharp
 
-        RunEmbeddedResource(EmbeddedResources.InstallPilote_1);
+        var outputInstall1 = RunEmbeddedResourceWithSudo(EmbeddedResources.InstallPilote_1);
+
+        using (var client = Connect())
+            new SshClientWrapper(client).SudoReboot();
 
         // wait for reboot
-        Thread.Sleep(30000);
+        Thread.Sleep(20000);
+    }
 
-        RunEmbeddedResource(EmbeddedResources.InstallPilote_2);
+    public void InstallCi()
+    {
+        var outputInstall2 = RunEmbeddedResourceWithSudo(EmbeddedResources.InstallPilote_2);
     }
 
     public void CheckInstall()
@@ -51,25 +64,14 @@ public class VBoxVmPilote : IVmPilote {
     private string RunEmbeddedResourceWithSudo(EmbeddedResource resource) 
     {
         
-        using (var scpClient = new ScpClient(GetConnectionInfo()))
+        using (var scpClient = ScpConnect())
         {
-            scpClient.Upload(resourceHelper.Read(resource), resource.Name);
+            scpClient.Upload(resource.Stream(), resource.Name);
         }
 
         using (var client = Connect())
         {
-            var promptRegex = new Regex(@"\][#$>]"); // regular expression for matching terminal prompt
-            var modes = new Dictionary<Renci.SshNet.Common.TerminalModes, uint>();
-            using (var stream = client.CreateShellStream("xterm", 255, 50, 800, 600, 1024, modes))
-            {
-                //stream.Write("sudo sh " + resource.Name);
-                stream.Write("sudo echo coucou");
-                stream.Expect(":");
-                stream.Write("test\n");
-                var output = stream.Expect(promptRegex);
-                return output;
-            }
-            
+            return new SshClientWrapper(client).RunSudo("sh " + resource.Name);
         }
     }
 
@@ -78,7 +80,7 @@ public class VBoxVmPilote : IVmPilote {
         
         using (var scpClient = new ScpClient(GetConnectionInfo()))
         {
-            scpClient.Upload(resourceHelper.Read(resource), resource.Name);
+            scpClient.Upload(resource.Stream(), resource.Name);
         }
 
         using (var client = Connect())

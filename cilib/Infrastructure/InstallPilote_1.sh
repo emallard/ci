@@ -1,6 +1,9 @@
-sudo apt-get update
 
-sudo apt-get install \
+set -e -x
+
+sudo apt-get -qq update
+
+sudo apt-get -qq --yes install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -15,10 +18,12 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 sudo apt-key fingerprint 0EBFCD88
 
-sudo apt-get update
+sudo apt-get -qq update
 
-sudo apt-get install docker-ce -y
+sudo apt-get -qq --yes install docker-ce
 
-sudo usermod -aG docker $USER
+sudo usermod -aG docker test
 
-sudo reboot
+#sudo usermod -aG docker $USER
+
+#sudo reboot

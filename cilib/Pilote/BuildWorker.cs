@@ -22,10 +22,14 @@ public class BuildWorker
     public string WorkingDirectoryInHost = "/home/etienne/docker/workerfiles";
     
     private readonly DockerWrapper dockerWrapper;
+    private readonly ShellHelper shellHelper;
 
-    public BuildWorker(DockerWrapper dockerWrapper)
+    public BuildWorker(
+        DockerWrapper dockerWrapper,
+        ShellHelper shellHelper) 
     {
         this.dockerWrapper = dockerWrapper;
+        this.shellHelper = shellHelper;
     }
 
     public async Task Run()
@@ -109,7 +113,7 @@ public class BuildWorker
             if (File.Exists(tarFilePath))
                 File.Delete(tarFilePath);
 
-            ShellHelper.Bash("tar cvf " + tarFilePath + " " + WorkingDirectoryInHost + "/dotnetcore_0");
+            shellHelper.Bash("tar cvf " + tarFilePath + " " + WorkingDirectoryInHost + "/dotnetcore_0");
             var parameters = new ContainerPathStatParameters();
             parameters.AllowOverwriteDirWithFile = true;
             parameters.Path = "/sources";
