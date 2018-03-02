@@ -56,12 +56,45 @@ public class VBoxVmPilote : IVmPilote {
         var outputInstall2 = RunEmbeddedResourceWithSudo(EmbeddedResources.InstallPilote_2);
     }
 
+    public void InstallMirrorRegistry()
+    {
+        using (var client = Connect())
+        {
+            var mirrorPort = 4999;
+            // Mirror runs on port 4999 
+            var mirrorDir = "/home/test/mirror";
+            var cmd = client.RunCommand($"mkdir {mirrorDir}");
+            var wait = cmd.Result;
+            
+            cmd = client.RunCommand(
+                  $"docker run -p {mirrorPort}:5000 -d --restart=always --name registry "
+                + $"-e REGISTRY_PROXY_REMOTEURL=http://registry-1.docker.io "
+                + $"-v {mirrorDir}:/var/lib/registry "
+                + $"registry:2"
+            );
+            wait = cmd.Result;
+            
+
+            var daemonjson = String.Join("\n", new string[] {
+                "{",
+                @"    ""registry-mirrors"" : [""http://localhost:" + mirrorPort + @"""]",
+                "}"
+            });
+            var cmdLine = $"echo '{daemonjson}' > /etc/docker/daemon.json";
+            wait = new SshClientWrapper(client).RunSudoBash(cmdLine);
+
+            new SshClientWrapper(client).SudoReboot();
+        }
+
+        Thread.Sleep(30000);
+    }
 
     public void InstallRegistry()
     {
         using (var client = Connect())
         {
             var cmd = client.RunCommand("docker run ciexe install-registry");
+            var wait = cmd.Result;
         }
     }
 
@@ -70,6 +103,7 @@ public class VBoxVmPilote : IVmPilote {
         using (var client = Connect())
         {
             var cmd = client.RunCommand("docker run ciexe install-vault");
+            var wait = cmd.Result;
         }
     }
 

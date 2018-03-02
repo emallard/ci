@@ -10,6 +10,8 @@ public interface IVmPilote {
     SshClient Connect();
     
     void InstallDocker();
+
+    void InstallMirrorRegistry();
     
     void InstallCi();
     

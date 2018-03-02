@@ -28,8 +28,17 @@ namespace citest
             }
         }
 
+        [Fact]
+        public void InstallPiloteDockerRegistry()
+        {
+            var infrastructure = this.container.Resolve<VBoxInfrastructure>();
+            var vmPilote = infrastructure.GetVmPilote();
+            vmPilote.InstallMirrorRegistry();
+        }
+
+
         // PiloteVm is already created
-        // Install script : docker, dotnetcore images, ciexe
+        // Install script : dotnetcore images, ciexe
         [Fact]
         public void InstallPilote()
         {

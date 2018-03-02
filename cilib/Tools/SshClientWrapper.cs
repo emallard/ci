@@ -17,6 +17,13 @@ public class SshClientWrapper {
         this.sshClient = sshClient;
     }
 
+    public string RunSudoBash(string command)
+    {
+        var escapedCommand = command.Replace("\"", "\\\"");
+        var commandLine = "bash -c \"" + escapedCommand + "\"";
+        return RunSudo(commandLine);
+    }
+
     public string RunSudo(string command)
     {
         var promptRegex = new Regex(@"\][#$>]"); // regular expression for matching terminal prompt
