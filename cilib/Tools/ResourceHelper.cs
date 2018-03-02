@@ -36,8 +36,8 @@ public class EmbeddedResources
 {
 
     public static EmbeddedResource VBoxClone = new EmbeddedResource("Infrastructure.VBox.VBoxClone.sh");
-    public static EmbeddedResource InstallPilote_1 = new EmbeddedResource("Infrastructure.InstallPilote_1.sh");
-    public static EmbeddedResource InstallPilote_2 = new EmbeddedResource("Infrastructure.InstallPilote_2.sh");
+    public static EmbeddedResource InstallDocker = new EmbeddedResource("Infrastructure.Common.InstallDocker.sh");
+    public static EmbeddedResource InstallCi = new EmbeddedResource("Infrastructure.InstallCi.sh");
 }
 
 

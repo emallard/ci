@@ -51,15 +51,15 @@ public class VBoxHelper {
     public void CheckVmExists(string vmName)
     {
         var list = shellHelper.Bash("vboxmanage list vms");
-        if (!list.Contains("\"pilote\""))
-            throw new Exception("Vm pilote doesn't exists");  
+        if (!list.Contains("\"" + vmName +"\""))
+            throw new Exception("Vm " + vmName + " doesn't exists");  
     }
 
     public void CheckVmDoesNotExists(string vmName)
     {
         var list = shellHelper.Bash("vboxmanage list vms");
-        if (list.Contains("\"pilote\""))
-            throw new Exception("Vm pilote already exists");  
+        if (list.Contains("\"" + vmName +"\""))
+            throw new Exception("Vm  + vmName +  already exists");  
     }
 
     public void NatLocalSshPortForwarding(string ip, string port)

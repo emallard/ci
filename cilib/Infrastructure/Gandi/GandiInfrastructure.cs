@@ -11,7 +11,27 @@ public class GandiInfrastructure : IInfrastructure
         throw new NotImplementedException();
     }
 
+    public void CreateVmWebServer()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteVmPilote()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteVmWebServer()
+    {
+        throw new NotImplementedException();
+    }
+
     public IVmPilote GetVmPilote()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IVmWebServer GetVmWebServer()
     {
         throw new NotImplementedException();
     }

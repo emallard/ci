@@ -10,8 +10,8 @@ using Renci.SshNet;
 public class VBoxInfrastructure : IInfrastructure
 {
     private readonly VBoxHelper vBoxHelper;
-    VBoxVmPilote vmPilote;
-
+    private readonly VBoxVmPilote vmPilote;
+    private readonly VBoxVmWebServer vmWebServer;
     string vmDir = "/media/etienne/LinuxData/vm/";
     //string vmIso = "/media/etienne/LinuxData/ubuntu-16.04.3-server-amd64.iso";
     string clonableVm = "clonable";
@@ -21,17 +21,30 @@ public class VBoxInfrastructure : IInfrastructure
     string PiloteIp = "10.0.2.5";
     int PilotePortForward = 22005;
 
+
+    string WebServerVmName = "webserver";
+    string WebServerIp = "10.0.2.6";
+    int WebServerPortForward = 22006;
+
+
     public VBoxInfrastructure(
         VBoxHelper vBoxHelper,
-        VBoxVmPilote vmPilote)
+        VBoxVmPilote vmPilote,
+        VBoxVmWebServer vmWebServer)
     {
         this.vBoxHelper = vBoxHelper;
         this.vmPilote = vmPilote;
+        this.vmWebServer = vmWebServer;
         this.vmPilote.Configure(new Uri($"tcp://127.0.0.1:{PilotePortForward}"), PiloteIp);
-
+        this.vmWebServer.Configure(new Uri($"tcp://127.0.0.1:{WebServerPortForward}"), WebServerIp);
         // Check that directory with vms exists 
         CheckVmDirExists();
     }
+
+
+    //
+    //  Pilote
+    //
 
     public void DeleteVmPilote()
     {
@@ -40,41 +53,38 @@ public class VBoxInfrastructure : IInfrastructure
 
     public void CreateVmPilote()
     {
-        
-        CheckClonableVm();
-        CheckVmDoesNotExists();
-
-        // Clone clonableVm
-        vBoxHelper.CloneVm(vmDir, clonableVm, PiloteVmName);
-
-        // Start pilote, it has been cloned from an image that runs on IP 10.0.2.200
-        vBoxHelper.StartVm(PiloteVmName);
-        Thread.Sleep(20000);
-        
-        vBoxHelper.NatLocalSshPortForwarding("10.0.2.200", $"{PilotePortForward}");
-        var connectionInfo = new ConnectionInfo(
-            "127.0.0.1", 22200, "test",
-            new PasswordAuthenticationMethod("test", "test"));
-        using (var sshClient = new SshClient(connectionInfo))
-        {
-            sshClient.Connect();
-            var command = $"sed 's/10.0.2.200/{PiloteIp}/g' /etc/network/interfaces > sed.tmp && cat sed.tmp > /etc/network/interfaces";
-            Console.WriteLine(command);
-            var cmd = sshClient.RunCommand(command);
-            Console.WriteLine("result : " + cmd.Result);
-        }
-
-        Console.WriteLine("restart vm");
-        vBoxHelper.RestartVm(PiloteVmName);
-        Thread.Sleep(20000);
-        vBoxHelper.NatLocalSshPortForwarding(PiloteIp, $"{PilotePortForward}");
+        this.CreateVm(PiloteVmName, PiloteIp, PilotePortForward);
     }
 
     public IVmPilote GetVmPilote()
     {
-        CheckVmExists();
+        CheckVmExists(PiloteVmName);
         return this.vmPilote;
     }
+
+    //
+    //  WebServer
+    //
+
+    public void DeleteVmWebServer()
+    {
+        vBoxHelper.DeleteVm(WebServerVmName);
+    }
+
+    public void CreateVmWebServer()
+    {
+        this.CreateVm(WebServerVmName, WebServerIp, WebServerPortForward);
+    }
+
+    public IVmWebServer GetVmWebServer()
+    {
+        CheckVmExists(WebServerVmName);
+        return this.vmWebServer;
+    }
+
+    // 
+    //  Private
+    //
 
     private void CheckVmDirExists()
     {
@@ -89,14 +99,47 @@ public class VBoxInfrastructure : IInfrastructure
             throw new Exception($"{clonableVmOvf} doesn't exists. Please run VBoxClonableVm.sh");
     }
 
-    private void CheckVmExists()
+    private void CheckVmExists(string vmName)
     {
-        vBoxHelper.CheckVmExists(PiloteVmName);
+        vBoxHelper.CheckVmExists(vmName);
     }
 
-    private void CheckVmDoesNotExists()
+    private void CheckVmDoesNotExists(string vmName)
     {
-        vBoxHelper.CheckVmDoesNotExists(PiloteVmName);
+        vBoxHelper.CheckVmDoesNotExists(vmName);
     }
+
+    private void CreateVm(string vmName, string ip, int portForward)
+    {
+        
+        CheckClonableVm();
+        CheckVmDoesNotExists(vmName);
+
+        // Clone clonableVm
+        vBoxHelper.CloneVm(vmDir, clonableVm, vmName);
+
+        // Start vm, it has been cloned from an image that runs on IP 10.0.2.200
+        vBoxHelper.StartVm(vmName);
+        Thread.Sleep(20000);
+        
+        vBoxHelper.NatLocalSshPortForwarding("10.0.2.200", $"{portForward}");
+        var connectionInfo = new ConnectionInfo(
+            "127.0.0.1", 22200, "test",
+            new PasswordAuthenticationMethod("test", "test"));
+        using (var sshClient = new SshClient(connectionInfo))
+        {
+            sshClient.Connect();
+            var command = $"sed 's/10.0.2.200/{ip}/g' /etc/network/interfaces > sed.tmp && cat sed.tmp > /etc/network/interfaces";
+            Console.WriteLine(command);
+            var cmd = sshClient.RunCommand(command);
+            Console.WriteLine("result : " + cmd.Result);
+        }
+
+        Console.WriteLine("restart vm");
+        vBoxHelper.RestartVm(vmName);
+        Thread.Sleep(20000);
+        vBoxHelper.NatLocalSshPortForwarding(ip, $"{portForward}");
+    }
+
 
 }
