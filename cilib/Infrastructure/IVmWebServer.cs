@@ -20,7 +20,9 @@ public interface IVmWebServer {
 
 public class ContainerConf
 {
+    /*
     string containerName;
     string hostName;
     string dockerComposeXml;
+    */
 }

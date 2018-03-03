@@ -12,9 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Infrastructure\InstallPilote.sh" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Infrastructure\VBox\VBoxClone.sh" />
     <EmbeddedResource Include="Infrastructure\Common\InstallDocker.sh" />
     <EmbeddedResource Include="Infrastructure\Common\InstallCi.sh" />

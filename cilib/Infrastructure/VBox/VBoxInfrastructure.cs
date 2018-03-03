@@ -46,6 +46,11 @@ public class VBoxInfrastructure : IInfrastructure
     //  Pilote
     //
 
+    public void TryToStartVmPilote()
+    {
+        vBoxHelper.TryToStartVm(PiloteVmName);
+    }
+
     public void DeleteVmPilote()
     {
         vBoxHelper.DeleteVm(PiloteVmName);
@@ -65,6 +70,11 @@ public class VBoxInfrastructure : IInfrastructure
     //
     //  WebServer
     //
+
+    public void TryToStartVmWebServer()
+    {
+        vBoxHelper.TryToStartVm(WebServerVmName);
+    }
 
     public void DeleteVmWebServer()
     {

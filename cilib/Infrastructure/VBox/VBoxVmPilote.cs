@@ -32,4 +32,9 @@ public class VBoxVmPilote : VBoxVmCommon, IVmPilote {
         }
     }
 
+    public void ConfigureDotNetBuildContainer(string name)
+    {
+
+    }
+
 }

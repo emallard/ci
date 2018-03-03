@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 public class VBoxHelper {
 
@@ -16,8 +17,10 @@ public class VBoxHelper {
 
     public bool IsVmStarted(string vmName)
     {
-        var r = shellHelper.Bash($"vboxmanage showvminfo \"{vmName}\" | grep -c \"running (sinc\"");
-        return r.StartsWith("1");
+        //var r = shellHelper.Bash($"vboxmanage showvminfo \"{vmName}\" | grep -c \"running (sinc\"");
+        //return r.StartsWith("1");
+        var list = shellHelper.Bash("vboxmanage list runningvms");
+        return list.Contains("\"" + vmName +"\"");
     }
 
     public void CheckVmStarted(string vmName)
@@ -30,6 +33,19 @@ public class VBoxHelper {
     {
         shellHelper.Bash($"vboxmanage controlvm {vmName} poweroff");
         shellHelper.Bash($"vboxmanage unregistervm {vmName} --delete");
+    }
+
+    public void TryToStartVm(string vmName)
+    {
+        if (VmExists(vmName))
+        {
+            if (!IsVmStarted(vmName)) 
+            {
+                StartVm(vmName);
+                Thread.Sleep(20000);
+            }
+        }
+        
     }
 
     public void StartVm(string vmName)
@@ -48,18 +64,22 @@ public class VBoxHelper {
         shellHelper.Bash($"vboxmanage import \"{vmDir}/{clonableVm}.ovf\" --vsys 0 --vmname \"{newVm}\" --unit 9 --disk \"{vmDir}/{newVm}.vmdk\"");
     }
 
-    public void CheckVmExists(string vmName)
+    public bool VmExists(string vmName)
     {
         var list = shellHelper.Bash("vboxmanage list vms");
-        if (!list.Contains("\"" + vmName +"\""))
+        return list.Contains("\"" + vmName +"\"");
+    }
+
+    public void CheckVmExists(string vmName)
+    {
+        if (!VmExists(vmName))
             throw new Exception("Vm " + vmName + " doesn't exists");  
     }
 
     public void CheckVmDoesNotExists(string vmName)
     {
-        var list = shellHelper.Bash("vboxmanage list vms");
-        if (list.Contains("\"" + vmName +"\""))
-            throw new Exception("Vm  + vmName +  already exists");  
+        if (VmExists(vmName))
+            throw new Exception("Vm " + vmName + " already exists");  
     }
 
     public void NatLocalSshPortForwarding(string ip, string port)

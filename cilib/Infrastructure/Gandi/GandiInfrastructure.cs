@@ -35,4 +35,14 @@ public class GandiInfrastructure : IInfrastructure
     {
         throw new NotImplementedException();
     }
+
+    public void TryToStartVmPilote()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void TryToStartVmWebServer()
+    {
+        throw new NotImplementedException();
+    }
 }

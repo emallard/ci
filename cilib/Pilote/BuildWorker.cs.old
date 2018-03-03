@@ -67,11 +67,11 @@ public class BuildWorker
     public void GetResource(string sourceDirectory)
     {
         //"apt-get install -y git".Bash();
-        var gitResource = new GitResource();
-        gitResource.GitRepository = "https://github.com/emallard/dotnetcore_0.git";
+        //var gitResource = new GitResource();
+        //gitResource.GitRepository = "https://github.com/emallard/dotnetcore_0.git";
 
         //Directory.CreateDirectory(sourcesDirectory);
-        gitResource.Get(sourceDirectory);
+        //gitResource.Get(sourceDirectory);
     }
 
     private async Task BuildArtifact2()

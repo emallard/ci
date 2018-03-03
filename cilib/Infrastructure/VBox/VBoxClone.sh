@@ -26,11 +26,12 @@ vboxmanage natnetwork modify --netname natnet --port-forward-4 "sshcloned:tcp:[1
 # replace ip in new vm
 vboxmanage startvm "$NEWVM" --type headless
 sleep 20s
-
 ssh test@127.0.0.1 -p 22200 "sed 's/10.0.2.200/$IP/g' /etc/network/interfaces > sed.tmp && cat sed.tmp > /etc/network/interfaces"
 
+# restart
 vboxmanage controlvm "$NEWVM" poweroff
 vboxmanage startvm "$NEWVM" --type headless
 
+# forward port
 vboxmanage natnetwork modify --netname natnet --port-forward-4 delete "ssh$NEWVM"
 vboxmanage natnetwork modify --netname natnet --port-forward-4 "ssh$NEWVM:tcp:[127.0.0.1]:$PORTFORWARD:[$IP]:22"

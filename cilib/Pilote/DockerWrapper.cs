@@ -5,8 +5,65 @@ using System.Collections.Generic;
 using Docker.DotNet.Models;
 using Docker.DotNet;
 using System.Linq;
+using System.Threading;
 
 public class DockerWrapper {
+
+
+    public async Task EnsureRunning(string containerName, ContainerStartParameters parameters)
+    {
+        /*
+        created : A container that has been created (e.g. with docker create) but not started
+        restarting : A container that is in the process of being restarted
+        running : A currently running container
+        paused : A container whose processes have been paused
+        exited : A container that ran and completed ("stopped" in other contexts, although a created container is technically also "stopped")
+        dead : A container that the daemon tried and failed to stop (usually due to a busy device or resource used by the container)
+        */
+        using (var client = GetClient())
+        {
+            var found = await this.FindContainerByName(containerName);
+            var state = found.State.ToLowerInvariant();
+            if (state == "running") 
+                {}
+            if (state == "restarting") 
+                {}
+            if (state == "exited")
+                await client.Containers.StartContainerAsync(found.ID, parameters);
+            if (state == "paused")
+                await client.Containers.UnpauseContainerAsync(found.ID);
+            if (state == "dead") 
+                {}
+
+
+            // check that container is really running
+            Thread.Sleep(1000);
+            found = await this.FindContainerByName(containerName);
+            state = found.State.ToLowerInvariant();
+            if (state != "running")
+                throw new Exception("Container not running : " + containerName);
+        }
+    }
+
+
+    public async Task CreateContainer(string repoTag, string containerName, CreateContainerParameters parameters)
+    {
+        using (var client = GetClient())
+        {
+            // ensure image exists
+            var foundImage = await this.FindImage(repoTag);
+            if (foundImage == null)
+            {
+                await this.CreateImage(repoTag);
+                foundImage = await this.FindImage(repoTag);
+            }
+
+            parameters.Image = foundImage.ID;
+            parameters.Name = containerName;
+            await client.Containers.CreateContainerAsync(parameters);
+        }
+    }
+
 
 
     public async Task DeleteContainerIfExistsByRepoTag(string repoTag)

@@ -9,7 +9,6 @@ public class Lanceur
 {
     public async Task Run<T>(Func<T, Task> action)
     {
-        //HttpWebRequest.DefaultWebProxy = null;
         var container = getDI();
         using (var scope = container.BeginLifetimeScope())
         {
@@ -21,17 +20,6 @@ public class Lanceur
     public void RunSync<T>(Func<T, Task> action)
     {
         Task.WaitAll(Run<T>(action));
-    }
-
-    public async Task RunWorker()
-    {
-        //HttpWebRequest.DefaultWebProxy = null;
-        var container = getDI();
-        using (var scope = container.BeginLifetimeScope())
-        {
-            var init = scope.Resolve<BuildWorker>();
-            await init.Run();
-        }
     }
 
     private IContainer getDI()
