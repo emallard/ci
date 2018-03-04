@@ -10,7 +10,6 @@ public interface IVmWebServer {
     SshClient Ssh();
     
     void InstallDocker();
-    void InstallCi();
     void InstallMirrorRegistry();
 
     void InstallTraefik();

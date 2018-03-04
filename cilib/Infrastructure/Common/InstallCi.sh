@@ -5,6 +5,7 @@ set -e -x
 sudo apt-get -qq --yes install git
 
 cd ~/
+mkdir -p ~/ci
 if [ -d "~/ci" ]; then
     cd ~/ci
     GITPULL=$(git pull)
@@ -13,13 +14,23 @@ if [ -d "~/ci" ]; then
         echo "up to date"
     else
         docker rm -f ciexe
+        # build and remove temporary containers
         docker build --force-rm -t ciexe .
-        docker run --name ciexe -it ciexe bash
+        # removoe <none> images
+        docker image rm $(docker images -f "dangling=true" -q)
+        # run ciexe with bash 
+        docker run --name ciexe ciexe bash
     fi
     
 else
-    #rm -rf ~/ci
-    git clone --quiet https://github.com/emallard/ci.git
     cd ~/ci
-    docker build --rm -t ciexe .
+    git clone --quiet https://github.com/emallard/ci.git
+    
+
+    # build and remove temporary containers
+    docker build --force-rm -t ciexe .
+    # removoe <none> images
+    docker image rm $(docker images -f "dangling=true" -q)
+    # run ciexe with bash 
+    docker run --name ciexe ciexe bash
 fi

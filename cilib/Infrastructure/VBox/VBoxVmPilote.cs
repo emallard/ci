@@ -8,7 +8,7 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
 
-public class VBoxVmPilote : VBoxVmCommon, IVmPilote {
+public class VBoxVmPilote : VBoxVm, IVmPilote {
 
     public VBoxVmPilote()
     {
@@ -16,20 +16,17 @@ public class VBoxVmPilote : VBoxVmCommon, IVmPilote {
 
     public void InstallRegistry()
     {
-        using (var client = Ssh())
-        {
-            var cmd = client.RunCommand("docker run ciexe install-registry");
-            var wait = cmd.Result;
-        }
+        this.SshCommand("docker start && docker exec dotnet ciexe.dll install-registry");
     }
 
     public void InstallVault()
     {
-        using (var client = Ssh())
-        {
-            var cmd = client.RunCommand("docker run ciexe install-vault");
-            var wait = cmd.Result;
-        }
+        this.SshCommand("docker run ciexe install-vault");
+    }
+
+    public void RunCiContainer()
+    {
+        this.SshCommand("docker run --name ciexe ciexe");
     }
 
     public void CreateBuildContainer()
@@ -56,4 +53,6 @@ public class VBoxVmPilote : VBoxVmCommon, IVmPilote {
     {
         throw new NotImplementedException();
     }
+
+    
 }

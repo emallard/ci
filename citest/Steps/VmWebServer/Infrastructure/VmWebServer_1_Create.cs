@@ -28,7 +28,7 @@ public class CreateVmWebServer : IStep {
         infrastructure.CreateVmWebServer();
     }
 
-    public void Revert()
+    public void Clean()
     {
         infrastructure.DeleteVmWebServer();
     }

@@ -8,12 +8,12 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
 
-public class VBoxVmCommon {
+public class VBoxVm : IVm {
 
     Uri sshUri;
     string ip;
 
-    public VBoxVmCommon()
+    public VBoxVm()
     {
     }
 
@@ -42,7 +42,7 @@ public class VBoxVmCommon {
         // How to run sudo commands
         // https://stackoverflow.com/questions/41555597/how-to-run-commands-by-sudo-and-enter-password-by-ssh-net-c-sharp
 
-        var outputInstall1 = RunEmbeddedResourceWithSudo(EmbeddedResources.InstallDocker);
+        var outputInstall1 = this.RunEmbeddedResourceWithSudo(EmbeddedResources.InstallDocker);
 
         using (var client = Ssh())
             new SshClientWrapper(client).SudoReboot();
@@ -85,49 +85,56 @@ public class VBoxVmCommon {
         Thread.Sleep(20000);
     }
 
-    public void InstallCi()
-    {
-        var outputInstall2 = RunEmbeddedResourceWithSudo(EmbeddedResources.InstallCi);
-    }
 
-    public void CleanCi()
+    public void InstallCiSources()
     {
-        using (var client = Ssh())
-        {
-            new SshClientWrapper(client).RunSudoBash("rm -rf ~/ci");
-        }
-    }
-
-
-    protected string RunEmbeddedResourceWithSudo(EmbeddedResource resource) 
-    {
+        this.SshSudoCommand("sudo apt-get -qq --yes install git");
         
-        using (var scpClient = Scp())
-        {
-            scpClient.Upload(resource.Stream(), resource.Name);
-        }
-
-        using (var client = Ssh())
-        {
-            return new SshClientWrapper(client).RunSudo("sh " + resource.Name);
-        }
+        var script = @"
+        set -e -x
+        if [ -d ""~/ci"" ]; then
+            git pull --quiet
+        else
+            mkdir ~/ci
+            git --git-dir=~/ci clone --quiet https://github.com/emallard/ci.git
+        fi
+        ";
+        this.SshScript(script, "InstallCiSources.sh");
     }
 
-    protected string RunEmbeddedResource(EmbeddedResource resource) 
+    public void CleanCiSources()
     {
-        
-        using (var scpClient = new ScpClient(GetConnectionInfo()))
-        {
-            scpClient.Upload(resource.Stream(), resource.Name);
-        }
-
-        using (var client = Ssh())
-        {
-            var cmd = client.RunCommand("sh " + resource.Name);
-            return cmd.Result;
-        }
+        this.Ssh(client => new SshClientWrapper(client).RunSudoBash("rm -rf ~/ci"));
     }
 
+    public void BuildCiImage()
+    {
+        this.Ssh(client =>
+        {
+            client.RunCommand("docker build --force-rm -t ciexe ~/ci");
+            client.RunCommand("docker image rm $(docker images -f \"dangling=true\" -q)");
+        });
+    }
+
+    public void CleanCiImage()
+    {
+        CleanCiContainer();
+        var images = this.SshCommand("docker images");
+        if (images.Contains("ciexe"))
+            this.SshCommand("docker image rm -f ciexe");
+    }
+
+    public void StartCiContainer()
+    {
+        this.SshCommand("docker run -it --name ciexe ciexe bash");
+    }
+
+    public void CleanCiContainer()
+    {
+        var containers = this.SshCommand("docker ps -a");
+        if (containers.Contains("ciexe"))
+            this.SshCommand("docker rm -f ciexe");
+    }
 
     protected ConnectionInfo GetConnectionInfo()
     {

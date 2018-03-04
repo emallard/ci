@@ -5,20 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using Renci.SshNet;
 
-public interface IVmPilote {
+public interface IVmPilote : IVm {
 
-    SshClient Ssh();
-    
-    void InstallCi();
-    void CleanCi();
-    
     void InstallDocker();
     void InstallMirrorRegistry();
     void InstallRegistry();
 
+    void InstallCiSources();
+    void CleanCiSources();
+
+    void BuildCiImage();
+    void CleanCiImage();
+
+    void RunCiContainer();
+    void CleanCiContainer();
+
     void CreateBuildContainer();
     void SetSourcesInBuildContainer();
     void RunBuildContainer();
+
     void CreateAppContainer();
     void PublishToAppRegistry();
 }

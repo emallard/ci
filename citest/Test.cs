@@ -35,7 +35,9 @@ namespace citest
                 Run<VmPilote_1_Create>();
                 Run<VmPilote_2_Docker>();
                 Run<VmPilote_3_MirrorRegistry>();
-                Run<VmPilote_4_Ci>();
+                Run<VmPilote_4_PiloteCi_Sources>();
+                Run<VmPilote_5_PiloteCi_Build>();
+                Run<VmPilote_6_PiloteCi_Run>();
 
                 // From : Container with CI installed
                 // To   : Vm with other software installed
@@ -57,7 +59,8 @@ namespace citest
 
         private void Run<S>() where S : IStep
         {
-            Run(container.Resolve<S>());
+            var s = container.Resolve<S>();
+            Run(s);
         }
         
 
@@ -70,10 +73,10 @@ namespace citest
                 step.Test();
                 Console.WriteLine("- OK");
             }
-            catch (AssertException)
+            catch (Exception)
             {
                 Console.WriteLine("- Step revert");
-                step.Revert();
+                step.Clean();
                 Console.WriteLine("- Step run");
                 step.Run();
                 Console.WriteLine("- Step test");

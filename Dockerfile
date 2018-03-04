@@ -18,4 +18,4 @@ RUN dotnet publish -c Release -o out
 FROM microsoft/aspnetcore:2.0
 WORKDIR /app
 COPY --from=build-env /app/ciexe/out ./
-# ENTRYPOINT ["dotnet", "ciexe.dll"]
+ENTRYPOINT ["dotnet", "ciexe.dll"]

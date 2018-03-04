@@ -7,31 +7,28 @@ namespace citest
     public class PiloteCi_6_RunFromAppRegistry : IStep
     {
         private readonly IInfrastructure infrastructure;
+        private readonly IVmPilote vmPilote;
+        
 
         public PiloteCi_6_RunFromAppRegistry(IInfrastructure infrastructure)
         {
             this.infrastructure = infrastructure;
+            this.vmPilote = infrastructure.GetVmPilote();
         }
 
         public void Test()
         {
-            var vmPilote = infrastructure.GetVmPilote();
-            using (var client = vmPilote.Ssh())
-            {
-                //var cmd = client.RunCommand("docker exec ciexe dotnet ciexe.dll hello");
-                //Assert.Contains("hello", cmd.Result);
-            }
+            //var result = vmPilote.SshCommand("docker exec ciexe dotnet ciexe.dll hello");
+            //Assert.Contains("hello", result);
         }
 
         public void Run()
         {
-            //var vmPilote = infrastructure.GetVmPilote();
             //vmPilote.InstallCi();
         }
 
-        public void Revert()
+        public void Clean()
         {
-            //var vmPilote = infrastructure.GetVmPilote();
             //vmPilote.CleanCi();
         }
     }

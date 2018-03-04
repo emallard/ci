@@ -8,7 +8,7 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
 
-public class VBoxVmWebServer : VBoxVmCommon, IVmWebServer {
+public class VBoxVmWebServer : VBoxVm, IVmWebServer {
 
     public VBoxVmWebServer()
     {
@@ -28,4 +28,5 @@ public class VBoxVmWebServer : VBoxVmCommon, IVmWebServer {
     {
         throw new NotImplementedException();
     }
+
 }

@@ -7,20 +7,18 @@ using System.Linq;
 public class VmPilote_1_Create : IStep {
 
     private readonly IInfrastructure infrastructure;
+    private readonly IVmPilote vmPilote;
 
     public VmPilote_1_Create(IInfrastructure infrastructure)
     {
         this.infrastructure = infrastructure;
+        this.vmPilote = infrastructure.GetVmPilote();
     }
 
     public void Test()
     {
-        var vmPilote = infrastructure.GetVmPilote();
-        using (var sshClient = vmPilote.Ssh())
-        {
-            var cmd = sshClient.RunCommand("echo coucou");
-            Assert.IsTrue("coucou\n" == cmd.Result);
-        }
+        var result = vmPilote.SshCommand("echo coucou");
+        Assert.IsTrue("coucou\n" == result);
     }
 
     public void Run()
@@ -28,7 +26,7 @@ public class VmPilote_1_Create : IStep {
         infrastructure.CreateVmPilote();
     }
 
-    public void Revert()
+    public void Clean()
     {
         infrastructure.DeleteVmPilote();
     }

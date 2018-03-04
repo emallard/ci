@@ -36,7 +36,7 @@ public class SshClientWrapper {
                 var output3 = new StreamReader(stream).ReadToEnd();
                 stream.WriteLine("test");
                 var output = stream.Expect("test@ubuntu");
-                Console.WriteLine(output);
+                Console.WriteLine(output3 + output);
                 return output;
             }
     }

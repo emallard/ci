@@ -16,7 +16,7 @@ public class GitResource
 
     public void Pull(string directory)
     {
-        var cmd = $"git --git-dir \"{directory}\" pull";
+        var cmd = $"git --git-dir=\"{directory}\" pull";
         shellHelper.Bash(cmd);
     }
 

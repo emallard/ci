@@ -3,12 +3,10 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Renci.SshNet;
 
-public interface IStep {
+public interface IVm {
 
-    void Test();
-
-    void Run();
-    
-    void Clean();
+    SshClient Ssh();
+    ScpClient Scp();
 }

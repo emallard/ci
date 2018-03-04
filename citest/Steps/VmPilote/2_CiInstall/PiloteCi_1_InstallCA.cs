@@ -7,32 +7,26 @@ namespace citest
     public class PiloteCi_1_InstallCA : IStep
     {
         private readonly IInfrastructure infrastructure;
+        private readonly IVmPilote vmPilote;
 
         public PiloteCi_1_InstallCA(IInfrastructure infrastructure)
         {
             this.infrastructure = infrastructure;
+            this.vmPilote = infrastructure.GetVmPilote();
         }
 
         public void Test()
         {
-            var vmPilote = infrastructure.GetVmPilote();
-            using (var client = vmPilote.Ssh())
-            {
-                //var cmd = client.RunCommand("docker exec ciexe dotnet ciexe.dll hello");
-                //Assert.Contains("hello", cmd.Result);
-            }
+            //var result = vmPilote.SshCommand("docker exec ciexe dotnet ciexe.dll hello");
+            //Assert.Contains("hello", cmd.Result);
         }
 
         public void Run()
         {
-            var vmPilote = infrastructure.GetVmPilote();
-            //vmPilote.InstallCi();
         }
 
-        public void Revert()
+        public void Clean()
         {
-            //var vmPilote = infrastructure.GetVmPilote();
-            //vmPilote.CleanCi();
         }
     }
 }
