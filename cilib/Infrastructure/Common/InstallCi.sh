@@ -20,6 +20,6 @@ if [ -d "~/ci" ]; then
 else
     #rm -rf ~/ci
     git clone --quiet https://github.com/emallard/ci.git
-    cd ~/ci/ciexe
+    cd ~/ci
     docker build --rm -t ciexe .
 fi

@@ -20,7 +20,7 @@ public class SshClientWrapper {
     public string RunSudoBash(string command)
     {
         var escapedCommand = command.Replace("\"", "\\\"");
-        var commandLine = "bash -c \"" + escapedCommand + "\"";
+        var commandLine = "sudo bash -c \"" + escapedCommand + "\"";
         return RunSudo(commandLine);
     }
 
@@ -31,7 +31,7 @@ public class SshClientWrapper {
             using (var stream = sshClient.CreateShellStream("xterm", 255, 50, 800, 600, 1024, modes))
             {
                 var output1 = new StreamReader(stream).ReadToEnd();
-                stream.WriteLine("sudo " + command);
+                stream.WriteLine(command);
                 var output2 = stream.Expect("Mot de passe");
                 var output3 = new StreamReader(stream).ReadToEnd();
                 stream.WriteLine("test");
@@ -44,7 +44,7 @@ public class SshClientWrapper {
     public void SudoReboot()
     {
         // reboot dans 2 seconds
-        RunSudo("bash -c \"( sleep 2 ; reboot ) &\"");
+        RunSudo("sudo bash -c \"( sleep 2 ; reboot ) &\"");
 
         var tries = 0;
         while (sshClient.IsConnected && tries < 50) {

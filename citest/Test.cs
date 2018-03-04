@@ -39,9 +39,9 @@ namespace citest
 
                 // From : Container with CI installed
                 // To   : Vm with other software installed
-                Run<PiloteCi_1_InstallCA>();
-                Run<PiloteCi_2_InstallVault>();
-                Run<PiloteCi_3_InstallLocalRegistry>();
+                //Run<PiloteCi_1_InstallCA>();
+                //Run<PiloteCi_2_InstallVault>();
+                //Run<PiloteCi_3_InstallLocalRegistry>();
 
 
                 // From : Vm with CI Installed and other software installed
@@ -63,13 +63,20 @@ namespace citest
 
         private void Run(IStep step)
         {
+            Console.WriteLine("==== Start Step " + step.GetType().Name);
+
             try {
+                Console.WriteLine("- Step test");
                 step.Test();
+                Console.WriteLine("- OK");
             }
             catch (AssertException)
             {
+                Console.WriteLine("- Step revert");
                 step.Revert();
+                Console.WriteLine("- Step run");
                 step.Run();
+                Console.WriteLine("- Step test");
                 step.Test();
             }
         }

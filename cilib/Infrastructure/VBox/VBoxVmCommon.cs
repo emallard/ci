@@ -90,6 +90,15 @@ public class VBoxVmCommon {
         var outputInstall2 = RunEmbeddedResourceWithSudo(EmbeddedResources.InstallCi);
     }
 
+    public void CleanCi()
+    {
+        using (var client = Ssh())
+        {
+            new SshClientWrapper(client).RunSudoBash("rm -rf ~/ci");
+        }
+    }
+
+
     protected string RunEmbeddedResourceWithSudo(EmbeddedResource resource) 
     {
         

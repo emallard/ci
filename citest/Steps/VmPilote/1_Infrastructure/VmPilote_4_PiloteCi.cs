@@ -31,8 +31,8 @@ namespace citest
 
         public void Revert()
         {
-            //var vmPilote = infrastructure.GetVmPilote();
-            //vmPilote.CleanCi();
+            var vmPilote = infrastructure.GetVmPilote();
+            vmPilote.CleanCi();
         }
     }
 }
