@@ -33,7 +33,7 @@ public class VBoxInfrastructure : IInfrastructure
         this.vmPilote.Configure(new Uri($"tcp://127.0.0.1:{vmPilote.PortForward}"), vmPilote.Ip.ToString());
         this.vmWebServer.Configure(new Uri($"tcp://127.0.0.1:{WebServerPortForward}"), WebServerIp);
         // Check that directory with vms exists 
-        CheckVmDirExists();
+        
     }
 
 
@@ -43,6 +43,7 @@ public class VBoxInfrastructure : IInfrastructure
 
     public void TryToStartVmPilote()
     {
+        CheckVmDirExists();
         vBoxHelper.TryToStartVm(vmPilote.VmName);
     }
 
@@ -68,6 +69,7 @@ public class VBoxInfrastructure : IInfrastructure
 
     public void TryToStartVmWebServer()
     {
+        CheckVmDirExists();
         vBoxHelper.TryToStartVm(WebServerVmName);
     }
 
