@@ -8,7 +8,7 @@
             "name": "Run CI EXE build",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build-ciexe",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/ciexe/bin/Debug/netcoreapp2.0/ciexe.dll",
             "args": ["build"],
@@ -18,11 +18,12 @@
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
         },
+        
         {
             "name": "Run CI TEST",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build-citest",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/citest/bin/Debug/netcoreapp2.0/citest.dll",
             "args": [],
@@ -32,6 +33,7 @@
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"
         },
+        
         {
             "name": ".NET Core Attach",
             "type": "coreclr",

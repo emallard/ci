@@ -109,32 +109,25 @@ public class VBoxVm : IVm {
 
     public void BuildCiImage()
     {
-        this.Ssh(client =>
-        {
-            client.RunCommand("docker build --force-rm -t ciexe ~/ci");
-            client.RunCommand("docker image rm $(docker images -f \"dangling=true\" -q)");
-        });
+        this.SshCommand("mkdir -p ~/ci/ci-data");
+        this.SshCommand("docker build --force-rm -t ciexe ~/ci");
+        this.SshCommand("docker image rm $(docker images -f \"dangling=true\" -q)");
     }
+
 
     public void CleanCiImage()
     {
-        CleanCiContainer();
+        this.SshCommand("rm -rf ~/ci/ci-data");
+
+        var containers = this.SshCommand("docker ps -a");
+        if (containers.Contains("ciexe"))
+            this.SshCommand("docker rm -f ciexe");
+        
         var images = this.SshCommand("docker images");
         if (images.Contains("ciexe"))
             this.SshCommand("docker image rm -f ciexe");
     }
 
-    public void StartCiContainer()
-    {
-        this.SshCommand("docker run -it --name ciexe ciexe bash");
-    }
-
-    public void CleanCiContainer()
-    {
-        var containers = this.SshCommand("docker ps -a");
-        if (containers.Contains("ciexe"))
-            this.SshCommand("docker rm -f ciexe");
-    }
 
     protected ConnectionInfo GetConnectionInfo()
     {

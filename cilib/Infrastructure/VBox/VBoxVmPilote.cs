@@ -10,35 +10,61 @@ using System.IO;
 
 public class VBoxVmPilote : VBoxVm, IVmPilote {
 
+    // Vm pilotes is bound to 2 volumes
+    // 1) to be able to use the docker socket ans thus the docker engine api
+    // 2) a directory to store data.
+
+    string volume1 = "-v /var/run/docker.sock:/var/run/docker.sock";
+    string volume2 = "-v ~/ci-data:/ci-data";
+
+    public string VmName => "pilote";
+    public IPAddress Ip => new IPAddress(new byte[]{10,0,2,5});
+    public int PortForward => 22005;
+    public int PrivateRegistryPort => 5443;
+    public string PrivateRegistryDomain => "private-registry.mynetwork.local";
+
     public VBoxVmPilote()
     {
     }
 
-    public void InstallRegistry()
+    public void InstallHosts()
     {
-        this.SshCommand("docker start && docker exec dotnet ciexe.dll install-registry");
+        this.SshSudoCommand($"echo \"{Ip}  {PrivateRegistryDomain}\" >> /etc/hosts");
+    }
+    
+    public void CleanHosts()
+    {
+        this.SshSudoCommand($"sed -i \"/ {PrivateRegistryDomain}/d\" /etc/hosts");
+    }
+
+    public string SshDockerRun(string arg)
+    {
+        return this.SshCommand($"docker run --rm --name ciexe {volume1} {volume2} ciexe " + arg);
+    }
+
+    public void InstallPrivateRegistry()
+    {
+        SshDockerRun("install-private-registry");
+    }
+
+    public void CleanPrivateRegistry()
+    {
+        SshDockerRun("clean-private-registry");
     }
 
     public void InstallVault()
     {
-        this.SshCommand("docker run ciexe install-vault");
-    }
-
-    public void RunCiContainer(string args)
-    {
-        this.SshCommand("docker run --rm --name ciexe ciexe " + args);
+        SshDockerRun("install-vault");
     }
 
     public void Build()
     {
-        var v1 = "-v /var/run/docker.sock:/var/run/docker.sock";
-        var v2 = "";//"-v ~/sources/:/sources";
-        
-        this.SshCommand($"docker run --rm --name ciexe {v1} {v2} ciexe build");
+        SshDockerRun("build");
     }
 
     public void Publish()
     {
-        throw new NotImplementedException();
+        SshDockerRun("publish");
     }
+
 }

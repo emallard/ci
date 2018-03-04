@@ -12,51 +12,34 @@ using System.Threading.Tasks;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 
-public class InitRegistry
+public class InstallRegistry
 {
     private readonly DockerWrapper dockerWrapper;
-
+    private readonly ShellHelper shellHelper;
     private string repoTag = "registry:2";
-    private string containerName = "my-registry";
+    private string containerName = "private-registry";
 
 
-    public InitRegistry(
-        DockerWrapper dockerWrapper)
+    public InstallRegistry(
+        DockerWrapper dockerWrapper,
+        ShellHelper shellHelper)
     {
         this.dockerWrapper = dockerWrapper;
+        this.shellHelper = shellHelper;
     }
 
-    public async Task CleanRegistryImage()
+    public async Task Clean()
     {
-        await dockerWrapper.DeleteImageIfExists(repoTag);
-    }
-
-    public async Task CleanRegistryContainer()
-    {
-        await dockerWrapper.DeleteContainerIfExistsByName(containerName); 
+        await dockerWrapper.DeleteContainerIfExistsByName(containerName);
+        await dockerWrapper.DeleteImageIfExists(repoTag); 
     }
 
 
-    public async Task Init()
+    public async Task Install()
     {
-        
-        await InitRegistryImage();
-        await InitRegistryContainer();
-    }
-
-    public async Task InitRegistryImage()
-    {
-         await dockerWrapper.CreateImage(repoTag);
-    }
-
-    public async Task InitRegistryContainer()
-    {
-/* 
-        var registryContainer = await dockerWrapper.FindContainerByName(containerName);
-        if (registryContainer != null)
-            return;
-*/
+        await dockerWrapper.CreateImage(repoTag);
         var registryImage = await dockerWrapper.FindImage(repoTag);
+
         using (var client = dockerWrapper.GetClient())
         {
             /*
@@ -73,12 +56,17 @@ public class InitRegistry
             registry:2
             */
 
+            shellHelper.Bash("mkdir -p ~/ci-data/private-registry");
+
+            // Registry data will be stored on /ci-data/private-registry
+
             var p = new CreateContainerParameters();
             p.Image = registryImage.ID;
             p.Volumes = new Dictionary<string, EmptyStruct>();
-            p.Volumes.Add("/certs:/certs", new EmptyStruct());
+            p.Volumes.Add("~/ci-data/private-registry:/var/lib/registry", new EmptyStruct());
+            p.Volumes.Add("~/ci-data/private-registry/certs:/certs", new EmptyStruct());
             p.ExposedPorts = new Dictionary<string, EmptyStruct>();
-            p.ExposedPorts.Add("443:443", new EmptyStruct());
+            p.ExposedPorts.Add("5443:443", new EmptyStruct());
             p.Env = new List<string>()
             {
                 "REGISTRY_HTTP_ADDR=0.0.0.0:443",
@@ -86,6 +74,9 @@ public class InitRegistry
                 "REGISTRY_HTTP_TLS_KEY=/certs/domain.key"
             };
             await client.Containers.CreateContainerAsync(p);
+
+
+            var p2 = new ContainerStartParameters();
         }
     }
 

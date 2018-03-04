@@ -17,7 +17,7 @@ public class TarHelper {
 
     public void CreateTarFile(string path,string outputFile)
     {
-        var cmd = $"tar -cf - {outputFile} " + path;
+        var cmd = $"tar -cf {outputFile} " + path;
         this.shellHelper.Bash(cmd);
     }
 

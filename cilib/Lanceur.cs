@@ -13,7 +13,9 @@ public class Lanceur
         using (var scope = container.BeginLifetimeScope())
         {
             var instance = scope.Resolve<T>();
+            Console.WriteLine("Lanceur");
             await action(instance);
+            Console.WriteLine("Lanceur Ok");
         }
     }
 

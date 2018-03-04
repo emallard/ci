@@ -2,12 +2,22 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build-citest",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
                 "${workspaceFolder}/citest/citest.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-ciexe",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/ciexe/ciexe.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

@@ -17,7 +17,7 @@ namespace citest
 
         public void Test()
         {
-            //var result = vmPilote.SshCommand("docker exec ciexe dotnet ciexe.dll hello");
+            var result = vmPilote.SshCommand("cat ~/ci-data/");
             //Assert.Contains("hello", cmd.Result);
         }
 

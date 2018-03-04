@@ -1,25 +1,74 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using VaultSharp.Backends.Authentication.Models;
 using VaultSharp.Backends.Authentication.Models.Token;
 using VaultSharp.Backends.Secret.Models;
 
-public class InitCA
+public class InstallCA
 {
     
     private readonly IConfig config;
     private readonly ShellHelper shellHelper;
+    private readonly IInfrastructure infrastructure;
 
-    public InitCA(
+    public InstallCA(
         IConfig config,
-        ShellHelper shellHelper)
+        ShellHelper shellHelper,
+        IInfrastructure infrastructure)
     {
         this.config = config;
         this.shellHelper = shellHelper;
+        this.infrastructure = infrastructure;
     }
 
+    
     public async Task CreateRootCA() 
+    {
+        var domain = infrastructure.GetVmPilote().PrivateRegistryDomain;
+        var ip = infrastructure.GetVmPilote().Ip;
+
+        // CA keys
+        shellHelper.Bash($"openssl genrsa -out /ci-data/myCA.key 2048");
+        
+        shellHelper.Bash(
+            "openssl req -x509 -new -nodes -key /ci-data/myCA.key -sha256 -days 1825 -out /ci-data/myCA.pem"
+            +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + domain + "' ");
+        
+        // /ci-data/myCA.pem => must be added as a trust certificate 
+
+
+        // Domain keys
+        shellHelper.Bash($"openssl genrsa -out /ci-data/{domain}.key 2048");
+        
+        shellHelper.Bash(
+            "openssl req -x509 -new -nodes -key /ci-data/{domain}.key -sha256 -days 1825 -out /ci-data/{domain}.csr"
+            +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + domain + "' ");
+        
+
+        // Sign domain keys with the CA
+
+        // .ext file
+        File.WriteAllLines($"/ci-data/{domain}.ext", new string[] {
+            "authorityKeyIdentifier=keyid,issuer",
+            "basicConstraints=CA:FALSE",
+            "keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment",
+            "subjectAltName = @alt_names",
+            "",
+            "[alt_names]",
+           $"DNS.1 = {domain}",
+           $"DNS.2 = {domain}.{ip}.xip.io"});
+
+        shellHelper.Bash(
+            "openssl x509 -req -in /ci-data/{domain}.csr -CA /ci-data/myCA.pem -CAkey /ci-data/myCA.key -CAcreateserial "
+            + "-out /ci-data/{domain}.crt -days 1825 -sha256 -extfile /ci-data/{domain}.ext");
+
+        await Task.CompletedTask;
+    }
+
+
+    public async Task CreateRootCA2() 
     {
         var myCAKey = shellHelper.Bash("openssl genrsa 2048");
         
@@ -28,6 +77,11 @@ public class InitCA
             +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + config.DomainName + "' ", myCAKey);
         
 
+        await Task.CompletedTask;
+    }
+
+    private async void StoreCAKeyInVault(string myCAKey)
+    {
         //"openssl genrsa -des3 -out myCA.key 2048";
 
         var vaultAddress = "http://" + config.PiloteIp + ":8200";

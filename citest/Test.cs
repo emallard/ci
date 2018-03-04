@@ -32,6 +32,7 @@ namespace citest
                 // From : no VM 
                 // To   : Image with CI installed
                 Run<VmPilote_1_Create>();
+                Run<VmPilote_1_Hosts>();
                 Run<VmPilote_2_Docker>();
                 Run<VmPilote_3_MirrorRegistry>();
                 Run<VmPilote_4_PiloteCi_Sources>();
@@ -39,9 +40,9 @@ namespace citest
 
                 // From : Image with CI installed
                 // To   : Vm with other software installed
-                //Run<PiloteCi_1_InstallCA>();
+                Run<PiloteCi_1_InstallCA>();
                 //Run<PiloteCi_2_InstallVault>();
-                //Run<PiloteCi_3_InstallLocalRegistry>();
+                Run<PiloteCi_3_InstallPrivateRegistry>();
 
                 // From : Vm with CI Installed and other software installed
                 // To   : Container with production webapp 
@@ -59,20 +60,19 @@ namespace citest
 
         private void Run(IStep step)
         {
-            Console.WriteLine("==== Run Step " + step.GetType().Name);
+            Console.WriteLine("==== " + step.GetType().Name);
 
             try {
-                Console.WriteLine("- Step test");
                 step.Test();
-                Console.WriteLine("- OK");
+                Console.WriteLine("- Nothing to do");
             }
             catch (Exception)
             {
-                Console.WriteLine("- Step clean");
+                Console.WriteLine("- Clean");
                 step.Clean();
-                Console.WriteLine("- Step run");
+                Console.WriteLine("- Run");
                 step.Run();
-                Console.WriteLine("- Step test");
+                Console.WriteLine("- Test");
                 step.Test();
             }
         }

@@ -7,9 +7,20 @@ using Renci.SshNet;
 
 public interface IVmPilote : IVm {
 
+    string VmName {get; }
+    IPAddress Ip { get; }
+    int PortForward {get ;}
+
+    void InstallHosts();
+    void CleanHosts();
     void InstallDocker();
     void InstallMirrorRegistry();
-    void InstallRegistry();
+
+    string PrivateRegistryDomain {get ;}
+    int PrivateRegistryPort {get ;}
+
+    void InstallPrivateRegistry();
+    void CleanPrivateRegistry();
 
     void InstallCiSources();
     void CleanCiSources();

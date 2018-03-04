@@ -17,11 +17,6 @@ public class VBoxInfrastructure : IInfrastructure
     string clonableVm = "clonable";
     string clonableVmOvf => Path.Combine(vmDir, clonableVm + ".ovf");
 
-    string PiloteVmName = "pilote";
-    string PiloteIp = "10.0.2.5";
-    int PilotePortForward = 22005;
-
-
     string WebServerVmName = "webserver";
     string WebServerIp = "10.0.2.6";
     int WebServerPortForward = 22006;
@@ -35,7 +30,7 @@ public class VBoxInfrastructure : IInfrastructure
         this.vBoxHelper = vBoxHelper;
         this.vmPilote = vmPilote;
         this.vmWebServer = vmWebServer;
-        this.vmPilote.Configure(new Uri($"tcp://127.0.0.1:{PilotePortForward}"), PiloteIp);
+        this.vmPilote.Configure(new Uri($"tcp://127.0.0.1:{vmPilote.PortForward}"), vmPilote.Ip.ToString());
         this.vmWebServer.Configure(new Uri($"tcp://127.0.0.1:{WebServerPortForward}"), WebServerIp);
         // Check that directory with vms exists 
         CheckVmDirExists();
@@ -48,22 +43,22 @@ public class VBoxInfrastructure : IInfrastructure
 
     public void TryToStartVmPilote()
     {
-        vBoxHelper.TryToStartVm(PiloteVmName);
+        vBoxHelper.TryToStartVm(vmPilote.VmName);
     }
 
     public void DeleteVmPilote()
     {
-        vBoxHelper.DeleteVm(PiloteVmName);
+        vBoxHelper.DeleteVm(vmPilote.VmName);
     }
 
     public void CreateVmPilote()
     {
-        this.CreateVm(PiloteVmName, PiloteIp, PilotePortForward);
+        this.CreateVm(vmPilote.VmName, vmPilote.Ip.ToString(), vmPilote.PortForward);
     }
 
     public IVmPilote GetVmPilote()
     {
-        CheckVmExists(PiloteVmName);
+        CheckVmExists(vmPilote.VmName);
         return this.vmPilote;
     }
 
