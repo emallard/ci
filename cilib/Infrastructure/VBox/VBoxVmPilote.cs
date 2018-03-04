@@ -42,6 +42,16 @@ public class VBoxVmPilote : VBoxVm, IVmPilote {
         return this.SshCommand($"docker run --rm --name ciexe {volume1} {volume2} ciexe " + arg);
     }
 
+    public void InstallCA()
+    {
+        SshDockerRun("install-ca");
+    }
+
+    public void CleanCA()
+    {
+        SshDockerRun("clean-ca");
+    }
+
     public void InstallPrivateRegistry()
     {
         SshDockerRun("install-private-registry");

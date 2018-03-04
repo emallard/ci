@@ -11,13 +11,17 @@ public interface IVmPilote : IVm {
     IPAddress Ip { get; }
     int PortForward {get ;}
 
+    string PrivateRegistryDomain {get ;}
+    int PrivateRegistryPort {get ;}
+
     void InstallHosts();
     void CleanHosts();
     void InstallDocker();
-    void InstallMirrorRegistry();
 
-    string PrivateRegistryDomain {get ;}
-    int PrivateRegistryPort {get ;}
+    void InstallCA();
+    void CleanCA();
+    
+    void InstallMirrorRegistry();
 
     void InstallPrivateRegistry();
     void CleanPrivateRegistry();

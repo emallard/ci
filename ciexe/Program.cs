@@ -28,6 +28,12 @@ namespace ciexe
                 return;
             }
             
+            if (args[0] == "install-ca")
+                new Lanceur().RunSync<InstallCA>(r => r.Install());
+
+            else if (args[0] == "clean-ca")
+                new Lanceur().RunSync<InstallCA>(r => r.Clean());
+
             if (args[0] == "install-private-registry")
                 new Lanceur().RunSync<InstallRegistry>(r => r.Install());
 

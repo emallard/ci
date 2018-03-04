@@ -24,33 +24,36 @@ public class InstallCA
     }
 
     
-    public async Task CreateRootCA() 
+    public async Task Install() 
     {
         var domain = infrastructure.GetVmPilote().PrivateRegistryDomain;
         var ip = infrastructure.GetVmPilote().Ip;
 
+        var dir = "/ci-data/tls";
+        shellHelper.Bash($"mkdir -p {dir}");
+
         // CA keys
-        shellHelper.Bash($"openssl genrsa -out /ci-data/myCA.key 2048");
+        shellHelper.Bash($"openssl genrsa -out {dir}/myCA.key 2048");
         
         shellHelper.Bash(
-            "openssl req -x509 -new -nodes -key /ci-data/myCA.key -sha256 -days 1825 -out /ci-data/myCA.pem"
+            "openssl req -x509 -new -nodes -key {dir}/myCA.key -sha256 -days 1825 -out {dir}/myCA.pem"
             +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + domain + "' ");
         
-        // /ci-data/myCA.pem => must be added as a trust certificate 
+        // {dir}/myCA.pem => must be added as a trust certificate 
 
 
         // Domain keys
-        shellHelper.Bash($"openssl genrsa -out /ci-data/{domain}.key 2048");
+        shellHelper.Bash($"openssl genrsa -out {dir}/{domain}.key 2048");
         
         shellHelper.Bash(
-            "openssl req -x509 -new -nodes -key /ci-data/{domain}.key -sha256 -days 1825 -out /ci-data/{domain}.csr"
+            "openssl req -x509 -new -nodes -key {dir}/{domain}.key -sha256 -days 1825 -out {dir}/{domain}.csr"
             +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + domain + "' ");
         
 
         // Sign domain keys with the CA
 
         // .ext file
-        File.WriteAllLines($"/ci-data/{domain}.ext", new string[] {
+        File.WriteAllLines($"{dir}/{domain}.ext", new string[] {
             "authorityKeyIdentifier=keyid,issuer",
             "basicConstraints=CA:FALSE",
             "keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment",
@@ -61,8 +64,16 @@ public class InstallCA
            $"DNS.2 = {domain}.{ip}.xip.io"});
 
         shellHelper.Bash(
-            "openssl x509 -req -in /ci-data/{domain}.csr -CA /ci-data/myCA.pem -CAkey /ci-data/myCA.key -CAcreateserial "
-            + "-out /ci-data/{domain}.crt -days 1825 -sha256 -extfile /ci-data/{domain}.ext");
+            "openssl x509 -req -in {dir}/{domain}.csr -CA {dir}/myCA.pem -CAkey {dir}/myCA.key -CAcreateserial "
+            + "-out {dir}/{domain}.crt -days 1825 -sha256 -extfile {dir}/{domain}.ext");
+
+        await Task.CompletedTask;
+    }
+
+    public async Task Clean() 
+    {
+        var dir = "/ci-data/tls";
+        shellHelper.Bash($"rm -rf {dir}");
 
         await Task.CompletedTask;
     }

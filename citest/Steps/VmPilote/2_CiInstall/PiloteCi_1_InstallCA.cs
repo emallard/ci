@@ -17,12 +17,13 @@ namespace citest
 
         public void Test()
         {
-            var result = vmPilote.SshCommand("cat ~/ci-data/");
-            //Assert.Contains("hello", cmd.Result);
+            var result = vmPilote.SshCommand("cat ~/ci-data/myCA.key");
+            Assert.IsTrue(result.Length > 3);
         }
 
         public void Run()
         {
+            vmPilote.InstallCiSources
         }
 
         public void Clean()
