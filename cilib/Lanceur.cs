@@ -29,7 +29,7 @@ public class Lanceur
         var builder = new ContainerBuilder();
         
         builder.RegisterType<ConfigVBox>().As<IConfig>();
-
+        builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();
         builder.RegisterAssemblyTypes(this.GetType().Assembly);
 
 

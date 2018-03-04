@@ -15,7 +15,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Infrastructure\VBox\VBoxClone.sh" />
     <EmbeddedResource Include="Infrastructure\Common\InstallDocker.sh" />
-    <EmbeddedResource Include="Infrastructure\Common\InstallCi.sh" />
   </ItemGroup>
 
 </Project>
