@@ -4,37 +4,88 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using Autofac;
 
-public class Test {
+namespace citest
+{
+    public class Test<T> where T : IInfrastructure {
 
-    public Action RunAll;
+        public Action RunAll;
+        IContainer container;
 
-    public Test(
-        IInfrastructure infrastructure,
-        CreateVmPilote createVmPilote,
-        CreateVmWebServer createVmWebServer)
-    {
-        RunAll = () =>
+        /*
+        public Test(IInfrastructure infrastructure,
+            CreateVmPilote createVmPilote,
+            CreateVmWebServer createVmWebServer,
+            PiloteCi piloteCi,
+            PiloteDocker piloteDocker
+            PiloteMirrorRegistry piloteCi)
+        {*/
+
+        public Test() 
         {
-            infrastructure.TryToStartVmPilote();
-            infrastructure.TryToStartVmWebServer();
+            RunAll = () =>
+            {
+                container = Init();
+                var infrastructure = container.Resolve<IInfrastructure>();
+                infrastructure.TryToStartVmPilote();
 
-            Run(createVmPilote);
-            Run(createVmWebServer);
-        };
-    }    
+                // From : no VM 
+                // To   : Container with CI installed
+                Run<VmPilote_1_Create>();
+                Run<VmPilote_2_Docker>();
+                Run<VmPilote_3_MirrorRegistry>();
+                Run<VmPilote_4_Ci>();
 
-    
-    private void Run(IStep step)
-    {
-        try {
-            step.Test();
+                // From : Container with CI installed
+                // To   : Vm with other software installed
+                Run<PiloteCi_1_InstallCA>();
+                Run<PiloteCi_2_InstallVault>();
+                Run<PiloteCi_3_InstallLocalRegistry>();
+
+
+                // From : Vm with CI Installed and other software installed
+                // To   : Container with production webapp 
+                Run<PiloteCi_1_CreateBuildContainer>();
+                Run<PiloteCi_2_SetSourceInBuildContainer>();
+                Run<PiloteCi_3_RunBuildContainer>();
+                Run<PiloteCi_4_CreateAppContainer>();
+                Run<PiloteCi_5_PublishToAppRegistry>();
+                Run<PiloteCi_6_RunFromAppRegistry>();
+            };
         }
-        catch (AssertException)
+
+        private void Run<S>() where S : IStep
         {
-            step.Revert();
-            step.Run();
-            step.Test();
+            Run(container.Resolve<S>());
+        }
+        
+
+        private void Run(IStep step)
+        {
+            try {
+                step.Test();
+            }
+            catch (AssertException)
+            {
+                step.Revert();
+                step.Run();
+                step.Test();
+            }
+        }
+
+        private IContainer Init()
+        {
+            var builder = new ContainerBuilder();
+            
+            builder.RegisterType<T>().As<IInfrastructure>();
+
+            builder.RegisterType<ConfigVBox>().As<IConfig>();
+            builder.RegisterAssemblyTypes(typeof(Lanceur).Assembly);
+            builder.RegisterAssemblyTypes(this.GetType().Assembly);
+
+            var container = builder.Build();
+            return container;
         }
     }
 }

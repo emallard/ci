@@ -23,14 +23,14 @@ public class VBoxVmCommon {
         this.ip = ip;
     }
 
-    public SshClient Connect()
+    public SshClient Ssh()
     {
         var sshClient = new SshClient(GetConnectionInfo());
         sshClient.Connect();
         return sshClient;
     }
 
-    public ScpClient ScpConnect()
+    public ScpClient Scp()
     {
         var scpClient = new ScpClient(GetConnectionInfo());
         scpClient.Connect();
@@ -44,7 +44,7 @@ public class VBoxVmCommon {
 
         var outputInstall1 = RunEmbeddedResourceWithSudo(EmbeddedResources.InstallDocker);
 
-        using (var client = Connect())
+        using (var client = Ssh())
             new SshClientWrapper(client).SudoReboot();
 
         // wait for reboot
@@ -54,7 +54,7 @@ public class VBoxVmCommon {
 
     public void InstallMirrorRegistry()
     {
-        using (var client = Connect())
+        using (var client = Ssh())
         {
             var mirrorPort = 4999;
             // Mirror runs on port 4999 
@@ -93,12 +93,12 @@ public class VBoxVmCommon {
     protected string RunEmbeddedResourceWithSudo(EmbeddedResource resource) 
     {
         
-        using (var scpClient = ScpConnect())
+        using (var scpClient = Scp())
         {
             scpClient.Upload(resource.Stream(), resource.Name);
         }
 
-        using (var client = Connect())
+        using (var client = Ssh())
         {
             return new SshClientWrapper(client).RunSudo("sh " + resource.Name);
         }
@@ -112,7 +112,7 @@ public class VBoxVmCommon {
             scpClient.Upload(resource.Stream(), resource.Name);
         }
 
-        using (var client = Connect())
+        using (var client = Ssh())
         {
             var cmd = client.RunCommand("sh " + resource.Name);
             return cmd.Result;

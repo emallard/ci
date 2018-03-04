@@ -7,7 +7,7 @@ using Renci.SshNet;
 
 public interface IVmWebServer {
 
-    SshClient Connect();
+    SshClient Ssh();
     
     void InstallDocker();
     void InstallCi();

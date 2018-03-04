@@ -1,15 +1,14 @@
 using System;
 using Autofac;
 using Renci.SshNet;
-using Xunit;
 
 namespace citest
 {
-    public class PiloteDocker : IStep
+    public class VmPilote_2_Docker : IStep
     {
         private readonly IInfrastructure infrastructure;
 
-        public PiloteDocker(IInfrastructure infrastructure)
+        public VmPilote_2_Docker(IInfrastructure infrastructure)
         {
             this.infrastructure = infrastructure;
         }
@@ -17,7 +16,7 @@ namespace citest
         public void Test()
         {
             var vmPilote = infrastructure.GetVmPilote();
-            using (var client = vmPilote.Connect())
+            using (var client = vmPilote.Ssh())
             {
                 var cmd = client.RunCommand("docker run --rm hello-world");
                 Assert.Contains("Hello from Docker!", cmd.Result);

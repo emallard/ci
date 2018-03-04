@@ -16,7 +16,7 @@ public class VBoxVmPilote : VBoxVmCommon, IVmPilote {
 
     public void InstallRegistry()
     {
-        using (var client = Connect())
+        using (var client = Ssh())
         {
             var cmd = client.RunCommand("docker run ciexe install-registry");
             var wait = cmd.Result;
@@ -25,16 +25,35 @@ public class VBoxVmPilote : VBoxVmCommon, IVmPilote {
 
     public void InstallVault()
     {
-        using (var client = Connect())
+        using (var client = Ssh())
         {
             var cmd = client.RunCommand("docker run ciexe install-vault");
             var wait = cmd.Result;
         }
     }
 
-    public void ConfigureDotNetBuildContainer(string name)
+    public void CreateBuildContainer()
     {
-
+        throw new NotImplementedException();
     }
 
+    public void SetSourcesInBuildContainer()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RunBuildContainer()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void CreateAppContainer()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void PublishToAppRegistry()
+    {
+        throw new NotImplementedException();
+    }
 }

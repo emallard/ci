@@ -9,7 +9,7 @@ public class Injection {
 
     public void Configure(ContainerBuilder builder)
     {
-        builder.RegisterType<ConfigInitDev>().As<IConfigInit>();
+        builder.RegisterType<ConfigVBox>().As<IConfig>();
 
         builder.RegisterAssemblyTypes(this.GetType().Assembly);
     }
@@ -17,7 +17,7 @@ public class Injection {
 
     public void ConfigureProd(ContainerBuilder builder)
     {
-        builder.RegisterType<ConfigInitDev>().As<IConfigInit>();
+        builder.RegisterType<ConfigVBox>().As<IConfig>();
 
         builder.RegisterAssemblyTypes(this.GetType().Assembly);
     }

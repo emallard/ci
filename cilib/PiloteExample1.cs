@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 
+
 public class PiloteExample1 {
 
     private readonly DotnetBuildContainer buildDotnetCore_0;

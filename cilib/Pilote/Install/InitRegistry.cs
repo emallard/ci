@@ -14,18 +14,15 @@ using Docker.DotNet.Models;
 
 public class InitRegistry
 {
-    private readonly IConfigInit config;
     private readonly DockerWrapper dockerWrapper;
 
-    private string repoTag = "registry:0.9.4";
+    private string repoTag = "registry:2";
     private string containerName = "my-registry";
 
 
     public InitRegistry(
-        IConfigInit config,
         DockerWrapper dockerWrapper)
     {
-        this.config = config;
         this.dockerWrapper = dockerWrapper;
     }
 

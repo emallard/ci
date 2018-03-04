@@ -26,7 +26,7 @@ public class Lanceur
     {
         var builder = new ContainerBuilder();
         
-        builder.RegisterType<ConfigInitDev>().As<IConfigInit>();
+        builder.RegisterType<ConfigVBox>().As<IConfig>();
 
         builder.RegisterAssemblyTypes(this.GetType().Assembly);
 

@@ -7,24 +7,8 @@ namespace citest
     {
         static void Main(string[] args)
         {
-            var container = Init<VBoxInfrastructure>();
-            var test = container.Resolve<Test>();
+            var test = new Test<VBoxInfrastructure>();
             test.RunAll();
-        }
-
-
-        public static IContainer Init<T>() where T : IInfrastructure
-        {
-            var builder = new ContainerBuilder();
-            
-            builder.RegisterType<T>().As<IInfrastructure>();
-
-            builder.RegisterType<ConfigInitDev>().As<IConfigInit>();
-            builder.RegisterAssemblyTypes(typeof(Lanceur).Assembly);
-            builder.RegisterAssemblyTypes(typeof(Program).Assembly);
-
-            var container = builder.Build();
-            return container;
         }
     }
 }

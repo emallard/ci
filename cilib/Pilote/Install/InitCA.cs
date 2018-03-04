@@ -8,11 +8,11 @@ using VaultSharp.Backends.Secret.Models;
 public class InitCA
 {
     
-    private readonly IConfigInit config;
+    private readonly IConfig config;
     private readonly ShellHelper shellHelper;
 
     public InitCA(
-        IConfigInit config,
+        IConfig config,
         ShellHelper shellHelper)
     {
         this.config = config;

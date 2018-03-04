@@ -1,15 +1,14 @@
 using System;
 using Autofac;
 using Renci.SshNet;
-using Xunit;
 
 namespace citest
 {
-    public class PiloteMirrorRegistry : IStep
+    public class PiloteCi_1_InstallCA : IStep
     {
         private readonly IInfrastructure infrastructure;
 
-        public PiloteMirrorRegistry(IInfrastructure infrastructure)
+        public PiloteCi_1_InstallCA(IInfrastructure infrastructure)
         {
             this.infrastructure = infrastructure;
         }
@@ -17,21 +16,23 @@ namespace citest
         public void Test()
         {
             var vmPilote = infrastructure.GetVmPilote();
-            using (var client = vmPilote.Connect())
+            using (var client = vmPilote.Ssh())
             {
-                var cmd = client.RunCommand("curl http://localhost:4999/v2/");
-                Assert.AreEqual("{}", cmd.Result);
+                //var cmd = client.RunCommand("docker exec ciexe dotnet ciexe.dll hello");
+                //Assert.Contains("hello", cmd.Result);
             }
         }
 
         public void Run()
         {
             var vmPilote = infrastructure.GetVmPilote();
-            vmPilote.InstallMirrorRegistry();
+            //vmPilote.InstallCi();
         }
 
         public void Revert()
         {
+            //var vmPilote = infrastructure.GetVmPilote();
+            //vmPilote.CleanCi();
         }
     }
 }

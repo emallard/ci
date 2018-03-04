@@ -4,19 +4,19 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 
-public class CreateVmWebServer : IStep {
+public class VmPilote_1_Create : IStep {
 
     private readonly IInfrastructure infrastructure;
 
-    public CreateVmWebServer(IInfrastructure infrastructure)
+    public VmPilote_1_Create(IInfrastructure infrastructure)
     {
         this.infrastructure = infrastructure;
     }
 
     public void Test()
     {
-        var vmWebServer = infrastructure.GetVmWebServer();
-        using (var sshClient = vmWebServer.Connect())
+        var vmPilote = infrastructure.GetVmPilote();
+        using (var sshClient = vmPilote.Ssh())
         {
             var cmd = sshClient.RunCommand("echo coucou");
             Assert.IsTrue("coucou\n" == cmd.Result);
@@ -25,11 +25,11 @@ public class CreateVmWebServer : IStep {
 
     public void Run()
     {
-        infrastructure.CreateVmWebServer();
+        infrastructure.CreateVmPilote();
     }
 
     public void Revert()
     {
-        infrastructure.DeleteVmWebServer();
+        infrastructure.DeleteVmPilote();
     }
 }
