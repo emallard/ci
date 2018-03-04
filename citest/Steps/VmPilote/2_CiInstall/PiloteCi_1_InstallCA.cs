@@ -23,11 +23,12 @@ namespace citest
 
         public void Run()
         {
-            vmPilote.InstallCiSources
+            vmPilote.InstallCA();
         }
 
         public void Clean()
         {
+            vmPilote.CleanCA();
         }
     }
 }
