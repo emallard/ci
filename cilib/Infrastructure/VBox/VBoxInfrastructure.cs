@@ -59,7 +59,6 @@ public class VBoxInfrastructure : IInfrastructure
 
     public IVmPilote GetVmPilote()
     {
-        CheckVmExists(vmPilote.VmName);
         return this.vmPilote;
     }
 
@@ -85,7 +84,6 @@ public class VBoxInfrastructure : IInfrastructure
 
     public IVmWebServer GetVmWebServer()
     {
-        CheckVmExists(WebServerVmName);
         return this.vmWebServer;
     }
 

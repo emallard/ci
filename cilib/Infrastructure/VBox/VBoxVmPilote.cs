@@ -15,7 +15,7 @@ public class VBoxVmPilote : VBoxVm, IVmPilote {
     // 2) a directory to store data.
 
     string volume1 = "--volume /var/run/docker.sock:/var/run/docker.sock";
-    string volume2 = "--volume ~/cidata:/cidata";
+    string volume2 = "--volume /home/test/cidata:/cidata";
 
     public string VmName => "pilote";
     public IPAddress Ip => new IPAddress(new byte[]{10,0,2,5});
