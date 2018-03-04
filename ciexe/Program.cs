@@ -34,10 +34,10 @@ namespace ciexe
             else if (args[0] == "clean-ca")
                 new Lanceur().RunSync<InstallCA>(r => r.Clean());
 
-            if (args[0] == "install-private-registry")
+            if (args[0] == "install-privateregistry")
                 new Lanceur().RunSync<InstallRegistry>(r => r.Install());
 
-            else if (args[0] == "clean-private-registry")
+            else if (args[0] == "clean-privateregistry")
                 new Lanceur().RunSync<InstallRegistry>(r => r.Clean());
             
             else if (args[0] == "install-vault")

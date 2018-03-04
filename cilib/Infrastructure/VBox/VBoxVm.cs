@@ -109,7 +109,7 @@ public class VBoxVm : IVm {
 
     public void BuildCiImage()
     {
-        this.SshCommand("mkdir -p ~/ci/ci-data");
+        this.SshCommand("mkdir -p ~/ci/cidata");
         this.SshCommand("docker build --force-rm -t ciexe ~/ci");
         this.SshCommand("docker image rm $(docker images -f \"dangling=true\" -q)");
     }
@@ -117,7 +117,7 @@ public class VBoxVm : IVm {
 
     public void CleanCiImage()
     {
-        this.SshCommand("rm -rf ~/ci/ci-data");
+        this.SshCommand("rm -rf ~/ci/cidata");
 
         var containers = this.SshCommand("docker ps -a");
         if (containers.Contains("ciexe"))

@@ -17,7 +17,7 @@ public class InstallRegistry
     private readonly DockerWrapper dockerWrapper;
     private readonly ShellHelper shellHelper;
     private string repoTag = "registry:2";
-    private string containerName = "private-registry";
+    private string containerName = "privateregistry";
 
 
     public InstallRegistry(
@@ -56,15 +56,15 @@ public class InstallRegistry
             registry:2
             */
 
-            shellHelper.Bash("mkdir -p ~/ci-data/private-registry");
+            shellHelper.Bash("mkdir -p ~/cidata/privateregistry");
 
-            // Registry data will be stored on /ci-data/private-registry
+            // Registry data will be stored on /cidata/privateregistry
 
             var p = new CreateContainerParameters();
             p.Image = registryImage.ID;
             p.Volumes = new Dictionary<string, EmptyStruct>();
-            p.Volumes.Add("~/ci-data/private-registry:/var/lib/registry", new EmptyStruct());
-            p.Volumes.Add("~/ci-data/private-registry/certs:/certs", new EmptyStruct());
+            p.Volumes.Add("~/cidata/privateregistry:/var/lib/registry", new EmptyStruct());
+            p.Volumes.Add("~/cidata/privateregistry/certs:/certs", new EmptyStruct());
             p.ExposedPorts = new Dictionary<string, EmptyStruct>();
             p.ExposedPorts.Add("5443:443", new EmptyStruct());
             p.Env = new List<string>()

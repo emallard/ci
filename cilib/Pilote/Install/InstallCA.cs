@@ -29,7 +29,7 @@ public class InstallCA
         var domain = infrastructure.GetVmPilote().PrivateRegistryDomain;
         var ip = infrastructure.GetVmPilote().Ip;
 
-        var dir = "/ci-data/tls";
+        var dir = "/cidata/tls";
         shellHelper.Bash($"mkdir -p {dir}");
 
         // CA keys
@@ -72,7 +72,7 @@ public class InstallCA
 
     public async Task Clean() 
     {
-        var dir = "/ci-data/tls";
+        var dir = "/cidata/tls";
         shellHelper.Bash($"rm -rf {dir}");
 
         await Task.CompletedTask;

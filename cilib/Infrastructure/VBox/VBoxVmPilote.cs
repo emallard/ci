@@ -15,13 +15,13 @@ public class VBoxVmPilote : VBoxVm, IVmPilote {
     // 2) a directory to store data.
 
     string volume1 = "--volume /var/run/docker.sock:/var/run/docker.sock";
-    string volume2 = "--volume ~/ci-data:/ci-data";
+    string volume2 = "--volume ~/cidata:/cidata";
 
     public string VmName => "pilote";
     public IPAddress Ip => new IPAddress(new byte[]{10,0,2,5});
     public int PortForward => 22005;
     public int PrivateRegistryPort => 5443;
-    public string PrivateRegistryDomain => "private-registry.mynetwork.local";
+    public string PrivateRegistryDomain => "privateregistry.mynetwork.local";
 
     public VBoxVmPilote()
     {
@@ -54,12 +54,12 @@ public class VBoxVmPilote : VBoxVm, IVmPilote {
 
     public void InstallPrivateRegistry()
     {
-        SshDockerRun("install-private-registry");
+        SshDockerRun("install-privateregistry");
     }
 
     public void CleanPrivateRegistry()
     {
-        SshDockerRun("clean-private-registry");
+        SshDockerRun("clean-privateregistry");
     }
 
     public void InstallVault()
