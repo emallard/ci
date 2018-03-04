@@ -32,10 +32,9 @@ namespace ciexe
             else if (args[0] == "install-vault")
                 new Lanceur().RunSync<InitVault>(r => r.Init());
 
-            /*
-            else if (args[0] == "install-ca")
-                new Lanceur().RunSync<InitCA>(r => r.InitNewHost());
-            */
+            else if (args[0] == "build")
+                new Lanceur().RunSync<PiloteExample1>(r => r.Build());
+            
         }
     }
 }

@@ -24,35 +24,21 @@ public class VBoxVmPilote : VBoxVm, IVmPilote {
         this.SshCommand("docker run ciexe install-vault");
     }
 
-    public void RunCiContainer()
+    public void RunCiContainer(string args)
     {
-        this.SshCommand("docker run --name ciexe ciexe");
+        this.SshCommand("docker run --rm --name ciexe ciexe " + args);
     }
 
-    public void CreateBuildContainer()
+    public void Build()
     {
-        throw new NotImplementedException();
+        var v1 = "-v /var/run/docker.sock:/var/run/docker.sock";
+        var v2 = "";//"-v ~/sources/:/sources";
+        
+        this.SshCommand($"docker run --rm --name ciexe {v1} {v2} ciexe build");
     }
 
-    public void SetSourcesInBuildContainer()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void RunBuildContainer()
+    public void Publish()
     {
         throw new NotImplementedException();
     }
-
-    public void CreateAppContainer()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void PublishToAppRegistry()
-    {
-        throw new NotImplementedException();
-    }
-
-    
 }

@@ -17,13 +17,6 @@ public interface IVmPilote : IVm {
     void BuildCiImage();
     void CleanCiImage();
 
-    void RunCiContainer();
-    void CleanCiContainer();
-
-    void CreateBuildContainer();
-    void SetSourcesInBuildContainer();
-    void RunBuildContainer();
-
-    void CreateAppContainer();
-    void PublishToAppRegistry();
+    void Build();
+    void Publish();
 }

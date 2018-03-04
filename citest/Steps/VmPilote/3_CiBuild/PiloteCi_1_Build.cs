@@ -4,12 +4,13 @@ using Renci.SshNet;
 
 namespace citest
 {
-    public class VmPilote_6_PiloteCi_Run : IStep
+    public class PiloteCi_1_Build : IStep
     {
         private readonly IInfrastructure infrastructure;
         private readonly IVmPilote vmPilote;
+        
 
-        public VmPilote_6_PiloteCi_Run(IInfrastructure infrastructure)
+        public PiloteCi_1_Build(IInfrastructure infrastructure)
         {
             this.infrastructure = infrastructure;
             this.vmPilote = infrastructure.GetVmPilote();
@@ -17,18 +18,17 @@ namespace citest
 
         public void Test()
         {
-            var result = vmPilote.SshCommand("docker start ciexe && docker exec ciexe dotnet ciexe.dll hello");
-            Assert.Contains("hello", result);
+            var result = vmPilote.SshCommand("docker images -a");
+            Assert.Contains("dotnetcore_0", result);
         }
 
         public void Run()
         {
-            vmPilote.RunCiContainer();
+            vmPilote.Build();
         }
 
         public void Clean()
         {
-            vmPilote.CleanCiContainer();
         }
     }
 }

@@ -17,6 +17,7 @@ namespace citest
 
         public void Test()
         {
+            // TODO : test if sources are the latest
             var result = vmPilote.SshCommand("cd ~/ci && git config --get remote.origin.url");
             Assert.Contains("https://github.com/emallard/ci.git", result);
         }

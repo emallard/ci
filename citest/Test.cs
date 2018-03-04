@@ -12,7 +12,6 @@ namespace citest
 
         public Action RunAll;
         IContainer container;
-
         /*
         public Test(IInfrastructure infrastructure,
             CreateVmPilote createVmPilote,
@@ -31,29 +30,23 @@ namespace citest
                 infrastructure.TryToStartVmPilote();
 
                 // From : no VM 
-                // To   : Container with CI installed
+                // To   : Image with CI installed
                 Run<VmPilote_1_Create>();
                 Run<VmPilote_2_Docker>();
                 Run<VmPilote_3_MirrorRegistry>();
                 Run<VmPilote_4_PiloteCi_Sources>();
                 Run<VmPilote_5_PiloteCi_Build>();
-                Run<VmPilote_6_PiloteCi_Run>();
 
-                // From : Container with CI installed
+                // From : Image with CI installed
                 // To   : Vm with other software installed
                 //Run<PiloteCi_1_InstallCA>();
                 //Run<PiloteCi_2_InstallVault>();
                 //Run<PiloteCi_3_InstallLocalRegistry>();
 
-
                 // From : Vm with CI Installed and other software installed
                 // To   : Container with production webapp 
-                Run<PiloteCi_1_CreateBuildContainer>();
-                Run<PiloteCi_2_SetSourceInBuildContainer>();
-                Run<PiloteCi_3_RunBuildContainer>();
-                Run<PiloteCi_4_CreateAppContainer>();
-                Run<PiloteCi_5_PublishToAppRegistry>();
-                Run<PiloteCi_6_RunFromAppRegistry>();
+                ForceRun<PiloteCi_1_Build>();
+                ForceRun<PiloteCi_2_Publish>();
             };
         }
 
@@ -66,7 +59,7 @@ namespace citest
 
         private void Run(IStep step)
         {
-            Console.WriteLine("==== Start Step " + step.GetType().Name);
+            Console.WriteLine("==== Run Step " + step.GetType().Name);
 
             try {
                 Console.WriteLine("- Step test");
@@ -75,7 +68,7 @@ namespace citest
             }
             catch (Exception)
             {
-                Console.WriteLine("- Step revert");
+                Console.WriteLine("- Step clean");
                 step.Clean();
                 Console.WriteLine("- Step run");
                 step.Run();
@@ -83,6 +76,26 @@ namespace citest
                 step.Test();
             }
         }
+        
+
+        private void ForceRun<S>() where S : IStep
+        {
+            var s = container.Resolve<S>();
+            ForceRun(s);
+        }
+
+        private void ForceRun(IStep step)
+        {
+            Console.WriteLine("==== ForceRun Step " + step.GetType().Name);
+
+            Console.WriteLine("- Step clean");
+            step.Clean();
+            Console.WriteLine("- Step run");
+            step.Run();
+            Console.WriteLine("- Step test");
+            step.Test();
+        }
+
 
         private IContainer Init()
         {

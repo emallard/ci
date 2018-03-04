@@ -17,8 +17,13 @@ namespace citest
 
         public void Test()
         {
+            // is image here
             var result = vmPilote.SshCommand("docker images");
             Assert.Contains("ciexe", result);
+
+            // try to run an image
+            result = vmPilote.SshCommand("docker run --rm --name ciexe ciexe hello");
+            Assert.Contains("hello", result);
         }
 
         public void Run()
