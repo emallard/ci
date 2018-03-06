@@ -14,8 +14,8 @@ public class VBoxVmPilote : VBoxVm, IVmPilote {
     // 1) to be able to use the docker socket ans thus the docker engine api
     // 2) a directory to store data.
 
-    string volume1 = "--volume /var/run/docker.sock:/var/run/docker.sock";
-    string volume2 = "--volume /home/test/cidata:/cidata";
+    string volume1 = "--volume /var/run/docker.sock:/var/run/docker.sock ";
+    string volume2 = "--volume /home/test/cidata:/cidata ";
 
     public string VmName => "pilote";
     public IPAddress Ip => new IPAddress(new byte[]{10,0,2,5});
@@ -39,17 +39,18 @@ public class VBoxVmPilote : VBoxVm, IVmPilote {
 
     public string SshDockerRun(string arg)
     {
-        return this.SshCommand($"docker run --name ciexe --rm {volume1} {volume2} ciexe " + arg);
+        return this.SshCommand(DockerRun(arg));
     }
 
     public void InstallCA()
     {
-        SshDockerRun("install-ca");
+        //SshDockerRun("install-ca");
+        this.SshScript(DockerRun("install-ca"), "installca.sh");
     }
 
     public void CleanCA()
     {
-        SshDockerRun("clean-ca");
+        this.SshScript(DockerRun("clean-ca"), "cleanca.sh");
     }
 
     public void InstallPrivateRegistry()
@@ -75,6 +76,11 @@ public class VBoxVmPilote : VBoxVm, IVmPilote {
     public void Publish()
     {
         SshDockerRun("publish");
+    }
+
+    private string DockerRun(string arg)
+    {
+        return "docker run --name ciexe --rm " + volume1 + " " + volume2 + " ciexe " + arg;
     }
 
 }

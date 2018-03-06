@@ -35,6 +35,13 @@ namespace citest
                 Run<VmPilote_1_Hosts>();
                 Run<VmPilote_2_Docker>();
                 Run<VmPilote_3_MirrorRegistry>();
+                
+                bool forceBuildCI = false;
+                if (forceBuildCI)
+                {
+                    Clean<VmPilote_5_PiloteCi_Build>();
+                    Clean<VmPilote_4_PiloteCi_Sources>();
+                }
                 Run<VmPilote_4_PiloteCi_Sources>();
                 Run<VmPilote_5_PiloteCi_Build>();
 
@@ -77,6 +84,11 @@ namespace citest
             }
         }
         
+        private void Clean<S>() where S : IStep
+        {
+            var s = container.Resolve<S>();
+            s.Clean();;
+        }
 
         private void ForceRun<S>() where S : IStep
         {

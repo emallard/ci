@@ -36,7 +36,7 @@ public class InstallCA
         shellHelper.Bash($"openssl genrsa -out {dir}/myCA.key 2048");
         
         shellHelper.Bash(
-            "openssl req -x509 -new -nodes -key {dir}/myCA.key -sha256 -days 1825 -out {dir}/myCA.pem"
+            $"openssl req -x509 -new -nodes -key {dir}/myCA.key -sha256 -days 1825 -out {dir}/myCA.pem"
             +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + domain + "' ");
         
         // {dir}/myCA.pem => must be added as a trust certificate 
@@ -46,7 +46,7 @@ public class InstallCA
         shellHelper.Bash($"openssl genrsa -out {dir}/{domain}.key 2048");
         
         shellHelper.Bash(
-            "openssl req -x509 -new -nodes -key {dir}/{domain}.key -sha256 -days 1825 -out {dir}/{domain}.csr"
+            $"openssl req -x509 -new -nodes -key {dir}/{domain}.key -sha256 -days 1825 -out {dir}/{domain}.csr"
             +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + domain + "' ");
         
 
@@ -64,8 +64,8 @@ public class InstallCA
            $"DNS.2 = {domain}.{ip}.xip.io"});
 
         shellHelper.Bash(
-            "openssl x509 -req -in {dir}/{domain}.csr -CA {dir}/myCA.pem -CAkey {dir}/myCA.key -CAcreateserial "
-            + "-out {dir}/{domain}.crt -days 1825 -sha256 -extfile {dir}/{domain}.ext");
+              $"openssl x509 -req -in {dir}/{domain}.csr -CA {dir}/myCA.pem -CAkey {dir}/myCA.key -CAcreateserial "
+            + $"-out {dir}/{domain}.crt -days 1825 -sha256 -extfile {dir}/{domain}.ext");
 
         await Task.CompletedTask;
     }
