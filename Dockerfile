@@ -2,6 +2,9 @@
 
 # FROM microsoft/dotnet:2.0-sdk AS build-env
 FROM microsoft/aspnetcore-build:2.0 AS build-env
+
+RUN mkdir /cidata
+
 WORKDIR /app
 
 # copy csproj and restore as distinct layers

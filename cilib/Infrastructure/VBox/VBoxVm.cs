@@ -92,11 +92,12 @@ public class VBoxVm : IVm {
         
         var script = @"
         set -e -x
-        if [ -d ""~/ci"" ]; then
+        if [ -d ""${HOME}/ci"" ]; then
+            cd ${HOME}/ci
             git pull --quiet
         else
             mkdir ~/ci
-            git --git-dir=~/ci clone --quiet https://github.com/emallard/ci.git
+            git --git-dir=${HOME}/ci clone --quiet https://github.com/emallard/ci.git
         fi
         ";
         this.SshScript(script, "InstallCiSources.sh");

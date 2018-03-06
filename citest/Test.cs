@@ -36,14 +36,16 @@ namespace citest
                 Run<VmPilote_2_Docker>();
                 Run<VmPilote_3_MirrorRegistry>();
                 
+                bool forceBuildCI = false;
                 bool alternativeBuild = true;
                 if (alternativeBuild)
                 {
+                    if (forceBuildCI)
+                        Clean<VmPilote_5_PiloteCi_Build>();
                     Run<VmPilote_5b_PiloteCi_BuildUsingSdk>();
                 }
                 else
                 {
-                    bool forceBuildCI = true;
                     if (forceBuildCI)
                     {
                         Clean<VmPilote_5_PiloteCi_Build>();
