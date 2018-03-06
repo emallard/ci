@@ -26,11 +26,16 @@ public interface IVmPilote : IVm {
     void InstallPrivateRegistry();
     void CleanPrivateRegistry();
 
-    void InstallCiSources();
+    void CloneOrPullCiSources();
     void CleanCiSources();
 
     void BuildCiImage();
     void CleanCiImage();
+
+    // Alternative Build using installed dotnetcore
+    void InstallDotNetCoreSdk();
+    void BuildCiUsingSdk();
+
 
     void Build();
     void Publish();

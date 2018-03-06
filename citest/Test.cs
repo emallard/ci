@@ -36,15 +36,25 @@ namespace citest
                 Run<VmPilote_2_Docker>();
                 Run<VmPilote_3_MirrorRegistry>();
                 
-                bool forceBuildCI = false;
-                if (forceBuildCI)
+                bool alternativeBuild = true;
+                if (alternativeBuild)
                 {
-                    Clean<VmPilote_5_PiloteCi_Build>();
-                    Clean<VmPilote_4_PiloteCi_Sources>();
+                    Run<VmPilote_5b_PiloteCi_BuildUsingSdk>();
                 }
-                Run<VmPilote_4_PiloteCi_Sources>();
-                Run<VmPilote_5_PiloteCi_Build>();
+                else
+                {
+                    bool forceBuildCI = true;
+                    if (forceBuildCI)
+                    {
+                        Clean<VmPilote_5_PiloteCi_Build>();
+                        Clean<VmPilote_4_PiloteCi_Sources>();
+                    }
+                    Run<VmPilote_4_PiloteCi_Sources>();
+                    Run<VmPilote_5_PiloteCi_Build>();
+                }
 
+                
+                
                 // From : Image with CI installed
                 // To   : Vm with other software installed
                 Run<PiloteCi_1_InstallCA>();

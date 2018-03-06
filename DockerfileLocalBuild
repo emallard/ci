@@ -1,0 +1,7 @@
+# Copy Local Build
+# to be done after : dotnet publish -c Release -o out
+
+FROM microsoft/aspnetcore:2.0
+WORKDIR /app
+COPY ciexe/out ./
+ENTRYPOINT ["dotnet", "ciexe.dll"]

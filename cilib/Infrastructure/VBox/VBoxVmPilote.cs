@@ -29,12 +29,12 @@ public class VBoxVmPilote : VBoxVm, IVmPilote {
 
     public void InstallHosts()
     {
-        this.SshSudoCommand($"echo \"{Ip}  {PrivateRegistryDomain}\" >> /etc/hosts");
+        this.SshSudoBashCommand($"echo \"{Ip}  {PrivateRegistryDomain}\" >> /etc/hosts");
     }
     
     public void CleanHosts()
     {
-        this.SshSudoCommand($"sed -i \"/ {PrivateRegistryDomain}/d\" /etc/hosts");
+        this.SshSudoBashCommand($"sed -i \"/ {PrivateRegistryDomain}/d\" /etc/hosts");
     }
 
     public string SshDockerRun(string arg)

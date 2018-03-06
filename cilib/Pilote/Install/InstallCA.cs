@@ -46,7 +46,7 @@ public class InstallCA
         shellHelper.Bash($"openssl genrsa -out {dir}/{domain}.key 2048");
         
         shellHelper.Bash(
-            $"openssl req -x509 -new -nodes -key {dir}/{domain}.key -sha256 -days 1825 -out {dir}/{domain}.csr"
+            $"openssl req -new -key {dir}/{domain}.key -sha256 -days 1825 -out {dir}/{domain}.csr"
             +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + domain + "' ");
         
 

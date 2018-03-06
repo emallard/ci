@@ -26,7 +26,7 @@ public static class IVmExtension {
         }
     }
 
-    public static string SshSudoCommand(this IVm vm, string command)
+    public static string SshSudoBashCommand(this IVm vm, string command)
     {
         using (var client = vm.Ssh())
         {

@@ -86,9 +86,9 @@ public class VBoxVm : IVm {
     }
 
 
-    public void InstallCiSources()
+    public void CloneOrPullCiSources()
     {
-        this.SshSudoCommand("sudo apt-get -qq --yes install git");
+        this.SshSudoBashCommand("sudo apt-get -qq --yes install git");
         
         var script = @"
         set -e -x
@@ -109,7 +109,6 @@ public class VBoxVm : IVm {
 
     public void BuildCiImage()
     {
-        this.SshCommand("mkdir -p ~/ci/cidata");
         this.SshCommand("docker build --force-rm -t ciexe ~/ci");
         this.SshCommand("docker image rm $(docker images -f \"dangling=true\" -q)");
     }
@@ -117,8 +116,6 @@ public class VBoxVm : IVm {
 
     public void CleanCiImage()
     {
-        this.SshCommand("rm -rf ~/ci/cidata");
-
         var containers = this.SshCommand("docker ps -a");
         if (containers.Contains("ciexe"))
             this.SshCommand("docker rm -f ciexe");
@@ -128,6 +125,24 @@ public class VBoxVm : IVm {
             this.SshCommand("docker image rm -f ciexe");
     }
 
+#region Alternative build
+    public void InstallDotNetCoreSdk()
+    {
+        this.SshCommand("curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg");
+        this.SshSudoBashCommand("mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg");
+        this.SshSudoBashCommand("sh -c 'echo \"deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod xenial main\" > /etc/apt/sources.list.d/dotnetdev.list'");
+
+        this.SshSudoBashCommand("sudo apt-get -qq --yes install apt-transport-https");
+        this.SshSudoBashCommand("sudo apt-get -qq update");
+        this.SshSudoBashCommand("sudo apt-get -qq --yes install dotnet-sdk-2.1.4");
+    }
+
+    public void BuildCiUsingSdk()
+    {
+        this.SshCommand("cd ci && dotnet restore && dotnet publish -c Release -o out");
+        this.SshCommand("cd ci && docker build -f DockerfileLocalBuild -t ciexe ~/ci");
+    }
+#endregion
 
     protected ConnectionInfo GetConnectionInfo()
     {
