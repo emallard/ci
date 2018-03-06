@@ -17,7 +17,7 @@ namespace citest
 
         public void Test()
         {
-            var result = vmPilote.SshCommand("cat ~/cidata/tls/myCA.key");
+            var result = vmPilote.SshCommand("cat ~/cidata/tls/myCA.pem");
             Assert.IsTrue(result.Length > 3);
         }
 

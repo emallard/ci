@@ -56,22 +56,22 @@ public class InstallRegistry
             registry:2
             */
 
-            shellHelper.Bash("mkdir -p ~/cidata/privateregistry");
+            shellHelper.Bash("mkdir -p ${HOME}/cidata/privateregistry/var/lib/registry");
 
             // Registry data will be stored on /cidata/privateregistry
 
             var p = new CreateContainerParameters();
             p.Image = registryImage.ID;
             p.Volumes = new Dictionary<string, EmptyStruct>();
-            p.Volumes.Add("~/cidata/privateregistry:/var/lib/registry", new EmptyStruct());
-            p.Volumes.Add("~/cidata/privateregistry/certs:/certs", new EmptyStruct());
+            p.Volumes.Add("${HOME}/cidata/privateregistry/var/lib/registry:/var/lib/registry", new EmptyStruct());
+            p.Volumes.Add("${HOME}/cidata/privateregistry/certs:/certs", new EmptyStruct());
             p.ExposedPorts = new Dictionary<string, EmptyStruct>();
             p.ExposedPorts.Add("5443:443", new EmptyStruct());
             p.Env = new List<string>()
             {
                 "REGISTRY_HTTP_ADDR=0.0.0.0:443",
-                "REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt",
-                "REGISTRY_HTTP_TLS_KEY=/certs/domain.key"
+                "REGISTRY_HTTP_TLS_CERTIFICATE=/certs/privateregistry.mynetwork.local.crt",
+                "REGISTRY_HTTP_TLS_KEY=/certs/privateregistry.mynetwork.local.key"
             };
             await client.Containers.CreateContainerAsync(p);
 

@@ -67,6 +67,12 @@ public class InstallCA
               $"openssl x509 -req -in {dir}/{domain}.csr -CA {dir}/myCA.pem -CAkey {dir}/myCA.key -CAcreateserial "
             + $"-out {dir}/{domain}.crt -days 1825 -sha256 -extfile {dir}/{domain}.ext");
 
+
+        // Copy keys to the privateregistry folder
+        shellHelper.Bash("rm -rf /cidata/privateregistry/certs");
+        shellHelper.Bash("mkdir -p /cidata/privateregistry/certs");
+        shellHelper.Bash($"cp {dir}/{domain}.* /cidata/privateregistry/certs");
+
         await Task.CompletedTask;
     }
 
