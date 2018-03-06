@@ -25,11 +25,12 @@ namespace citest
 
         public void Run()
         {
-
+            vmPilote.InstallPrivateRegistry();
         }
 
         public void Clean()
         {
+            vmPilote.CleanPrivateRegistry();
         }
     }
 }
