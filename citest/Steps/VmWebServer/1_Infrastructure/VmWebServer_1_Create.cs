@@ -4,23 +4,21 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 
-public class CreateVmWebServer : IStep {
+public class VmWebServer_1_Create : IStep {
 
     private readonly IInfrastructure infrastructure;
+    private readonly IVmWebServer vmWebServer;
 
-    public CreateVmWebServer(IInfrastructure infrastructure)
+    public VmWebServer_1_Create(IInfrastructure infrastructure)
     {
         this.infrastructure = infrastructure;
+        this.vmWebServer = infrastructure.GetVmWebServer();
     }
 
     public void Test()
     {
-        var vmWebServer = infrastructure.GetVmWebServer();
-        using (var sshClient = vmWebServer.Ssh())
-        {
-            var cmd = sshClient.RunCommand("echo coucou");
-            Assert.IsTrue("coucou\n" == cmd.Result);
-        }
+        var result = vmWebServer.SshCommand("echo coucou");
+        Assert.IsTrue("coucou\n" == result);
     }
 
     public void Run()

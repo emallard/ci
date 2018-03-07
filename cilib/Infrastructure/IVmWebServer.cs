@@ -5,23 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Renci.SshNet;
 
-public interface IVmWebServer {
+public interface IVmWebServer : IVm {
 
-    SshClient Ssh();
-    
+    void InstallHosts();
+    void CleanHosts();
     void InstallDocker();
     void InstallMirrorRegistry();
-
-    void InstallTraefik();
-    void AddOrUpdateContainer(ContainerConf conf);
-    void RemoveContainer(ContainerConf conf);
-}
-
-public class ContainerConf
-{
-    /*
-    string containerName;
-    string hostName;
-    string dockerComposeXml;
-    */
+    
 }

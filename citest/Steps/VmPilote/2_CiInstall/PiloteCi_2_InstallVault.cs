@@ -8,12 +8,13 @@ namespace citest
     {
         private readonly IInfrastructure infrastructure;
         private readonly IVmPilote vmPilote;
-        
+        private readonly VmCiCli cli;
 
         public PiloteCi_2_InstallVault(IInfrastructure infrastructure)
         {
             this.infrastructure = infrastructure;
             this.vmPilote = infrastructure.GetVmPilote();
+            this.cli = new VmCiCli().SetVm(vmPilote);
         }
 
         public void Test()

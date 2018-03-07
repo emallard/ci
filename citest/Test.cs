@@ -67,6 +67,21 @@ namespace citest
                 // To   : Container with production webapp 
                 ForceRun<PiloteCi_1_Build>();
                 ForceRun<PiloteCi_2_Publish>();
+
+
+
+
+
+                // Part 2 install app on webserver
+                infrastructure.TryToStartVmWebServer();
+
+                // From : no VM 
+                // To   : Image with CI installed
+                Run<VmWebServer_1_Create>();
+                Run<VmWebServer_1_Hosts>();
+                Run<VmWebServer_2_Docker>();
+                Run<VmWebServer_3_MirrorRegistry>();
+
             };
         }
 

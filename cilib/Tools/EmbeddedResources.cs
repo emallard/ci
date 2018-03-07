@@ -10,7 +10,6 @@ using System.Text;
 public class EmbeddedResources
 {
 
-    public static EmbeddedResource VBoxClone = new EmbeddedResource("Infrastructure.VBox.VBoxClone.sh");
     public static EmbeddedResource InstallDocker = new EmbeddedResource("Infrastructure.Common.InstallDocker.sh");
 
     static EmbeddedResources() 

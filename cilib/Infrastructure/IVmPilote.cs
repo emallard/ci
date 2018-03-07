@@ -17,14 +17,7 @@ public interface IVmPilote : IVm {
     void InstallHosts();
     void CleanHosts();
     void InstallDocker();
-
-    void InstallCA();
-    void CleanCA();
-    
     void InstallMirrorRegistry();
-
-    void InstallPrivateRegistry();
-    void CleanPrivateRegistry();
 
     void CloneOrPullCiSources();
     void CleanCiSources();
@@ -35,8 +28,4 @@ public interface IVmPilote : IVm {
     // Alternative Build using installed dotnetcore
     void InstallDotNetCoreSdk();
     void BuildCiUsingSdk();
-
-
-    void Build();
-    void Publish();
 }

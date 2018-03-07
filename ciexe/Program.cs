@@ -41,7 +41,7 @@ namespace ciexe
                 new Lanceur().RunSync<InstallRegistry>(r => r.Clean());
             
             else if (args[0] == "install-vault")
-                new Lanceur().RunSync<InitVault>(r => r.Init());
+                new Lanceur().RunSync<InstallVault>(r => r.Init());
 
 
 

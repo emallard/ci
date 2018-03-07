@@ -6,13 +6,13 @@ using VaultSharp;
 using VaultSharp.Backends.Authentication.Models;
 using VaultSharp.Backends.Authentication.Models.Token;
 
-public class InitVault
+public class InstallVault
 {
     private readonly DockerWrapper dockerWrapper;
     private string repoTag = "vault:0.9.4";
     private string containerName = "my-vault";
 
-    public InitVault(DockerWrapper dockerWrapper)
+    public InstallVault(DockerWrapper dockerWrapper)
     {
         this.dockerWrapper = dockerWrapper;
     }
