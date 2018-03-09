@@ -59,9 +59,11 @@ public class InstallRegistry
             registry:2
             */
 
-            shellHelper.Bash("mkdir -p ${HOME}/cidata/privateregistry/var/lib/registry");
+            var home = "/home/test";
 
-            var home = shellHelper.Bash("echo ${HOME}");
+            shellHelper.Bash("mkdir -p " + home + "/cidata/privateregistry/var/lib/registry");
+
+            
             // Registry data will be stored on /cidata/privateregistry
 
             var p = new CreateContainerParameters();
