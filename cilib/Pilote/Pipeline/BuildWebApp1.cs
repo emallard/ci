@@ -78,9 +78,36 @@ public class BuildWebApp1 {
         using (var client = dockerWrapper.GetClient())
         {
             var parameters = new ImageTagParameters();
-            parameters.RepositoryName = "localhost:5000/" + ImageName;
+            parameters.RepositoryName = "privateregistry.mynetwork.local:5443/" + ImageName;
             parameters.Tag = "1";
             await client.Images.TagImageAsync(ImageName, parameters);
+
+
+            var foundImage = await dockerWrapper.FindImage(ImageName + ":1");
+
+            var p = new ImagePushParameters();
+            p.ImageID = foundImage.ID;
+            p.Tag = "1";
+
+            var progress = new DockerProgress(m => {
+                if (m.Progress != null) 
+                {
+                    Console.WriteLine(m.ID + " " + m.ProgressMessage /*+ " : " + m.Progress.Current + "/" + m.Progress.Total*/);
+                }
+            });
+            var authConfig = new AuthConfig();
+            await client.Images.PushImageAsync(ImageName + ":1", p, authConfig, progress);
+        }
+    }
+
+    public async Task Unpublish()
+    {
+        using (var client = dockerWrapper.GetClient())
+        {
+            var name = "privateregistry.mynetwork.local:5443/" + ImageName + ":1";
+            var p = new ImageDeleteParameters();
+            p.Force = false; //What happens if image is used on another VM ?
+            await client.Images.DeleteImageAsync(name, p);
         }
     }
 }

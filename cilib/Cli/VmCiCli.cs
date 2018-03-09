@@ -24,6 +24,7 @@ public class VmCiCli {
     public IVmCiCliCommand BuildWebApp1;
     public IVmCiCliCommand CleanWebApp1;
     public IVmCiCliCommand PublishWebApp1;
+    public IVmCiCliCommand UnpublishWebApp1;
     
     public VmCiCli(
         InstallCA installCA,
@@ -45,6 +46,7 @@ public class VmCiCli {
         this.CleanWebApp1 = Create<BuildWebApp1>("build-webapp1", async () => await buildWebApp1.CleanBuild());
 
         this.PublishWebApp1 = Create<BuildWebApp1>("publish-webapp1", async () => await buildWebApp1.Publish());
+        this.UnpublishWebApp1 = Create<BuildWebApp1>("publish-webapp1", async () => await buildWebApp1.Unpublish());
     }
 
     public VmCiCli SetVm(IVm vm)
@@ -60,7 +62,7 @@ public class VmCiCli {
 
     public void SshCall(IVmCiCliCommand command)
     {
-        vm.SshScript(DockerRun(command.CommandLine), command.CommandLine + "sh");
+        vm.SshScript(DockerRun(command.CommandLine), command.CommandLine + ".sh");
     }
 
     public Task ExecuteFromCommandLine(string commandLine)

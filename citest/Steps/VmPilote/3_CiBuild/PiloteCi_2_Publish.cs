@@ -19,8 +19,8 @@ namespace citest
 
         public void Test()
         {
-            //var result = vmPilote.SshCommand("docker exec ciexe dotnet ciexe.dll hello");
-            //Assert.Contains("hello", result);
+            var result = vmPilote.SshCommand("curl -X GET https://privateregistry.mynetwork.local:5443/v2/_catalog");
+            Assert.Contains("dotnetcore_0", result);
         }
 
         public void Run()
@@ -30,7 +30,7 @@ namespace citest
 
         public void Clean()
         {
-            //vmPilote.CleanCi();
+            cli.PublishWebApp1.SshCall();
         }
     }
 }
