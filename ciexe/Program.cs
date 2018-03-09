@@ -11,23 +11,26 @@ namespace ciexe
         {
             HttpWebRequest.DefaultWebProxy = null;
             if (args.Length == 0) {
-                Console.WriteLine("--help");
+                Console.WriteLine("help");
                 return;
             }
-                
 
-            /*
-            var builder = new ContainerBuilder();
-            var injection = new Injection();
-            injection.ConfigureProd(builder);
-            var container = builder.Build();
-            */
             if (args[0] == "hello")
             {
                 Console.WriteLine("hello");
                 return;
             }
+
+            if (args[0] == "help")
+            {
+                var list= new Lanceur().Resolve<VmCiCli>().CommandList();
+                Console.WriteLine(list);
+                return;
+            }
             
+            new Lanceur().RunSync<VmCiCli>(cli => cli.ExecuteFromCommandLine(args[0]));
+
+/*
             if (args[0] == "install-ca")
                 new Lanceur().RunSync<InstallCA>(r => r.Install());
 
@@ -50,6 +53,7 @@ namespace ciexe
 
             else if (args[0] == "publish")
                 new Lanceur().RunSync<PiloteExample1>(r => r.Publish());
+*/
             
         }
     }

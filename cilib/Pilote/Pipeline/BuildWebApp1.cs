@@ -8,7 +8,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 
-public class PiloteExample1 {
+public class BuildWebApp1 {
 
     private readonly DockerWrapper dockerWrapper;
     private readonly GitHelper gitHelper;
@@ -16,7 +16,7 @@ public class PiloteExample1 {
 
     string ImageName = "dotnetcore_0";
 
-    public PiloteExample1(
+    public BuildWebApp1(
         DockerWrapper dockerWrapper,
         GitHelper gitHelper,
         TarHelper tarHelper)
@@ -61,6 +61,12 @@ public class PiloteExample1 {
             Console.WriteLine("coucou");
         }
         */
+    }
+
+    public async Task CleanBuild()
+    {
+        var tag = "1";
+        await dockerWrapper.DeleteImageIfExists(ImageName + ":" + tag);
     }
 
     public async Task Publish()

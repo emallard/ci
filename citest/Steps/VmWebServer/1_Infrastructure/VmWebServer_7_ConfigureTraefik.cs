@@ -10,11 +10,11 @@ namespace citest
         private readonly IVmWebServer vmWebServer;
         private readonly VmCiCli cli;
 
-        public VmWebServer_7_ConfigureTraefik(IInfrastructure infrastructure)
+        public VmWebServer_7_ConfigureTraefik(IInfrastructure infrastructure, VmCiCli cli)
         {
             this.infrastructure = infrastructure;
             this.vmWebServer = infrastructure.GetVmWebServer();
-            this.cli = new VmCiCli().SetVm(vmWebServer);
+            this.cli = cli.SetVm(vmWebServer);
         }
 
         public void Test()

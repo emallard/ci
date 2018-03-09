@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 public class VmCiCli {
 
@@ -15,6 +16,37 @@ public class VmCiCli {
     string volume1 = "--volume /var/run/docker.sock:/var/run/docker.sock ";
     string volume2 = "--volume /home/test/cidata:/cidata ";
 
+    public IVmCiCliCommand InstallCA;
+    public IVmCiCliCommand CleanCA;
+    public IVmCiCliCommand InstallRegistry;
+    public IVmCiCliCommand CleanRegistry;
+    public IVmCiCliCommand InstallVault;
+    public IVmCiCliCommand BuildWebApp1;
+    public IVmCiCliCommand CleanWebApp1;
+    public IVmCiCliCommand PublishWebApp1;
+    
+    public VmCiCli(
+        InstallCA installCA,
+        InstallRegistry installRegistry,
+        InstallVault installVault,
+        BuildWebApp1 buildWebApp1
+        )
+    {
+
+        this.InstallCA = Create<InstallCA>("install-ca", async () => await installCA.Install());
+        this.CleanCA = Create<InstallCA>("clean-ca", async () => await installCA.Clean());
+
+        this.InstallRegistry = Create<InstallRegistry>("install-registry", async () => await installRegistry.Install());
+        this.CleanRegistry = Create<InstallRegistry>("clean-registry", async () => await installRegistry.Clean());
+
+        this.InstallVault = Create<InstallVault>("install-vault", async () => await installVault.Init());
+
+        this.BuildWebApp1 = Create<BuildWebApp1>("build-webapp1", async () => await buildWebApp1.Build());
+        this.CleanWebApp1 = Create<BuildWebApp1>("build-webapp1", async () => await buildWebApp1.CleanBuild());
+
+        this.PublishWebApp1 = Create<BuildWebApp1>("publish-webapp1", async () => await buildWebApp1.Publish());
+    }
+
     public VmCiCli SetVm(IVm vm)
     {
         this.vm = vm;
@@ -26,44 +58,50 @@ public class VmCiCli {
         return vm.SshCommand(DockerRun(arg));
     }
 
-    public void InstallCA()
+    public void SshCall(IVmCiCliCommand command)
     {
-        //SshDockerRun("install-ca");
-        vm.SshScript(DockerRun("install-ca"), "installca.sh");
+        vm.SshScript(DockerRun(command.CommandLine), command.CommandLine + "sh");
     }
 
-    public void CleanCA()
+    public Task ExecuteFromCommandLine(string commandLine)
     {
-        vm.SshScript(DockerRun("clean-ca"), "cleanca.sh");
+        var fields = this.GetType().GetFields();
+        foreach (var field in fields)
+        {
+            if (field.FieldType == typeof(IVmCiCliCommand))
+            {
+                var cmd = (IVmCiCliCommand) field.GetValue(this);
+                if (cmd.CommandLine == commandLine)    
+                {
+                    return cmd.Action();
+                }
+            }
+        }
+        throw new Exception("No command found for command line : " + commandLine);
     }
 
-    public void InstallPrivateRegistry()
+    public string CommandList()
     {
-        SshDockerRun("install-privateregistry");
-    }
-
-    public void CleanPrivateRegistry()
-    {
-        SshDockerRun("clean-privateregistry");
-    }
-
-    public void InstallVault()
-    {
-        SshDockerRun("install-vault");
-    }
-
-    public void BuildWebApp()
-    {
-        SshDockerRun("build");
-    }
-
-    public void PublishWebApp()
-    {
-        SshDockerRun("publish");
+        var sb = new StringBuilder();
+        var fields = this.GetType().GetFields();
+        foreach (var field in fields)
+        {
+            if (field.FieldType == typeof(IVmCiCliCommand))
+            {
+                sb.AppendLine(field.Name);
+            }
+        }
+        return sb.ToString();
     }
 
     private string DockerRun(string arg)
     {
         return "docker run --name ciexe --rm " + volume1 + " " + volume2 + " ciexe " + arg;
+    }
+
+    private VmCiCliCommand<T> Create<T>(string commandLine, Func<Task> action)
+    {
+        var cliCmd = new VmCiCliCommand<T>(this, commandLine, action);
+        return cliCmd;
     }
 }

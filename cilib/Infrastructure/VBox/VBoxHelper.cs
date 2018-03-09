@@ -56,6 +56,7 @@ public class VBoxHelper {
     public void RestartVm(string vmName) 
     {
         shellHelper.Bash($"vboxmanage controlvm \"{vmName}\" acpipowerbutton");
+        Thread.Sleep(10000);
         shellHelper.Bash($"vboxmanage startvm \"{vmName}\" --type headless");
     }
 

@@ -24,6 +24,12 @@ public class Lanceur
         Task.WaitAll(Run<T>(action));
     }
 
+    public T Resolve<T>()
+    {
+        var container = getDI();
+        return container.Resolve<T>();
+    }
+
     private IContainer getDI()
     {
         var builder = new ContainerBuilder();

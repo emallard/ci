@@ -10,11 +10,11 @@ namespace citest
         private readonly IVmPilote vmPilote;
         private readonly VmCiCli cli;
 
-        public PiloteCi_2_InstallVault(IInfrastructure infrastructure)
+        public PiloteCi_2_InstallVault(IInfrastructure infrastructure, VmCiCli cli)
         {
             this.infrastructure = infrastructure;
             this.vmPilote = infrastructure.GetVmPilote();
-            this.cli = new VmCiCli().SetVm(vmPilote);
+            this.cli = cli.SetVm(vmPilote);
         }
 
         public void Test()
@@ -25,6 +25,7 @@ namespace citest
 
         public void Run()
         {
+            cli.InstallVault.SshCall();
         }
 
         public void Clean()

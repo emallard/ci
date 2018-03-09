@@ -10,11 +10,11 @@ namespace citest
         private readonly IVmPilote vmPilote;
         private readonly VmCiCli cli;
 
-        public PiloteCi_3_InstallPrivateRegistry(IInfrastructure infrastructure)
+        public PiloteCi_3_InstallPrivateRegistry(IInfrastructure infrastructure, VmCiCli cli)
         {
             this.infrastructure = infrastructure;
             this.vmPilote = infrastructure.GetVmPilote();
-            this.cli = new VmCiCli().SetVm(vmPilote);
+            this.cli = cli.SetVm(vmPilote);
         }
 
         public void Test()
@@ -27,12 +27,12 @@ namespace citest
 
         public void Run()
         {
-            cli.InstallPrivateRegistry();
+            cli.InstallRegistry.SshCall();
         }
 
         public void Clean()
         {
-            cli.CleanPrivateRegistry();
+            cli.CleanRegistry.SshCall();
         }
     }
 }

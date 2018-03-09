@@ -36,7 +36,7 @@ namespace citest
                 Run<VmPilote_2_Docker>();
                 Run<VmPilote_3_MirrorRegistry>();
                 
-                bool forceBuildCI = false;
+                bool forceBuildCI = true;
                 bool alternativeBuild = true;
                 if (alternativeBuild)
                 {
