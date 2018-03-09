@@ -90,7 +90,8 @@ public class VmCiCli {
         {
             if (field.FieldType == typeof(IVmCiCliCommand))
             {
-                sb.AppendLine(field.Name);
+                var cmd = (IVmCiCliCommand) field.GetValue(this);
+                sb.AppendLine(cmd.CommandLine);
             }
         }
         return sb.ToString();

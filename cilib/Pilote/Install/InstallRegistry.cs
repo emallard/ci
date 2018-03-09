@@ -78,6 +78,11 @@ public class InstallRegistry
                 "REGISTRY_HTTP_TLS_KEY=/certs/privateregistry.mynetwork.local.key"
             };
             p.Name = "privateregistry";
+            p.HostConfig = new HostConfig();
+            p.HostConfig.RestartPolicy = new RestartPolicy();
+            p.HostConfig.RestartPolicy.Name = RestartPolicyKind.Always;
+            p.HostConfig.RestartPolicy.MaximumRetryCount = 5;
+            p.HostConfig.AutoRemove = true;
             var response = await client.Containers.CreateContainerAsync(p);
 
 
