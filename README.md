@@ -8,9 +8,9 @@ Can run on VirtualBox locally, or using PAAS Gandi.net
 
 # Projects
 
-- cilib : Main Project
-- ciexe : Command line tool that can run cilib functions (used to run ssh on VMs)
-- citest : Full pipeline test
+- [cilib](cilib/README.md) : Main Project
+- [ciexe](ciexe/README.md) : Command line tool that can run cilib functions (used to run ssh on VMs)
+- [citest](citest/README.md) : Full pipeline test
 
 # Dev / VBox infrastructure
 
