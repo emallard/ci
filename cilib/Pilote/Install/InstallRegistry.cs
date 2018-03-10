@@ -83,7 +83,8 @@ public class InstallRegistry
             {
                 "REGISTRY_HTTP_ADDR=0.0.0.0:443",
                 "REGISTRY_HTTP_TLS_CERTIFICATE=/certs/privateregistry.mynetwork.local.crt",
-                "REGISTRY_HTTP_TLS_KEY=/certs/privateregistry.mynetwork.local.key"
+                "REGISTRY_HTTP_TLS_KEY=/certs/privateregistry.mynetwork.local.key",
+                "REGISTRY_STORAGE_DELETE_ENABLED=true"
             };
             p.Name = "privateregistry";
             
