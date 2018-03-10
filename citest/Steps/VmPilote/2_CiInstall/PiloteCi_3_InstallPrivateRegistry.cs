@@ -21,8 +21,16 @@ namespace citest
         {
             var domain = vmPilote.PrivateRegistryDomain;
             var port = vmPilote.PrivateRegistryPort;
-            var result = vmPilote.SshCommand($"curl https://{domain}:{port}/v2/");
-            Assert.AreEqual("{}", result);
+            // First, test insecure
+            {
+                var result = vmPilote.SshCommand($"curl --insecure https://{domain}:{port}/v2/");
+                Assert.IsTrue(result.StartsWith("{"));
+            }
+            // Then test secure
+            {
+                var result = vmPilote.SshCommand($"curl https://{domain}:{port}/v2/");
+                Assert.IsTrue(result.StartsWith("{"));
+            }
         }
 
         public void Run()

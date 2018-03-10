@@ -13,3 +13,21 @@ https://deliciousbrains.com/ssl-certificate-authority-for-local-https-developmen
 ## notes sur la générationde clés
 
 https://docs.docker.com/engine/security/https/#create-a-ca-server-and-client-keys-with-openssl
+
+## Ubuntu : installer un Certificat
+
+convert myCA.pem to crt :
+```
+openssl x509 -in foo.pem -inform PEM -out foo.crt
+```
+Add certificate :
+```	
+sudo cp foo.crt /usr/local/share/ca-certificates/foo.crt
+sudo update-ca-certificates
+```
+
+Remove	
+```
+Remove your CA.
+sudo update-ca-certificates --fresh
+```
