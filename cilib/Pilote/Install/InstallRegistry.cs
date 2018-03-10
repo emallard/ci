@@ -77,11 +77,15 @@ public class InstallRegistry
             var home = "/home/test";
             var p = new CreateContainerParameters();
             p.Image = registryImage.ID;
+            /*
             p.Volumes = new Dictionary<string, EmptyStruct>();
-            p.Volumes.Add("/var/lib/registry:" + home + "/cidata/privateregistry/var/lib/registry", new EmptyStruct());
-            p.Volumes.Add("/certs:" + home + "/cidata/privateregistry/certs", new EmptyStruct());
+            p.Volumes.Add(home + "/cidata/privateregistry/var/lib/registry:/var/lib/registry", new EmptyStruct());
+            p.Volumes.Add(home + "/cidata/privateregistry/certs:/certs", new EmptyStruct());
+            */
+            /*
             p.ExposedPorts = new Dictionary<string, EmptyStruct>();
             p.ExposedPorts.Add("5443:443", new EmptyStruct());
+            */
             p.Env = new List<string>()
             {
                 "REGISTRY_HTTP_ADDR=0.0.0.0:443",
@@ -89,8 +93,19 @@ public class InstallRegistry
                 "REGISTRY_HTTP_TLS_KEY=/certs/privateregistry.mynetwork.local.key"
             };
             p.Name = "privateregistry";
-            /*
+            
             p.HostConfig = new HostConfig();
+            p.HostConfig.Binds = new List<string>() {
+                home + "/cidata/privateregistry/var/lib/registry:/var/lib/registry",
+                home + "/cidata/privateregistry/certs:/certs"
+            };
+            var portBinding = new PortBinding();
+            portBinding.HostIP = "0.0.0.0";
+            portBinding.HostPort = "5443";
+            p.HostConfig.PortBindings = new Dictionary<string, IList<PortBinding>>();
+            p.HostConfig.PortBindings.Add("443", new List<PortBinding>() {portBinding});
+
+            /*
             p.HostConfig.RestartPolicy = new RestartPolicy();
             p.HostConfig.RestartPolicy.Name = RestartPolicyKind.Always;
             */
