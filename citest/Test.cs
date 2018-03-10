@@ -12,61 +12,58 @@ namespace citest
 
         public Action RunAll;
         IContainer container;
-        /*
-        public Test(IInfrastructure infrastructure,
-            CreateVmPilote createVmPilote,
-            CreateVmWebServer createVmWebServer,
-            PiloteCi piloteCi,
-            PiloteDocker piloteDocker
-            PiloteMirrorRegistry piloteCi)
-        {*/
 
         public Test() 
         {
             RunAll = () =>
             {
                 container = Init();
+                var runner = new TestRunner();
+                runner.SetContainer(container);
+                runner.TestOnly = false;
+                
+
                 var infrastructure = container.Resolve<IInfrastructure>();
                 infrastructure.TryToStartVmPilote();
 
                 // From : no VM 
                 // To   : Image with CI installed
-                Run<VmPilote_1_Create>();
-                Run<VmPilote_1_Hosts>();
-                Run<VmPilote_2_Docker>();
-                Run<VmPilote_3_MirrorRegistry>();
+                runner.Run<VmPilote_1_Create>();
+                runner.Run<VmPilote_1_Hosts>();
+                runner.Run<VmPilote_2_Docker>();
+                runner.Run<VmPilote_3_MirrorRegistry>();
                 
                 bool forceBuildCI = true;
                 bool alternativeBuild = true;
                 if (alternativeBuild)
                 {
                     if (forceBuildCI)
-                        Clean<VmPilote_5_PiloteCi_Build>();
-                    Run<VmPilote_5b_PiloteCi_BuildUsingSdk>();
+                        runner.Clean<VmPilote_5_PiloteCi_Build>();
+                    runner.Run<VmPilote_5b_PiloteCi_BuildUsingSdk>();
                 }
                 else
                 {
                     if (forceBuildCI)
                     {
-                        Clean<VmPilote_5_PiloteCi_Build>();
-                        Clean<VmPilote_4_PiloteCi_Sources>();
+                        runner.Clean<VmPilote_5_PiloteCi_Build>();
+                        runner.Clean<VmPilote_4_PiloteCi_Sources>();
                     }
-                    Run<VmPilote_4_PiloteCi_Sources>();
-                    Run<VmPilote_5_PiloteCi_Build>();
+                    runner.Run<VmPilote_4_PiloteCi_Sources>();
+                    runner.Run<VmPilote_5_PiloteCi_Build>();
                 }
 
                 
                 
                 // From : Image with CI installed
                 // To   : Vm with other software installed
-                Run<PiloteCi_1_InstallCA>();
+                runner.Run<PiloteCi_1_InstallCA>();
                 //Run<PiloteCi_2_InstallVault>();
-                Run<PiloteCi_3_InstallPrivateRegistry>();
+                runner.Run<PiloteCi_3_InstallPrivateRegistry>();
 
                 // From : Vm with CI Installed and other software installed
                 // To   : Container with production webapp 
-                ForceRun<PiloteCi_1_Build>();
-                ForceRun<PiloteCi_2_Publish>();
+                runner.Run<PiloteCi_1_Build>();
+                runner.Run<PiloteCi_2_Publish>();
 
 
 
@@ -77,14 +74,14 @@ namespace citest
 
                 // From : no VM 
                 // To   : Image with CI installed
-                Run<VmWebServer_1_Create>();
-                Run<VmWebServer_1_Hosts>();
-                Run<VmWebServer_2_Docker>();
-                Run<VmWebServer_3_MirrorRegistry>();
+                runner.Run<VmWebServer_1_Create>();
+                runner.Run<VmWebServer_1_Hosts>();
+                runner.Run<VmWebServer_2_Docker>();
+                runner.Run<VmWebServer_3_MirrorRegistry>();
 
             };
         }
-
+/*
         private void Run<S>() where S : IStep
         {
             var s = container.Resolve<S>();
@@ -134,7 +131,7 @@ namespace citest
             Console.WriteLine("- Step test");
             step.Test();
         }
-
+*/
 
         private IContainer Init()
         {

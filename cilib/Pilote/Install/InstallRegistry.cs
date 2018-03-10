@@ -61,8 +61,6 @@ public class InstallRegistry
             registry:2
             */
 
-            
-
             // copy tls keys
             shellHelper.Bash("rm -rf /cidata/privateregistry/certs");
             shellHelper.Bash("mkdir -p /cidata/privateregistry/certs");
@@ -77,12 +75,7 @@ public class InstallRegistry
             var home = "/home/test";
             var p = new CreateContainerParameters();
             p.Image = registryImage.ID;
-            /*
-            p.Volumes = new Dictionary<string, EmptyStruct>();
-            p.Volumes.Add(home + "/cidata/privateregistry/var/lib/registry:/var/lib/registry", new EmptyStruct());
-            p.Volumes.Add(home + "/cidata/privateregistry/certs:/certs", new EmptyStruct());
-            */
-            
+
             p.ExposedPorts = new Dictionary<string, EmptyStruct>();
             p.ExposedPorts.Add("443/tcp", new EmptyStruct());
             
@@ -104,11 +97,10 @@ public class InstallRegistry
             portBinding.HostPort = "5443";
             p.HostConfig.PortBindings = new Dictionary<string, IList<PortBinding>>();
             p.HostConfig.PortBindings.Add("443/tcp", new List<PortBinding>() {portBinding});
-
-            /*
+            
             p.HostConfig.RestartPolicy = new RestartPolicy();
             p.HostConfig.RestartPolicy.Name = RestartPolicyKind.Always;
-            */
+            
             var response = await client.Containers.CreateContainerAsync(p);
 
 

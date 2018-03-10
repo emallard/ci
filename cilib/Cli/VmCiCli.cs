@@ -43,10 +43,10 @@ public class VmCiCli {
         this.InstallVault = Create<InstallVault>("install-vault", async () => await installVault.Init());
 
         this.BuildWebApp1 = Create<BuildWebApp1>("build-webapp1", async () => await buildWebApp1.Build());
-        this.CleanWebApp1 = Create<BuildWebApp1>("build-webapp1", async () => await buildWebApp1.CleanBuild());
+        this.CleanWebApp1 = Create<BuildWebApp1>("clean-webapp1", async () => await buildWebApp1.CleanBuild());
 
         this.PublishWebApp1 = Create<BuildWebApp1>("publish-webapp1", async () => await buildWebApp1.Publish());
-        this.UnpublishWebApp1 = Create<BuildWebApp1>("publish-webapp1", async () => await buildWebApp1.Unpublish());
+        this.UnpublishWebApp1 = Create<BuildWebApp1>("unpublish-webapp1", async () => await buildWebApp1.Unpublish());
     }
 
     public VmCiCli SetVm(IVm vm)

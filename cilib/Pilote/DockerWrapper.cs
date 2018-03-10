@@ -9,6 +9,23 @@ using System.Threading;
 
 public class DockerWrapper {
 
+    public async Task DeleteDanglingImages()
+    {
+        using (var client = GetClient())
+        {
+            var p = new ImagesListParameters();
+            p.Filters = new Dictionary<string, IDictionary<string, bool>>();
+            p.Filters.Add("dangling", new Dictionary<string, bool>() {{"true", true}});
+            var images = await client.Images.ListImagesAsync(p);
+
+            foreach (var image in images)
+            {
+                var p2 = new ImageDeleteParameters();
+                p2.Force = false;
+                await client.Images.DeleteImageAsync(image.ID, p2);
+            }
+        }
+    }
 
     public async Task EnsureRunning(string containerName, ContainerStartParameters parameters)
     {

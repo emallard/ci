@@ -30,7 +30,7 @@ namespace citest
 
         public void Clean()
         {
-            cli.PublishWebApp1.SshCall();
+            cli.UnpublishWebApp1.SshCall();
         }
     }
 }

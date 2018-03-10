@@ -51,6 +51,7 @@ public class BuildWebApp1 {
             false
         );
 
+        await dockerWrapper.DeleteDanglingImages();
 
         /* Broken pipe problem with Docker.DotNet
         using (var client = dockerWrapper.GetClient())
