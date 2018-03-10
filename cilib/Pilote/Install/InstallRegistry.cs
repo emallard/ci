@@ -103,7 +103,7 @@ public class InstallRegistry
             portBinding.HostIP = "0.0.0.0";
             portBinding.HostPort = "5443";
             p.HostConfig.PortBindings = new Dictionary<string, IList<PortBinding>>();
-            p.HostConfig.PortBindings.Add("443", new List<PortBinding>() {portBinding});
+            p.HostConfig.PortBindings.Add("443/tcp", new List<PortBinding>() {portBinding});
 
             /*
             p.HostConfig.RestartPolicy = new RestartPolicy();
