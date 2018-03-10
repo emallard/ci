@@ -78,8 +78,8 @@ public class InstallRegistry
             var p = new CreateContainerParameters();
             p.Image = registryImage.ID;
             p.Volumes = new Dictionary<string, EmptyStruct>();
-            p.Volumes.Add(home + "/cidata/privateregistry/var/lib/registry:/var/lib/registry", new EmptyStruct());
-            p.Volumes.Add(home + "/cidata/privateregistry/certs:/certs", new EmptyStruct());
+            p.Volumes.Add("/var/lib/registry:" + home + "/cidata/privateregistry/var/lib/registry", new EmptyStruct());
+            p.Volumes.Add("/certs:" + home + "/cidata/privateregistry/certs", new EmptyStruct());
             p.ExposedPorts = new Dictionary<string, EmptyStruct>();
             p.ExposedPorts.Add("5443:443", new EmptyStruct());
             p.Env = new List<string>()
