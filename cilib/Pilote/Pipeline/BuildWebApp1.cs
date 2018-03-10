@@ -101,14 +101,9 @@ public class BuildWebApp1 {
         }
     }
 
-    public async Task Unpublish()
+    public async Task CleanPublish()
     {
-        using (var client = dockerWrapper.GetClient())
-        {
-            var name = "privateregistry.mynetwork.local:5443/" + ImageName + ":1";
-            var p = new ImageDeleteParameters();
-            p.Force = false; //What happens if image is used on another VM ?
-            await client.Images.DeleteImageAsync(name, p);
-        }
+        var tag = "1";
+        await dockerWrapper.DeleteImageIfExists("privateregistry.mynetwork.local:5443/" + ImageName + ":" + tag);
     }
 }

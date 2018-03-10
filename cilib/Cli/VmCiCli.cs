@@ -46,7 +46,7 @@ public class VmCiCli {
         this.CleanWebApp1 = Create<BuildWebApp1>("clean-webapp1", async () => await buildWebApp1.CleanBuild());
 
         this.PublishWebApp1 = Create<BuildWebApp1>("publish-webapp1", async () => await buildWebApp1.Publish());
-        this.UnpublishWebApp1 = Create<BuildWebApp1>("unpublish-webapp1", async () => await buildWebApp1.Unpublish());
+        this.UnpublishWebApp1 = Create<BuildWebApp1>("cleanpublish-webapp1", async () => await buildWebApp1.CleanPublish());
     }
 
     public VmCiCli SetVm(IVm vm)
