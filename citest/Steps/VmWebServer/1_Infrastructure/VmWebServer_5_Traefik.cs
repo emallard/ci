@@ -19,17 +19,18 @@ namespace citest
 
         public void Test()
         {
-            //var result = vmWebServer.SshCommand("curl http://localhost:4999/v2/");
-            //Assert.AreEqual("{}", result);
+            var result = vmWebServer.SshCommand("curl http://localhost:80/");
+            Assert.AreEqual("{}", result);
         }
 
         public void Run()
         {
-            //cli.InstallTraefik();
+            cli.InstallTraefik.SshCall();
         }
 
         public void Clean()
         {
+            cli.CleanTraefik.SshCall();
         }
     }
 }

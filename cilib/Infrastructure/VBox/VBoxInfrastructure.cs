@@ -32,7 +32,7 @@ public class VBoxInfrastructure : IInfrastructure
         this.vmWebServer = vmWebServer;
         this.vmPilote.Configure(new Uri($"tcp://127.0.0.1:{vmPilote.PortForward}"), vmPilote.Ip.ToString());
         this.vmWebServer.Configure(new Uri($"tcp://127.0.0.1:{WebServerPortForward}"), WebServerIp);
-        // Check that directory with vms exists 
+        this.vmWebServer.SetVmPilote(this.vmPilote); 
         
     }
 

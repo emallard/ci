@@ -26,11 +26,22 @@ public class VmCiCli {
     public IVmCiCliCommand PublishWebApp1;
     public IVmCiCliCommand UnpublishWebApp1;
     
+    // WebServer
+    public IVmCiCliCommand InstallTraefik;
+    public IVmCiCliCommand CleanTraefik;
+    public IVmCiCliCommand InstallWebApp1;
+    public IVmCiCliCommand CleanInstallWebApp1;
+
+
     public VmCiCli(
         InstallCA installCA,
         InstallRegistry installRegistry,
         InstallVault installVault,
-        BuildWebApp1 buildWebApp1
+        BuildWebApp1 buildWebApp1,
+
+        // WebServer
+        InstallTraefik installTraefik,
+        InstallWebApp installWebApp
         )
     {
 
@@ -47,6 +58,13 @@ public class VmCiCli {
 
         this.PublishWebApp1 = Create<BuildWebApp1>("publish-webapp1", async () => await buildWebApp1.Publish());
         this.UnpublishWebApp1 = Create<BuildWebApp1>("cleanpublish-webapp1", async () => await buildWebApp1.CleanPublish());
+
+        // Webserver
+        this.InstallTraefik = Create<InstallTraefik>("webserver-install-webapp1", async () => await installTraefik.Install());
+        this.CleanTraefik = Create<InstallTraefik>("clean-webapp1", async () => await installTraefik.Clean());
+
+        this.InstallWebApp1 = Create<InstallWebApp>("webserver-install-webapp1", async () => await installWebApp.Install());
+        this.CleanInstallWebApp1 = Create<InstallWebApp>("clean-webapp1", async () => await installWebApp.CleanInstall());
     }
 
     public VmCiCli SetVm(IVm vm)

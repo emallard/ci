@@ -14,17 +14,24 @@ public class VBoxVmWebServer : VBoxVm, IVmWebServer {
     public IPAddress Ip => new IPAddress(new byte[]{10,0,2,6});
     public int PortForward => 22006;
     
+    VBoxVmPilote vmPilote;
+
     public VBoxVmWebServer()
     {
     }
 
+    public void SetVmPilote(VBoxVmPilote vmPilote)
+    {
+        this.vmPilote = vmPilote;
+    }
+
     public void InstallHosts()
     {
-        throw new NotImplementedException();
+        this.SshSudoBashCommand($"echo \"{vmPilote.Ip}  {vmPilote.PrivateRegistryDomain}\" >> /etc/hosts");
     }
 
     public void CleanHosts()
     {
-        throw new NotImplementedException();
+        this.SshSudoBashCommand($"sed -i \"/ {vmPilote.PrivateRegistryDomain}/d\" /etc/hosts");
     }
 }

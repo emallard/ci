@@ -8,26 +8,28 @@ public class VmWebServer_1_Hosts : IStep {
 
     private readonly IInfrastructure infrastructure;
     private readonly IVmWebServer vmWebServer;
+    private readonly IVmPilote vmPilote;
 
     public VmWebServer_1_Hosts(IInfrastructure infrastructure)
     {
         this.infrastructure = infrastructure;
         this.vmWebServer = infrastructure.GetVmWebServer();
+        this.vmPilote = infrastructure.GetVmPilote();
     }
 
     public void Test()
     {
-        //var result = vmWebServer.SshCommand($"getent hosts {vmWebServer.PrivateRegistryDomain}");
-        //Assert.Contains(vmWebServer.PrivateRegistryDomain, result);
+        var result = vmWebServer.SshCommand($"getent hosts {vmPilote.PrivateRegistryDomain}");
+        Assert.Contains(vmPilote.PrivateRegistryDomain, result);
     }
 
     public void Run()
     {
-        //vmWebServer.InstallHosts();
+        vmWebServer.InstallHosts();
     }
 
     public void Clean()
     {
-        //vmWebServer.CleanHosts();
+        vmWebServer.CleanHosts();
     }
 }
