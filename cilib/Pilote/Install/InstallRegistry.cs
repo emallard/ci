@@ -31,13 +31,15 @@ public class InstallRegistry
     public async Task Clean()
     {
         await dockerWrapper.DeleteContainerIfExistsByName(containerName);
-        await dockerWrapper.DeleteImageIfExists(repoTag); 
+        // Image is alrady used by the mirror registry
+        //await dockerWrapper.DeleteImageIfExists(repoTag); 
     }
 
 
     public async Task Install()
     {
-        await dockerWrapper.CreateImage(repoTag);
+        // Image is alrady used by the mirror registry
+        //await dockerWrapper.CreateImage(repoTag);
         var registryImage = await dockerWrapper.FindImage(repoTag);
 
         using (var client = dockerWrapper.GetClient())
