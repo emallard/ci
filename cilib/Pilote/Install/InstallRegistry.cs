@@ -82,10 +82,10 @@ public class InstallRegistry
             p.Volumes.Add(home + "/cidata/privateregistry/var/lib/registry:/var/lib/registry", new EmptyStruct());
             p.Volumes.Add(home + "/cidata/privateregistry/certs:/certs", new EmptyStruct());
             */
-            /*
+            
             p.ExposedPorts = new Dictionary<string, EmptyStruct>();
-            p.ExposedPorts.Add("5443:443", new EmptyStruct());
-            */
+            p.ExposedPorts.Add("443/tcp", new EmptyStruct());
+            
             p.Env = new List<string>()
             {
                 "REGISTRY_HTTP_ADDR=0.0.0.0:443",
