@@ -153,7 +153,7 @@ public class DockerWrapper {
         }
     }
 
-    public async Task DeleteImageIfExists(string repoTag)
+    public async Task DeleteImageIfExists(string repoTag, bool prune=true)
     {
         var registryImage = await this.FindImage(repoTag);
         if (registryImage == null)
@@ -161,7 +161,7 @@ public class DockerWrapper {
 
         using (var client = GetClient())
         {
-            await client.Images.DeleteImageAsync(registryImage.ID, new ImageDeleteParameters());
+            await client.Images.DeleteImageAsync(registryImage.ID, new ImageDeleteParameters() { PruneChildren = prune});
         }
     }
 
