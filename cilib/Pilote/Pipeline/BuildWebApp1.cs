@@ -100,7 +100,7 @@ public class BuildWebApp1 {
                 }
             });
             var authConfig = new AuthConfig();
-            await client.Images.PushImageAsync(ImageName + ":1", p, authConfig, progress);
+            await client.Images.PushImageAsync("privateregistry.mynetwork.local:5443/" + ImageName + ":1", p, authConfig, progress);
         }
     }
 
