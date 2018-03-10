@@ -142,7 +142,6 @@ public class VBoxVm : IVm {
     {
         this.SshCommand("cd ci && dotnet restore && dotnet publish -c Release -o out");
         this.SshCommand("cd ci && docker build --force-rm -f DockerfileLocalBuild -t ciexe ~/ci");
-        this.SshCommand("docker image rm $(docker images -f \"dangling=true\" -q)");
     }
 #endregion
 

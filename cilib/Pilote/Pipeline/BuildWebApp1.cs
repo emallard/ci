@@ -72,6 +72,8 @@ public class BuildWebApp1 {
 
     public async Task Publish()
     {
+        Console.WriteLine("Publish");
+
         // https://stackoverflow.com/questions/28349392/how-to-push-a-docker-image-to-a-private-repository
         //docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]
         //Then docker push using that same tag.
@@ -81,9 +83,10 @@ public class BuildWebApp1 {
             var parameters = new ImageTagParameters();
             parameters.RepositoryName = "privateregistry.mynetwork.local:5443/" + ImageName;
             parameters.Tag = "1";
-            await client.Images.TagImageAsync(ImageName, parameters);
+            Console.WriteLine("Tag");
+            await client.Images.TagImageAsync(ImageName + ":1", parameters);
 
-
+            Console.WriteLine("try to find : " + ImageName + ":1");
             var foundImage = await dockerWrapper.FindImage(ImageName + ":1");
 
             var p = new ImagePushParameters();
