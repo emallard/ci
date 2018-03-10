@@ -161,7 +161,7 @@ public class DockerWrapper {
 
         using (var client = GetClient())
         {
-            await client.Images.DeleteImageAsync(registryImage.ID, new ImageDeleteParameters() { PruneChildren = prune});
+            await client.Images.DeleteImageAsync(repoTag/*registryImage.ID*/, new ImageDeleteParameters() { PruneChildren = prune});
         }
     }
 

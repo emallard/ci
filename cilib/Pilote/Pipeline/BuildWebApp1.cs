@@ -107,6 +107,6 @@ public class BuildWebApp1 {
     public async Task CleanPublish()
     {
         var tag = "1";
-        await dockerWrapper.DeleteImageIfExists("privateregistry.mynetwork.local:5443/" + ImageName + ":" + tag, false);
+        await dockerWrapper.DeleteImageIfExists("privateregistry.mynetwork.local:5443/" + ImageName + ":" + tag, true);
     }
 }

@@ -63,7 +63,7 @@ namespace citest
                 // From : Vm with CI Installed and other software installed
                 // To   : Container with production webapp 
                 runner.Run<PiloteCi_1_Build>();
-                runner.Run<PiloteCi_2_Publish>();
+                runner.ForceRun<PiloteCi_2_Publish>();
 
 
 
