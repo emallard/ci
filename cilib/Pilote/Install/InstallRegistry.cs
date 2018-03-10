@@ -59,13 +59,20 @@ public class InstallRegistry
             registry:2
             */
 
-            var home = "/home/test";
+            
 
-            shellHelper.Bash("mkdir -p " + home + "/cidata/privateregistry/var/lib/registry");
+            // copy tls keys
+            shellHelper.Bash("rm -rf /cidata/privateregistry/certs");
+            shellHelper.Bash("mkdir -p /cidata/privateregistry/certs");
+            shellHelper.Bash($"cp /cidata/tls/privateregistry.mynetwork.local.* /cidata/privateregistry/certs");
+            
+
+            // Registry data will be stored on /cidata/privateregistry
+            shellHelper.Bash("mkdir -p /cidata/privateregistry/var/lib/registry");
 
             
-            // Registry data will be stored on /cidata/privateregistry
-
+            
+            var home = "/home/test";
             var p = new CreateContainerParameters();
             p.Image = registryImage.ID;
             p.Volumes = new Dictionary<string, EmptyStruct>();
