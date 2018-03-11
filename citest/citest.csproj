@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../cilib/cilib.csproj" />
+    <ProjectReference Include="../cicli/cicli.csproj" />
     <PackageReference Include="autofac" Version="4.6.2" />
     <PackageReference Include="ssh.net" Version="2016.1.0" />
   </ItemGroup>

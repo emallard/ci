@@ -7,7 +7,9 @@ namespace citest
     {
         static void Main(string[] args)
         {
-            var test = new Test<VBoxInfrastructure>();
+            var runner = new TestRunner();
+
+            var test = new Scenario1<VBoxInfrastructure>(runner);
             test.RunAll();
         }
     }

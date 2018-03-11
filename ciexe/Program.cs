@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Autofac;
+using cicli;
 
 namespace ciexe
 {
@@ -23,37 +24,27 @@ namespace ciexe
 
             if (args[0] == "help")
             {
-                var list= new Lanceur().Resolve<VmCiCli>().CommandList();
+                var list = getDI().Resolve<CiCli>().CommandList();
                 Console.WriteLine(list);
                 return;
             }
             
-            new Lanceur().RunSync<VmCiCli>(cli => cli.ExecuteFromCommandLine(args[0]));
+            RunSync.Run<CiCli>(getDI(), cli => cli.ExecuteFromCommandLine(args[0]));            
+        }
 
-/*
-            if (args[0] == "install-ca")
-                new Lanceur().RunSync<InstallCA>(r => r.Install());
 
-            else if (args[0] == "clean-ca")
-                new Lanceur().RunSync<InstallCA>(r => r.Clean());
-
-            if (args[0] == "install-privateregistry")
-                new Lanceur().RunSync<InstallRegistry>(r => r.Install());
-
-            else if (args[0] == "clean-privateregistry")
-                new Lanceur().RunSync<InstallRegistry>(r => r.Clean());
+        public static IContainer getDI()
+        {
+            var builder = new ContainerBuilder();
             
-            else if (args[0] == "install-vault")
-                new Lanceur().RunSync<InstallVault>(r => r.Init());
+            builder.RegisterType<ConfigVBox>().As<IConfig>();
+            builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();
+           
+            builder.RegisterAssemblyTypes(typeof(CiLib).Assembly);
+            builder.RegisterAssemblyTypes(typeof(CiCli).Assembly);
 
-
-
-            else if (args[0] == "build")
-                new Lanceur().RunSync<PiloteExample1>(r => r.Build());
-
-            else if (args[0] == "publish")
-                new Lanceur().RunSync<PiloteExample1>(r => r.Publish());
-*/
+            var container = builder.Build();
+            return container;
             
         }
     }

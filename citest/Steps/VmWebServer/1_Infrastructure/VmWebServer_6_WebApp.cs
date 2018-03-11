@@ -1,5 +1,6 @@
 using System;
 using Autofac;
+using cicli;
 using Renci.SshNet;
 
 namespace citest
@@ -8,9 +9,9 @@ namespace citest
     {
         private readonly IInfrastructure infrastructure;
         private readonly IVmWebServer vmWebServer;
-        private readonly VmCiCli cli;
+        private readonly CiCli cli;
 
-        public VmWebServer_6_WebApp(IInfrastructure infrastructure, VmCiCli cli)
+        public VmWebServer_6_WebApp(IInfrastructure infrastructure, CiCli cli)
         {
             this.infrastructure = infrastructure;
             this.vmWebServer = infrastructure.GetVmWebServer();
