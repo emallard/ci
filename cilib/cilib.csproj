@@ -13,6 +13,8 @@
     <ProjectReference Include="../ciinfra/ciinfra.csproj" />
   </ItemGroup>
 
-
+  <ItemGroup>
+    <EmbeddedResource Include="WebServer\traefik.toml" />
+  </ItemGroup>
 
 </Project>

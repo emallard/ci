@@ -7,26 +7,26 @@ using System.Reflection;
 using System.IO;
 using System.Text;
 
-public class EmbeddedResource
+public class EmbeddedResourceCiLib
 {
     public readonly string Name;
 
-    public EmbeddedResource(string name)
+    public EmbeddedResourceCiLib(string name)
     {
         Name = name;
     }
 
     public Stream Stream()
     {
-        var stream = this.GetType().Assembly.GetManifestResourceStream("ciinfra." + Name);
+        var stream = this.GetType().Assembly.GetManifestResourceStream("cilib." + Name);
         if (stream == null)
-            throw new Exception("No stream for resource : " + "ciinfra." + Name);
+            throw new Exception("No stream for resource : " + "cilib." + Name);
         return stream;
     }
 
     public string ReadAsText()
     {
-        var resourceStream = this.GetType().Assembly.GetManifestResourceStream("ciinfra." + Name);
+        var resourceStream = this.GetType().Assembly.GetManifestResourceStream("cilib." + Name);
         using (var reader = new StreamReader(resourceStream, Encoding.UTF8))
         {
             return reader.ReadToEnd();

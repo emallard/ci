@@ -9,26 +9,29 @@ using Docker.DotNet.Models;
 public class InstallTraefik {
 
     private readonly DockerWrapper dockerWrapper;
-
+    private readonly ICiLibCiDataDirectory cidataDir;
+    private readonly IInfrastructure infrastructure;
     string traefikRepoTag = "traefik:1.5";
     string containerName = "traefik";
 
-    public InstallTraefik(DockerWrapper dockerWrapper)
+    public InstallTraefik(
+        DockerWrapper dockerWrapper,
+        ICiLibCiDataDirectory cidataDir,
+        IInfrastructure infrastructure)
     {
         this.dockerWrapper = dockerWrapper;
+        this.cidataDir = cidataDir;
+        this.infrastructure = infrastructure;
     }
 
     public async Task Install() 
     {
-        await Task.CompletedTask;
-
-        // copy configuration file to /cidata/traefik
         //docker run -d -p 8080:8080 -p 80:80 -v $PWD/traefik.toml:/etc/traefik/traefik.toml traefik
 
-        var traefikDir = "/cidata/traefik"; 
+        var traefikDir = cidataDir + "/traefik"; 
         if (!Directory.Exists(traefikDir))
             Directory.CreateDirectory(traefikDir);
-        File.WriteAllText(Path.Combine(traefikDir, "traefik.toml"), EmbeddedResources.TraefikToml.ReadAsText());
+        File.WriteAllText(Path.Combine(traefikDir, "traefik.toml"), EmbeddedResourcesCiLib.TraefikToml.ReadAsText());
 
 
         
@@ -38,17 +41,17 @@ public class InstallTraefik {
 
         using (var client = this.dockerWrapper.GetClient())
         {
-            var home = "/home/test";
+            var infraCidata = infrastructure.CidataDirectory;
             var p = new CreateContainerParameters();
             p.Image = traefikImage.ID;
 
-//            p.ExposedPorts = new Dictionary<string, EmptyStruct>();
-//            p.ExposedPorts.Add("443/tcp", new EmptyStruct());
+            p.ExposedPorts = new Dictionary<string, EmptyStruct>();
+            p.ExposedPorts.Add("8080/tcp", new EmptyStruct());
             
             p.Name = containerName;
             
             p.HostConfig = new DockerHostConfig()
-                .Bind(home + "/cidata/traefik/traefik.toml:/etc/traefik/traefik.toml")
+                .Bind(infraCidata + "/traefik/traefik.toml:/etc/traefik/traefik.toml")
                 .PortBinding("0.0.0.0", "8080", "8080/tcp")
                 .PortBinding("0.0.0.0", "80", "80/tcp")
                 .RestartAlways()

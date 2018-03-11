@@ -37,11 +37,9 @@ namespace ciexe
         {
             var builder = new ContainerBuilder();
             
-            builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();
-           
+            builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();           
             builder.RegisterModule<CiCliModule>();
 
-            builder.RegisterInstance<CiDataDirectory>(new CiDataDirectory("/cidata"));
 
             var container = builder.Build();
             return container;

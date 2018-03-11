@@ -16,16 +16,22 @@ public class InstallRegistry
 {
     private readonly DockerWrapper dockerWrapper;
     private readonly ShellHelper shellHelper;
+    private readonly ICiLibCiDataDirectory cidataDir;
+    private readonly IInfrastructure infrastructure;
     private string repoTag = "registry:2";
     private string containerName = "privateregistry";
 
 
     public InstallRegistry(
         DockerWrapper dockerWrapper,
-        ShellHelper shellHelper)
+        ShellHelper shellHelper,
+        ICiLibCiDataDirectory cidataDir,
+        IInfrastructure infrastructure)
     {
         this.dockerWrapper = dockerWrapper;
         this.shellHelper = shellHelper;
+        this.cidataDir = cidataDir;
+        this.infrastructure = infrastructure;
     }
 
     public async Task Clean()
@@ -62,17 +68,16 @@ public class InstallRegistry
             */
 
             // copy tls keys
-            shellHelper.Bash("rm -rf /cidata/privateregistry/certs");
-            shellHelper.Bash("mkdir -p /cidata/privateregistry/certs");
-            shellHelper.Bash($"cp /cidata/tls/privateregistry.mynetwork.local.* /cidata/privateregistry/certs");
+            shellHelper.Bash($"rm -rf {cidataDir}/privateregistry/certs");
+            shellHelper.Bash($"mkdir -p {cidataDir}/privateregistry/certs");
+            shellHelper.Bash($"cp {cidataDir}/tls/privateregistry.mynetwork.local.* {cidataDir}/privateregistry/certs");
             
 
-            // Registry data will be stored on /cidata/privateregistry
-            shellHelper.Bash("mkdir -p /cidata/privateregistry/var/lib/registry");
+            // Registry data outside the container in /privateregistry
+            shellHelper.Bash("mkdir -p {cidataDir}/privateregistry/var/lib/registry");
 
             
-            
-            var home = "/home/test";
+            var infraCidata = infrastructure.CidataDirectory;
             var p = new CreateContainerParameters();
             p.Image = registryImage.ID;
 
@@ -88,56 +93,17 @@ public class InstallRegistry
             };
             p.Name = "privateregistry";
             
-            p.HostConfig = new HostConfig();
-            p.HostConfig.Binds = new List<string>() {
-                home + "/cidata/privateregistry/var/lib/registry:/var/lib/registry",
-                home + "/cidata/privateregistry/certs:/certs"
-            };
-            var portBinding = new PortBinding();
-            portBinding.HostIP = "0.0.0.0";
-            portBinding.HostPort = "5443";
-            p.HostConfig.PortBindings = new Dictionary<string, IList<PortBinding>>();
-            p.HostConfig.PortBindings.Add("443/tcp", new List<PortBinding>() {portBinding});
-            
-            p.HostConfig.RestartPolicy = new RestartPolicy();
-            p.HostConfig.RestartPolicy.Name = RestartPolicyKind.Always;
-            
-            var response = await client.Containers.CreateContainerAsync(p);
+            p.HostConfig = new DockerHostConfig()
+                .Bind($"{infraCidata}/privateregistry/var/lib/registry:/var/lib/registry")
+                .Bind($"{infraCidata}/privateregistry/certs:/certs")
+                .PortBinding("0.0.0.0", "5443", "443/tcp")
+                .RestartAlways()
+                .GetConfig();
 
+            var response = await client.Containers.CreateContainerAsync(p);
 
             var p2 = new ContainerStartParameters();
             await client.Containers.StartContainerAsync(response.ID, p2);
         }
     }
-
-/*
-    public async Task AddTLSKey()
-    {
-        
-        // Ask Certificate Authority for files
-
-        // Create tarball with keys
-        var tarStream = new MemoryStream();
-        
-        //using (Stream gzipStream = new GZipOutputStream(fs))
-        using (TarArchive tarArchive = TarArchive.CreateOutputTarArchive(tarStream))
-        {
-            TarEntry tarEntry = TarEntry.CreateEntryFromFile("private.key");
-            tarArchive.WriteEntry(tarEntry, true);
-        }
-
-
-        tarStream.Position = 0;
-        using (var client = dockerWrapper.GetClient())
-        {
-            var parameters = new ContainerPathStatParameters();
-            var response = await dockerWrapper.FindContainerByName(this.containerName);
-            await client.Containers.ExtractArchiveToContainerAsync(response.ID, parameters, tarStream);
-        }
-    
-        tarStream.Dispose();
-        
-        // Copy to container
-    }
-*/
 }

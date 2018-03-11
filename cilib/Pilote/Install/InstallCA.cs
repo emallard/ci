@@ -11,13 +11,16 @@ public class InstallCA
     
     private readonly ShellHelper shellHelper;
     private readonly IInfrastructure infrastructure;
+    private readonly ICiLibCiDataDirectory cidataDir;
 
     public InstallCA(
         ShellHelper shellHelper,
-        IInfrastructure infrastructure)
+        IInfrastructure infrastructure,
+        ICiLibCiDataDirectory cidataDir)
     {
         this.shellHelper = shellHelper;
         this.infrastructure = infrastructure;
+        this.cidataDir = cidataDir;
     }
 
     
@@ -26,7 +29,7 @@ public class InstallCA
         var domain = infrastructure.GetVmPilote().PrivateRegistryDomain;
         var ip = infrastructure.GetVmPilote().Ip;
 
-        var dir = "/cidata/tls";
+        var dir = cidataDir + "/tls";
         shellHelper.Bash($"mkdir -p {dir}");
 
         // CA keys
@@ -66,16 +69,16 @@ public class InstallCA
 
 
         // Copy keys to the privateregistry folder
-        shellHelper.Bash("rm -rf /cidata/privateregistry/certs");
-        shellHelper.Bash("mkdir -p /cidata/privateregistry/certs");
-        shellHelper.Bash($"cp {dir}/{domain}.* /cidata/privateregistry/certs");
+        shellHelper.Bash($"rm -rf {cidataDir}/privateregistry/certs");
+        shellHelper.Bash($"mkdir -p {cidataDir}/privateregistry/certs");
+        shellHelper.Bash($"cp {dir}/{domain}.* {cidataDir}/privateregistry/certs");
 
         await Task.CompletedTask;
     }
 
     public async Task Clean() 
     {
-        var dir = "/cidata/tls";
+        var dir = cidataDir + "/tls";
         shellHelper.Bash($"rm -rf {dir}");
 
         await Task.CompletedTask;

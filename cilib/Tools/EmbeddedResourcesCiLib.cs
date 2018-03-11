@@ -10,7 +10,7 @@ using System.Text;
 public class EmbeddedResourcesCiLib
 {
 
-    public static EmbeddedResource TraefikToml = new EmbeddedResource("WebServer.traefik.toml");
+    public static EmbeddedResourceCiLib TraefikToml = new EmbeddedResourceCiLib("WebServer.traefik.toml");
 
     static EmbeddedResourcesCiLib() 
     {
@@ -20,7 +20,7 @@ public class EmbeddedResourcesCiLib
 
         foreach (var f in fields)
         {
-            var fvalue = (EmbeddedResource) f.GetValue(null);
+            var fvalue = (EmbeddedResourceCiLib) f.GetValue(null);
             if (!names.Any(n => n == "cilib." + fvalue.Name))
                 throw new Exception($"Resource not found : {fvalue}");
         }

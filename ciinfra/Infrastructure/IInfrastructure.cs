@@ -7,6 +7,7 @@ using System.Linq;
 public interface IInfrastructure {
 
     string DomainName { get; }
+    string CidataDirectory {get ;}
 
     void TryToStartVmPilote();
     void DeleteVmPilote();

@@ -15,8 +15,8 @@ namespace cicli
         
         IVm vm;
 
-        string volume1 = "--volume /var/run/docker.sock:/var/run/docker.sock ";
-        string volume2 = "--volume /home/test/cidata:/cidata ";
+        string volume1;
+        string volume2;
 
         public CiCliCommand InstallCA;
         public CiCliCommand CleanCA;
@@ -36,6 +36,9 @@ namespace cicli
 
 
         public CiCli(
+
+            IInfrastructure infrastructure,
+
             InstallCA installCA,
             InstallRegistry installRegistry,
             InstallVault installVault,
@@ -46,6 +49,9 @@ namespace cicli
             InstallWebApp installWebApp
             )
         {
+
+            volume1 = "--volume /var/run/docker.sock:/var/run/docker.sock ";
+            volume2 = "--volume " + infrastructure.CidataDirectory + ":/cidata ";
 
             this.InstallCA = Create<InstallCA>("install-ca", async () => await installCA.Install());
             this.CleanCA = Create<InstallCA>("clean-ca", async () => await installCA.Clean());

@@ -36,8 +36,7 @@ Can run on VirtualBox locally, or using PAAS Gandi.net
 - Create a clonable machine of UbuntuServer with VirtualBox. cf clib/Infrastructure/VBoxClonableVm.md
 - Run citest executable
 
-# How to debug ciexe
+# How to debug ciexe -> run ciexetest
 
-In order to debug locally, create a /home/test/cidata directory (the same one as the one inside cloned VMs)
-Then debug panel in Visual Studio Code, select Run CI EXE
-
+In order to debug locally, create a /home/test/cidata directory (the same one as the one inside cloned VMs).
+Then run tests.

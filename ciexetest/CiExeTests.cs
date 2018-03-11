@@ -22,13 +22,9 @@ namespace ciexetest
         [Fact] public void CleanInstallWebApp1()    { Run(cli => cli.CleanInstallWebApp1); }
 
 
-
-
-
         private void Run(Func<CiCli, CiCliCommand> commande)
         {
-            RunSync.Run<CiCli>(getDI(), 
-                cli =>  {
+            RunSync.Run<CiCli>(getDI(), cli =>  {
                     var cmd = commande(cli);
                     // put break point here
                     return cmd.Action();
@@ -40,11 +36,8 @@ namespace ciexetest
         {
             var builder = new ContainerBuilder();
             
-            builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();
-           
-            builder.RegisterModule<CiCliModule>();
-
-            builder.RegisterInstance<CiDataDirectory>(new CiDataDirectory("/home/test/cidata"));
+            builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();           
+            builder.RegisterModule<CiCliModuleCiExeTest>();
 
             var container = builder.Build();
             return container;

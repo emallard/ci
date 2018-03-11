@@ -14,3 +14,13 @@ public class CiCliModule : Module {
     }
     
 }
+
+public class CiCliModuleCiExeTest : Module {
+
+    protected override void Load(ContainerBuilder builder)
+    {
+        builder.RegisterAssemblyTypes(this.GetType().Assembly);
+        builder.RegisterModule<CiLibModuleCiExeTest>();
+    }
+    
+}

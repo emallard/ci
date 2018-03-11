@@ -23,6 +23,7 @@ public class VBoxInfrastructure : IInfrastructure
 
 
     public string DomainName => "mynetwork.local";
+    public string CidataDirectory => "/home/test/cidata";
 
     public VBoxInfrastructure(
         VBoxHelper vBoxHelper,

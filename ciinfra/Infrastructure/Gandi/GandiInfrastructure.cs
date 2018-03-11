@@ -7,6 +7,7 @@ using System.Linq;
 public class GandiInfrastructure : IInfrastructure
 {
     public string DomainName => "company.com";
+    public string CidataDirectory => "/home/admin/cidata";
 
     public void CreateVmPilote()
     {

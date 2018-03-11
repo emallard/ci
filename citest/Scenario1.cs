@@ -87,7 +87,7 @@ namespace citest
             
             builder.RegisterType<T>().As<IInfrastructure>();
 
-            builder.RegisterModule<CiInfraModule>();
+            //builder.RegisterModule<CiInfraModule>();
             builder.RegisterModule<CiCliModule>();
             builder.RegisterAssemblyTypes(this.GetType().Assembly);
 

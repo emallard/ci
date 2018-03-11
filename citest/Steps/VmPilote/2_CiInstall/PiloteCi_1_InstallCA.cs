@@ -20,7 +20,8 @@ namespace citest
 
         public void Test()
         {
-            var result = vmPilote.SshCommand("cat ~/cidata/tls/myCA.pem");
+            var infraCidata = infrastructure.CidataDirectory;
+            var result = vmPilote.SshCommand("cat " + infraCidata + "/tls/myCA.pem");
             Assert.IsTrue(result.Length > 3);
         }
 

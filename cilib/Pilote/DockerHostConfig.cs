@@ -29,7 +29,6 @@ public class DockerHostConfig {
         var portBinding = new PortBinding();
         portBinding.HostIP = hostIp;
         portBinding.HostPort = hostPort;
-        hostConfig.PortBindings = new Dictionary<string, IList<PortBinding>>();
         hostConfig.PortBindings.Add(containerPort, new List<PortBinding>() {portBinding});
         
         return this;
