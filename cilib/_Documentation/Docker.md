@@ -39,3 +39,16 @@ docker exec -it ciexe bash
 ```
 docker exec ciexe dotnet ciexe.dll
 ```
+
+## Run and make container sleep
+
+TO BE TESTED
+```
+sleep infinity
+bash -c sleep infinity
+```
+
+You could use this CMD in your Dockerfile:
+```
+CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
+```

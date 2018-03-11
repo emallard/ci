@@ -35,7 +35,7 @@ public class InstallVault
 
     public async Task InitVaultImage() 
     {
-        await dockerWrapper.CreateImage(repoTag);
+        await dockerWrapper.CreateImageIfNotFound(repoTag);
     }
 
     public async Task InitVaultContainer() 

@@ -13,9 +13,27 @@ Can run on VirtualBox locally, or using PAAS Gandi.net
 - [cicli](cicli/README.md) : Lib to call ciexe from ssh
 - [citest](citest/README.md) : Full pipeline test
 
+
+
+```
+ciinfra
+    |  \
+    |   cilib
+    |      \
+    |     cicli __ ciexetest
+    |    /     \      
+    citest       ciexe   
+```
+
 # Dev / VBox infrastructure
 
 - Install Virtual box
 - Download Ubuntu Server ISO.
 - Create a clonable machine of UbuntuServer with VirtualBox. cf clib/Infrastructure/VBoxClonableVm.md
 - Run citest executable
+
+# How to debug ciexe
+
+In order to debug locally, create a /home/test/cidata directory (the same one as the one inside cloned VMs)
+Then debug panel in Visual Studio Code, select Run CI EXE
+

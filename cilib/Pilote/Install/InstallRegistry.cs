@@ -39,7 +39,7 @@ public class InstallRegistry
     public async Task Install()
     {
         // Image is alrady used by the mirror registry
-        //await dockerWrapper.CreateImage(repoTag);
+        await dockerWrapper.CreateImageIfNotFound(repoTag);
         var registryImage = await dockerWrapper.FindImage(repoTag);
 
         using (var client = dockerWrapper.GetClient())

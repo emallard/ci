@@ -11,6 +11,7 @@ public class EmbeddedResources
 {
 
     public static EmbeddedResource InstallDocker = new EmbeddedResource("Infrastructure.Common.InstallDocker.sh");
+    public static EmbeddedResource TraefikToml = new EmbeddedResource("WebServer.traefik.toml");
 
     static EmbeddedResources() 
     {

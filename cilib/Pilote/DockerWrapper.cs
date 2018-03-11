@@ -71,7 +71,7 @@ public class DockerWrapper {
             var foundImage = await this.FindImage(repoTag);
             if (foundImage == null)
             {
-                await this.CreateImage(repoTag);
+                await this.CreateImageIfNotFound(repoTag);
                 foundImage = await this.FindImage(repoTag);
             }
 
@@ -167,10 +167,10 @@ public class DockerWrapper {
 
 
 
-    public async Task CreateImage(string repoTag)
+    public async Task CreateImageIfNotFound(string repoTag)
     {
-        var registryImage = await this.FindImage(repoTag);
-        if (registryImage != null)
+        var foundImage = await this.FindImage(repoTag);
+        if (foundImage != null)
             return;
 
         using (var client = GetClient())

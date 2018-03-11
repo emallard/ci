@@ -43,6 +43,8 @@ namespace ciexe
             builder.RegisterAssemblyTypes(typeof(CiLib).Assembly);
             builder.RegisterAssemblyTypes(typeof(CiCli).Assembly);
 
+            builder.RegisterInstance<CiDataDirectory>(new CiDataDirectory("/cidata"));
+
             var container = builder.Build();
             return container;
             
