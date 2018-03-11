@@ -10,11 +10,9 @@
     <PackageReference Include="newtonsoft.json" Version="11.0.1" />
     <PackageReference Include="ssh.net" Version="2016.1.0" />
     <PackageReference Include="VaultSharp" Version="0.6.4" />
+    <ProjectReference Include="../ciinfra/ciinfra.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Infrastructure\VBox\VBoxClone.sh" />
-    <EmbeddedResource Include="Infrastructure\Common\InstallDocker.sh" />
-  </ItemGroup>
+
 
 </Project>

@@ -6,6 +6,8 @@ using System.Linq;
 
 public class GandiInfrastructure : IInfrastructure
 {
+    public string DomainName => "company.com";
+
     public void CreateVmPilote()
     {
         throw new NotImplementedException();

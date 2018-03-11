@@ -40,11 +40,9 @@ namespace ciexetest
         {
             var builder = new ContainerBuilder();
             
-            builder.RegisterType<ConfigVBox>().As<IConfig>();
             builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();
            
-            builder.RegisterAssemblyTypes(typeof(CiLib).Assembly);
-            builder.RegisterAssemblyTypes(typeof(CiCli).Assembly);
+            builder.RegisterModule<CiCliModule>();
 
             builder.RegisterInstance<CiDataDirectory>(new CiDataDirectory("/home/test/cidata"));
 

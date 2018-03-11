@@ -87,9 +87,8 @@ namespace citest
             
             builder.RegisterType<T>().As<IInfrastructure>();
 
-            builder.RegisterType<ConfigVBox>().As<IConfig>();
-            builder.RegisterAssemblyTypes(typeof(CiLib).Assembly);
-            builder.RegisterAssemblyTypes(typeof(CiCli).Assembly);
+            builder.RegisterModule<CiInfraModule>();
+            builder.RegisterModule<CiCliModule>();
             builder.RegisterAssemblyTypes(this.GetType().Assembly);
 
             var container = builder.Build();

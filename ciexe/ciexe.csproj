@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../ciinfra/ciinfra.csproj" />
     <ProjectReference Include="../cilib/cilib.csproj" />
     <ProjectReference Include="../cicli/cicli.csproj" />
     <PackageReference Include="autofac" Version="4.6.2" />

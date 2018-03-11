@@ -9,16 +9,13 @@ using VaultSharp.Backends.Secret.Models;
 public class InstallCA
 {
     
-    private readonly IConfig config;
     private readonly ShellHelper shellHelper;
     private readonly IInfrastructure infrastructure;
 
     public InstallCA(
-        IConfig config,
         ShellHelper shellHelper,
         IInfrastructure infrastructure)
     {
-        this.config = config;
         this.shellHelper = shellHelper;
         this.infrastructure = infrastructure;
     }
@@ -91,7 +88,7 @@ public class InstallCA
         
         var myCAPem =  shellHelper.BashAndStdIn(
             "openssl req -x509 -new -nodes -key /dev/stdin -sha256 -days 1825"
-            +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + config.DomainName + "' ", myCAKey);
+            +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + infrastructure.DomainName + "' ", myCAKey);
         
 
         await Task.CompletedTask;
@@ -101,7 +98,7 @@ public class InstallCA
     {
         //"openssl genrsa -des3 -out myCA.key 2048";
 
-        var vaultAddress = "http://" + config.PiloteIp + ":8200";
+        var vaultAddress = "http://" + infrastructure.GetVmPilote().Ip + ":8200";
         IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo("myroot");
         var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(new System.Uri(vaultAddress), tokenAuthenticationInfo);
 

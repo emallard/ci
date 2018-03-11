@@ -22,6 +22,8 @@ public class VBoxInfrastructure : IInfrastructure
     int WebServerPortForward = 22006;
 
 
+    public string DomainName => "mynetwork.local";
+
     public VBoxInfrastructure(
         VBoxHelper vBoxHelper,
         VBoxVmPilote vmPilote,

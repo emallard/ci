@@ -8,21 +8,25 @@ Can run on VirtualBox locally, or using PAAS Gandi.net
 
 # Projects
 
-- [cilib](cilib/README.md) : Main Project
+- [ciinfra](ciinfra/README.md) : VM functions, and SSH commands before ciexe is installed
+- [cilib](cilib/README.md) : CI functions to be runned inside a container in VMs
+
+- [cicli](cicli/README.md) : Define commands forwarded to cilib
 - [ciexe](ciexe/README.md) : Command line tool that can run cilib functions (used to run ssh on VMs)
-- [cicli](cicli/README.md) : Lib to call ciexe from ssh
-- [citest](citest/README.md) : Full pipeline test
+
+- [ciexetest](ciexetest/README.md) : Allow to debug ciexe on local machine
+- [citest](citest/README.md) : Full scenario from nothing to VMs fully running webapps 
 
 
 
 ```
-ciinfra
-    |  \
-    |   cilib
-    |      \
-    |     cicli __ ciexetest
-    |    /     \      
-    citest       ciexe   
+   ciinfra
+    /   \
+   |    cilib
+   |      \
+   |     cicli 
+    \    /   \      
+    citest    ciexe, ciexetest   
 ```
 
 # Dev / VBox infrastructure

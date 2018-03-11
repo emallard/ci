@@ -6,6 +6,8 @@ using System.Linq;
 
 public interface IInfrastructure {
 
+    string DomainName { get; }
+
     void TryToStartVmPilote();
     void DeleteVmPilote();
     void CreateVmPilote();
