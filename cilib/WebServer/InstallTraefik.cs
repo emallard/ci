@@ -63,6 +63,12 @@ public class InstallTraefik {
             var p2 = new ContainerStartParameters();
             await client.Containers.StartContainerAsync(response.ID, p2);
         }
+
+        // Traffic network so that traefic can communicate with other containers
+        using (var client = this.dockerWrapper.GetClient())
+        {
+            //client.Networks.CreateNetworkAsync();
+        }
     }
 
 

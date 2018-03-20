@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="newtonsoft.json" Version="11.0.1" />
     <PackageReference Include="autofac" Version="4.6.2" />
     <PackageReference Include="ssh.net" Version="2016.1.0" />
   </ItemGroup>

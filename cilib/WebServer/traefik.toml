@@ -95,7 +95,7 @@ address = ":8080"
 ################################################################
 
 # Enable Docker configuration backend
-[docker]
+# [docker]
 
 # Docker server endpoint. Can be a tcp or a unix socket endpoint.
 #
@@ -118,3 +118,6 @@ address = ":8080"
 # Default: true
 #
 # exposedbydefault = true
+
+[file]
+  filename = "rules.toml"

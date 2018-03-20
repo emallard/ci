@@ -10,7 +10,7 @@ using Renci.SshNet;
 public class VBoxInfrastructure : IInfrastructure
 {
     private readonly VBoxHelper vBoxHelper;
-    private readonly VBoxVmPilote vmPilote;
+    private readonly VmPilote vmPilote;
     private readonly VBoxVmWebServer vmWebServer;
     string vmDir = "/media/etienne/LinuxData/vm/";
     //string vmIso = "/media/etienne/LinuxData/ubuntu-16.04.3-server-amd64.iso";
@@ -27,14 +27,23 @@ public class VBoxInfrastructure : IInfrastructure
 
     public VBoxInfrastructure(
         VBoxHelper vBoxHelper,
-        VBoxVmPilote vmPilote,
+        VmPilote vmPilote,
         VBoxVmWebServer vmWebServer)
     {
         this.vBoxHelper = vBoxHelper;
         this.vmPilote = vmPilote;
         this.vmWebServer = vmWebServer;
-        this.vmPilote.Configure(new Uri($"tcp://127.0.0.1:{vmPilote.PortForward}"), vmPilote.Ip.ToString());
-        this.vmWebServer.Configure(new Uri($"tcp://127.0.0.1:{WebServerPortForward}"), WebServerIp);
+        
+        this.vmPilote.VmName = "pilote";
+        this.vmPilote.Ip = new IPAddress(new byte[]{10,0,2,5});
+        this.vmPilote.PortForward = 22005;
+        this.vmPilote.PrivateRegistryPort = 5443;
+        this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";
+        this.vmPilote.SshUri = new Uri($"tcp://127.0.0.1:{vmPilote.PortForward}");
+        this.vmPilote.SshUser = "test";
+        this.vmPilote.SshPassword = "test";
+        
+        this.vmWebServer.Configure(new Uri($"tcp://127.0.0.1:{WebServerPortForward}")/*, WebServerIp*/);
         this.vmWebServer.SetVmPilote(this.vmPilote); 
         
     }

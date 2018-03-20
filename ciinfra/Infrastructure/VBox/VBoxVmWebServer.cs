@@ -14,13 +14,13 @@ public class VBoxVmWebServer : VBoxVm, IVmWebServer {
     public IPAddress Ip => new IPAddress(new byte[]{10,0,2,6});
     public int PortForward => 22006;
     
-    VBoxVmPilote vmPilote;
+    IVmPilote vmPilote;
 
     public VBoxVmWebServer()
     {
     }
 
-    public void SetVmPilote(VBoxVmPilote vmPilote)
+    public void SetVmPilote(IVmPilote vmPilote)
     {
         this.vmPilote = vmPilote;
     }

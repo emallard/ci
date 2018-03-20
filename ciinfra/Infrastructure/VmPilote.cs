@@ -8,19 +8,27 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
 
-public class VBoxVm : IVm {
+public class VmPilote : IVmPilote {
 
-    Uri sshUri;
-    //string ip;
+    /*
+    public string VmName => "pilote";
+    public IPAddress Ip => new IPAddress(new byte[]{10,0,2,5});
+    public int PortForward => 22005;
+    public int PrivateRegistryPort => 5443;
+    public string PrivateRegistryDomain => "privateregistry.mynetwork.local";
+    */  
+    public string VmName {get; set;}
+    public IPAddress Ip {get; set;}
+    public int PortForward {get; set;}
+    public int PrivateRegistryPort {get; set;}
+    public string PrivateRegistryDomain {get; set;}
 
-    public VBoxVm()
+    public Uri SshUri;
+    public string SshUser;
+    public string SshPassword;
+
+    public VmPilote()
     {
-    }
-
-    public void Configure(Uri sshUri/*, string ip*/)
-    {
-        this.sshUri = sshUri;
-        //this.ip = ip;
     }
 
     public SshClient Ssh()
@@ -35,6 +43,16 @@ public class VBoxVm : IVm {
         var scpClient = new ScpClient(GetConnectionInfo());
         scpClient.Connect();
         return scpClient;
+    }
+
+    protected ConnectionInfo GetConnectionInfo()
+    {
+        var connectionInfo = new ConnectionInfo(
+            SshUri.Host, 
+            SshUri.Port, 
+            SshUser,
+            new PasswordAuthenticationMethod(SshUser, SshPassword));
+        return connectionInfo;
     }
 
     public void InstallDocker()
@@ -145,14 +163,16 @@ public class VBoxVm : IVm {
     }
 #endregion
 
-    protected ConnectionInfo GetConnectionInfo()
+    public void InstallHosts()
     {
-        var connectionInfo = new ConnectionInfo(
-            sshUri.Host, 
-            sshUri.Port, 
-            "test",
-            new PasswordAuthenticationMethod("test", "test"));
-        return connectionInfo;
+        this.SshSudoBashCommand($"echo \"{Ip}  {PrivateRegistryDomain}\" >> /etc/hosts");
     }
+    
+    public void CleanHosts()
+    {
+        this.SshSudoBashCommand($"sed -i \"/ {PrivateRegistryDomain}/d\" /etc/hosts");
+    }
+
+    
 
 }
