@@ -30,6 +30,12 @@ public class GandiInfrastructure : IInfrastructure
         this.vmPilote.SshUser = SecretStore.GetSecret("piloteUser");
         this.vmPilote.SshPassword = SecretStore.GetSecret("piloteUserPassword");
 
+        DiscoverVmPilote();
+    }
+
+    private void DiscoverVmPilote()
+    {
+
         var vmInfo = xmlRPC.TryVmInfo(vmPilote.VmName);
         if (vmInfo != null)
         {
@@ -38,14 +44,11 @@ public class GandiInfrastructure : IInfrastructure
             var ipv4 = ifaceInfo.ips[0]["ip"];
             this.vmPilote.Ip = IPAddress.Parse(ipv4);
         }
-        //vmPilote.Ip
     }
 
     public void TryToStartVmPilote()
     {
         var vmList = xmlRPC.VmList();
-        //var vmInfo = xmlRPC.VmInfo(vmPilote.VmName);
-        
     }
 
     public void CreateVmPilote()
@@ -53,12 +56,18 @@ public class GandiInfrastructure : IInfrastructure
         var vmInfo = xmlRPC.TryVmInfo(vmPilote.VmName);
 
         //CheckVmDoesNotExists(vmName);
-        xmlRPC.CreateVm(this.vmPilote.VmName);
+        xmlRPC.CreateVm(this.vmPilote.VmName,
+            8000,
+            SecretStore.GetSecret("piloteRootPassword"),
+            SecretStore.GetSecret("piloteUser"),
+            SecretStore.GetSecret("piloteUserPassword")
+        );
         Thread.Sleep(30000);
         var vmInfo1 = xmlRPC.TryVmInfo(vmPilote.VmName);
         Thread.Sleep(30000);
         var vmInfo2 = xmlRPC.TryVmInfo(vmPilote.VmName);
         Thread.Sleep(1000);
+        DiscoverVmPilote();
     }
 
     public IVmPilote GetVmPilote()
@@ -76,9 +85,6 @@ public class GandiInfrastructure : IInfrastructure
             xmlRPC.VmDelete(vmId);
         }*/
     }
-
-
-
 
     public void CreateVmWebServer()
     {

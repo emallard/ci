@@ -75,7 +75,7 @@ public class GandiXmlRPC
         return d;
     }
 
-    public void CreateVm(string vmName)
+    public void CreateVm(string vmName, int diskSizeInMb, string rootPassword, string user, string userPassword)
     {
 
         var code = 
@@ -95,24 +95,26 @@ public class GandiXmlRPC
 
     disk_spec = {
         'datacenter_id': dc_id,
-        'name': vmName}
+        'name': vmName,
+        'size' : %diskSizeInMb%}
     vm_spec = {
         'datacenter_id':dc_id,
         'hostname':     vmName,
-        'memory':       512,
+        'memory':       1024,
         'cores':        1,
         'ip_version':   4,
         'bandwidth':    102400,
-        'password':     '%piloteRootPassword%',
-        'run':          'useradd -m -p %piloteUserPassword% -s /bin/bash %piloteUser% && adduser test sudo'}
+        'password':     '%rootPassword%',
+        'run':          'useradd -m -p %userPassword% -s /bin/bash %user% && adduser %user% sudo'}
 
     op = api.hosting.vm.create_from(apikey, vm_spec, disk_spec, src_disk_id)
     printjson(op)
 ";
         code = code.Replace("%VMNAME%", vmName);
-        code = code.Replace("%piloteRootPassword%", SecretStore.GetSecret("piloteRootPassword"));
-        code = code.Replace("%piloteUser%", SecretStore.GetSecret("piloteUser"));
-        code = code.Replace("%piloteUserPassword%", SecretStore.GetSecret("piloteUserPassword"));
+        code = code.Replace("%rootPassword%", rootPassword);
+        code = code.Replace("%user%", user);
+        code = code.Replace("%userPassword%", userPassword);
+        code = code.Replace("%diskSizeInMb%", diskSizeInMb.ToString());
         
         var call = new PythonCall();
         var d = call.GetArray(code);
