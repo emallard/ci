@@ -82,4 +82,20 @@ public static class IVmExtension {
             return cmd.Result;
         }
     }
+
+    public static string SshScriptWithStdIn(this IVm vm, string scriptContent, string scriptName, string stdInInputName, string stdInInputValue) 
+    {
+        using (var scpClient = vm.Scp())
+        {
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(scriptContent));
+            scpClient.Upload(stream, scriptName);
+        }
+
+        using (var client = vm.Ssh())
+        {
+            var wrapper = new SshClientWrapper(client);
+            var result = wrapper.RunWithStdIn("sh " + scriptName, stdInInputName, stdInInputValue);
+            return result;
+        }
+    }
 }

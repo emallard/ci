@@ -7,6 +7,7 @@ using Renci.SshNet;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
+using ciinfra;
 
 public class VmPilote : IVmPilote {
 
@@ -16,42 +17,42 @@ public class VmPilote : IVmPilote {
     public int PortForward => 22005;
     public int PrivateRegistryPort => 5443;
     public string PrivateRegistryDomain => "privateregistry.mynetwork.local";
-    */  
+    */
+/*  
     public string VmName {get; set;}
     public IPAddress Ip {get; set;}
     public int PortForward {get; set;}
+*/
     public int PrivateRegistryPort {get; set;}
     public string PrivateRegistryDomain {get; set;}
+    public SshConnection sshConnection;
 
-    public Uri SshUri;
-    public string SshUser;
-    public string SshPassword;
-
-    public VmPilote()
+    public void SetSshConnection(SshConnection sshConnection)
     {
+        this.sshConnection = sshConnection;
     }
 
     public SshClient Ssh()
     {
-        var sshClient = new SshClient(GetConnectionInfo());
+        var sshClient = new SshClient(GetConnectionInfo(sshConnection));
         sshClient.Connect();
         return sshClient;
     }
 
     public ScpClient Scp()
     {
-        var scpClient = new ScpClient(GetConnectionInfo());
+        var scpClient = new ScpClient(GetConnectionInfo(sshConnection));
         scpClient.Connect();
         return scpClient;
     }
 
-    protected ConnectionInfo GetConnectionInfo()
+    protected ConnectionInfo GetConnectionInfo(SshConnection sshConnection)
     {
         var connectionInfo = new ConnectionInfo(
-            SshUri.Host, 
-            SshUri.Port, 
-            SshUser,
-            new PasswordAuthenticationMethod(SshUser, SshPassword));
+            sshConnection.SshUri.Host, 
+            sshConnection.SshUri.Port, 
+            sshConnection.user,
+            new PasswordAuthenticationMethod(sshConnection.user, sshConnection.password));
         return connectionInfo;
     }
 
@@ -165,7 +166,7 @@ public class VmPilote : IVmPilote {
 
     public void InstallHosts()
     {
-        this.SshSudoBashCommand($"echo \"{Ip}  {PrivateRegistryDomain}\" >> /etc/hosts");
+        this.SshSudoBashCommand($"echo \"127.0.0.1  {PrivateRegistryDomain}\" >> /etc/hosts");
     }
     
     public void CleanHosts()

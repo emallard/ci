@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using cilib;
 using VaultSharp.Backends.Authentication.Models;
 using VaultSharp.Backends.Authentication.Models.Token;
 using VaultSharp.Backends.Secret.Models;
@@ -12,22 +13,25 @@ public class InstallCA
     private readonly ShellHelper shellHelper;
     private readonly IInfrastructure infrastructure;
     private readonly ICiLibCiDataDirectory cidataDir;
+    private readonly Vault vault;
 
     public InstallCA(
         ShellHelper shellHelper,
         IInfrastructure infrastructure,
-        ICiLibCiDataDirectory cidataDir)
+        ICiLibCiDataDirectory cidataDir,
+        Vault vault)
     {
         this.shellHelper = shellHelper;
         this.infrastructure = infrastructure;
         this.cidataDir = cidataDir;
+        this.vault = vault;
     }
 
     
     public async Task Install() 
     {
-        var domain = infrastructure.GetVmPilote().PrivateRegistryDomain;
-        var ip = infrastructure.GetVmPilote().Ip;
+        var domain = vault.ReadSecret("PrivateRegistryDomain");
+        //var ip = infrastructure.GetVmPilote().Ip;
 
         var dir = cidataDir + "/tls";
         shellHelper.Bash($"mkdir -p {dir}");
@@ -60,8 +64,7 @@ public class InstallCA
             "subjectAltName = @alt_names",
             "",
             "[alt_names]",
-           $"DNS.1 = {domain}",
-           $"DNS.2 = {domain}.{ip}.xip.io"});
+           $"DNS.1 = {domain}"});
 
         shellHelper.Bash(
               $"openssl x509 -req -in {dir}/{domain}.csr -CA {dir}/myCA.pem -CAkey {dir}/myCA.key -CAcreateserial "
@@ -91,7 +94,7 @@ public class InstallCA
         
         var myCAPem =  shellHelper.BashAndStdIn(
             "openssl req -x509 -new -nodes -key /dev/stdin -sha256 -days 1825"
-            +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + infrastructure.DomainName + "' ", myCAKey);
+            +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + vault.ReadSecret("InfrastructureDomainName") + "' ", myCAKey);
         
 
         await Task.CompletedTask;
@@ -101,7 +104,7 @@ public class InstallCA
     {
         //"openssl genrsa -des3 -out myCA.key 2048";
 
-        var vaultAddress = "http://" + infrastructure.GetVmPilote().Ip + ":8200";
+        var vaultAddress = "http://127.0.0.1:8200";
         IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo("myroot");
         var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(new System.Uri(vaultAddress), tokenAuthenticationInfo);
 

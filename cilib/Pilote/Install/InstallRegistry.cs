@@ -77,7 +77,7 @@ public class InstallRegistry
             shellHelper.Bash("mkdir -p {cidataDir}/privateregistry/var/lib/registry");
 
             
-            var infraCidata = infrastructure.CidataDirectory;
+            var infraCidata = "/cidata";//infrastructure.CidataDirectory;
             var p = new CreateContainerParameters();
             p.Image = registryImage.ID;
 

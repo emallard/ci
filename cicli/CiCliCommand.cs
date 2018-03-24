@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using cilib;
 
 namespace cicli
     {
@@ -10,7 +11,7 @@ namespace cicli
     {
         string CommandLine {get ;}
         Func<Task> Action {get ;}
-        void SshCall();
+        void SshCall(VaultToken vaultToken);
     }
 
     public class CiCliCommand<T> : CiCliCommand{
@@ -26,9 +27,9 @@ namespace cicli
             this.cli = cli;
         }
 
-        public void SshCall()
+        public void SshCall(VaultToken vaultToken)
         {
-            cli.SshCall(this);
+            cli.SshCall(this, vaultToken);
         }
     }
 }

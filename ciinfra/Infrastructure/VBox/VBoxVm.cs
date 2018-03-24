@@ -7,36 +7,45 @@ using Renci.SshNet;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
+using ciinfra;
 
 public class VBoxVm : IVm {
 
-    Uri sshUri;
-    //string ip;
-
+    private SshConnection sshConnection;
+    
     public VBoxVm()
     {
     }
 
-    public void Configure(Uri sshUri/*, string ip*/)
+    public void SetSshConnection(SshConnection sshConnection)
     {
-        this.sshUri = sshUri;
-        //this.ip = ip;
+        this.sshConnection = sshConnection;
     }
 
     public SshClient Ssh()
     {
-        var sshClient = new SshClient(GetConnectionInfo());
+        var sshClient = new SshClient(GetConnectionInfo(sshConnection));
         sshClient.Connect();
         return sshClient;
     }
 
     public ScpClient Scp()
     {
-        var scpClient = new ScpClient(GetConnectionInfo());
+        var scpClient = new ScpClient(GetConnectionInfo(sshConnection));
         scpClient.Connect();
         return scpClient;
     }
 
+    protected ConnectionInfo GetConnectionInfo(SshConnection sshConnection)
+    {
+        var connectionInfo = new ConnectionInfo(
+            sshConnection.SshUri.Host, 
+            sshConnection.SshUri.Port, 
+            sshConnection.user,
+            new PasswordAuthenticationMethod(sshConnection.user, sshConnection.password));
+        return connectionInfo;
+    }
+    
     public void InstallDocker()
     {
         // How to run sudo commands
@@ -144,15 +153,5 @@ public class VBoxVm : IVm {
         this.SshCommand("cd ci && docker build --force-rm -f DockerfileLocalBuild -t ciexe ~/ci");
     }
 #endregion
-
-    protected ConnectionInfo GetConnectionInfo()
-    {
-        var connectionInfo = new ConnectionInfo(
-            sshUri.Host, 
-            sshUri.Port, 
-            "test",
-            new PasswordAuthenticationMethod("test", "test"));
-        return connectionInfo;
-    }
 
 }

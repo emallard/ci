@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Renci.SshNet;
+using ciinfra;
 
 public interface IVmPilote : IVm {
-
+/*
     string VmName {get; }
     IPAddress Ip { get; }
     int PortForward {get ;}
+*/
 
     string PrivateRegistryDomain {get ;}
     int PrivateRegistryPort {get ;}

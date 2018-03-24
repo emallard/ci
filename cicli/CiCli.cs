@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using cilib;
 
 namespace cicli
 {
@@ -33,7 +34,7 @@ namespace cicli
         public CiCliCommand CleanTraefik;
         public CiCliCommand InstallWebApp1;
         public CiCliCommand CleanInstallWebApp1;
-
+        private readonly Vault vault;
 
         public CiCli(
 
@@ -46,12 +47,13 @@ namespace cicli
 
             // WebServer
             InstallTraefik installTraefik,
-            InstallWebApp installWebApp
+            InstallWebApp installWebApp,
+            Vault vault
             )
         {
 
             volume1 = "--volume /var/run/docker.sock:/var/run/docker.sock ";
-            volume2 = "--volume " + infrastructure.CidataDirectory + ":/cidata ";
+            volume2 = "--volume " + "/cidata"/*infrastructure.CidataDirectory*/ + ":/cidata ";
 
             this.InstallCA = Create<InstallCA>("install-ca", async () => await installCA.Install());
             this.CleanCA = Create<InstallCA>("clean-ca", async () => await installCA.Clean());
@@ -73,6 +75,7 @@ namespace cicli
 
             this.InstallWebApp1 = Create<InstallWebApp>("webserver-install-webapp1", async () => await installWebApp.Install());
             this.CleanInstallWebApp1 = Create<InstallWebApp>("clean-webapp1", async () => await installWebApp.CleanInstall());
+            this.vault = vault;
         }
 
         public CiCli SetVm(IVm vm)
@@ -81,14 +84,9 @@ namespace cicli
             return this;
         }
 
-        public string SshDockerRun(string arg)
+        public void SshCall(CiCliCommand command, VaultToken vaultToken)
         {
-            return vm.SshCommand(DockerRun(arg));
-        }
-
-        public void SshCall(CiCliCommand command)
-        {
-            vm.SshScript(DockerRun(command.CommandLine), command.CommandLine + ".sh");
+            vm.SshScriptWithStdIn(DockerRun(command.CommandLine), command.CommandLine + ".sh", "token : ", vaultToken.Content.ToString());
         }
 
         public Task ExecuteFromCommandLine(string commandLine)

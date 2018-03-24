@@ -6,6 +6,7 @@ using System.Linq;
 using System.IO;
 using System.Threading;
 using Renci.SshNet;
+using ciinfra;
 
 public class VBoxInfrastructure : IInfrastructure
 {
@@ -33,69 +34,31 @@ public class VBoxInfrastructure : IInfrastructure
         this.vBoxHelper = vBoxHelper;
         this.vmPilote = vmPilote;
         this.vmWebServer = vmWebServer;
-        
-        this.vmPilote.VmName = "pilote";
-        this.vmPilote.Ip = new IPAddress(new byte[]{10,0,2,5});
-        this.vmPilote.PortForward = 22005;
+
         this.vmPilote.PrivateRegistryPort = 5443;
-        this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";
-        this.vmPilote.SshUri = new Uri($"tcp://127.0.0.1:{vmPilote.PortForward}");
-        this.vmPilote.SshUser = "test";
-        this.vmPilote.SshPassword = "test";
-        
-        this.vmWebServer.Configure(new Uri($"tcp://127.0.0.1:{WebServerPortForward}")/*, WebServerIp*/);
-        this.vmWebServer.SetVmPilote(this.vmPilote); 
-        
+        this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";       
     }
 
 
-    //
-    //  Pilote
-    //
-
-    public void TryToStartVmPilote()
+    public void TryToStartVm(InfrastructureKey key, string vmName)
     {
-        CheckVmDirExists();
-        vBoxHelper.TryToStartVm(vmPilote.VmName);
+         vBoxHelper.TryToStartVm(vmName);
     }
 
-    public void DeleteVmPilote()
+    public void DeleteVm(InfrastructureKey key, string vmName)
     {
-        vBoxHelper.DeleteVm(vmPilote.VmName);
+        vBoxHelper.DeleteVm(vmName);
     }
 
-    public void CreateVmPilote()
+    public IVmPilote GetVmPilote(SshConnection sshConnection)
     {
-        this.CreateVm(vmPilote.VmName, vmPilote.Ip.ToString(), vmPilote.PortForward);
-    }
-
-    public IVmPilote GetVmPilote()
-    {
+        this.vmPilote.SetSshConnection(sshConnection);
         return this.vmPilote;
     }
 
-    //
-    //  WebServer
-    //
-
-    public void TryToStartVmWebServer()
+    public IVmWebServer GetVmWebServer(SshConnection sshConnection)
     {
-        CheckVmDirExists();
-        vBoxHelper.TryToStartVm(WebServerVmName);
-    }
-
-    public void DeleteVmWebServer()
-    {
-        vBoxHelper.DeleteVm(WebServerVmName);
-    }
-
-    public void CreateVmWebServer()
-    {
-        this.CreateVm(WebServerVmName, WebServerIp, WebServerPortForward);
-    }
-
-    public IVmWebServer GetVmWebServer()
-    {
+        this.vmWebServer.SetSshConnection(sshConnection);
         return this.vmWebServer;
     }
 
@@ -126,9 +89,32 @@ public class VBoxInfrastructure : IInfrastructure
         vBoxHelper.CheckVmDoesNotExists(vmName);
     }
 
-    private void CreateVm(string vmName, string ip, int portForward)
+
+    public string GetVmIp(InfrastructureKey key, string vmName)
     {
-        
+        if (vmName == "pilote")
+            return "10.0.2.5";
+        if (vmName == "webserver")
+            return "10.0.2.6";
+
+        throw new Exception("Unknown VM");
+    }
+
+    public Uri GetVmSshUri(InfrastructureKey key, string vmName)
+    {
+        if (vmName == "pilote")
+            return new Uri("tcp://10.0.2.5:22005");
+        if (vmName == "webserver")
+            return new Uri("tcp://10.0.2.6:22006");
+
+        throw new Exception("Unknown VM");
+    }
+
+    public void CreateVm(InfrastructureKey key, string vmName, string adminuser, string adminpassword)
+    {
+        var ip = GetVmIp(key, vmName);
+        var portForward = GetVmSshUri(key, vmName).Port;
+
         CheckClonableVm();
         CheckVmDoesNotExists(vmName);
 
@@ -156,6 +142,20 @@ public class VBoxInfrastructure : IInfrastructure
         vBoxHelper.RestartVm(vmName);
         Thread.Sleep(20000);
         vBoxHelper.NatLocalSshPortForwarding(ip, $"{portForward}");
+    }
+
+    public SshClient Ssh(InfrastructureKey key, string vmName, string user, string password)
+    {
+        var sshUri = this.GetVmSshUri(key, vmName);
+        var connectionInfo = new ConnectionInfo(
+            sshUri.Host, 
+            sshUri.Port, 
+            user,
+            new PasswordAuthenticationMethod(user, password));
+
+        var sshClient = new SshClient(connectionInfo);
+        sshClient.Connect();
+        return sshClient;
     }
 
 

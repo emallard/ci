@@ -3,19 +3,21 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using ciinfra;
+using Renci.SshNet;
 
 public interface IInfrastructure {
 
-    string DomainName { get; }
-    string CidataDirectory {get ;}
 
-    void TryToStartVmPilote();
-    void DeleteVmPilote();
-    void CreateVmPilote();
-    IVmPilote GetVmPilote();
+    void CreateVm(InfrastructureKey key, string vmName, string adminuser, string adminpassword);
+    string GetVmIp(InfrastructureKey key, string vmName);
+    Uri GetVmSshUri(InfrastructureKey key, string vmName);
+    SshClient Ssh(InfrastructureKey key, string vmName, string user, string password);
 
-    void TryToStartVmWebServer();
-    void DeleteVmWebServer();
-    void CreateVmWebServer();
-    IVmWebServer GetVmWebServer();
+    void TryToStartVm(InfrastructureKey key, string vmName);
+    void DeleteVm(InfrastructureKey key, string vmName);
+
+    IVmPilote GetVmPilote(SshConnection sshConnection);
+    IVmWebServer GetVmWebServer(SshConnection sshConnection);
+
 }

@@ -41,7 +41,7 @@ public class InstallTraefik {
 
         using (var client = this.dockerWrapper.GetClient())
         {
-            var infraCidata = infrastructure.CidataDirectory;
+            var infraCidata = "/cidata";
             var p = new CreateContainerParameters();
             p.Image = traefikImage.ID;
 

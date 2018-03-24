@@ -27,7 +27,7 @@ namespace citest
         {
             
             var infrastructure = container.Resolve<IInfrastructure>();
-            infrastructure.TryToStartVmPilote();
+            //infrastructure.TryToStartVm("pilote");
 
             // From : no VM 
             // To   : Image with CI installed
@@ -71,7 +71,7 @@ namespace citest
 
 
             // Part 2 install app on webserver
-            infrastructure.TryToStartVmWebServer();
+            //infrastructure.TryToStartVmWebServer();
 
             // From : no VM 
             // To   : Image with CI installed

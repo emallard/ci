@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Autofac;
 using cicli;
+using cilib;
 
 namespace ciexe
 {
@@ -24,6 +25,10 @@ namespace ciexe
 
             if (args[0] == "help")
             {
+                // initialize vaultToken
+                Console.Write("token : ");
+                var readVaultToken = Console.ReadLine();
+                getDI().Resolve<Vault>().SetToken(new VaultToken() { Content = readVaultToken });
                 var list = getDI().Resolve<CiCli>().CommandList();
                 Console.WriteLine(list);
                 return;
@@ -37,7 +42,9 @@ namespace ciexe
         {
             var builder = new ContainerBuilder();
             
-            builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();           
+            builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();   
+            builder.RegisterType<IVaultBackend>().As<VaultBackendTestImpl>();   
+                    
             builder.RegisterModule<CiCliModule>();
 
 

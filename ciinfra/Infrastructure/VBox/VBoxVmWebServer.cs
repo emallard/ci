@@ -7,31 +7,22 @@ using Renci.SshNet;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
+using ciinfra;
 
 public class VBoxVmWebServer : VBoxVm, IVmWebServer {
 
-    public string VmName => "webserver";
-    public IPAddress Ip => new IPAddress(new byte[]{10,0,2,6});
-    public int PortForward => 22006;
-    
-    IVmPilote vmPilote;
 
     public VBoxVmWebServer()
     {
     }
 
-    public void SetVmPilote(IVmPilote vmPilote)
+    public void InstallHosts(string vmPiloteIp, string vmPilotePrivateRegistryDomain)
     {
-        this.vmPilote = vmPilote;
+        this.SshSudoBashCommand($"echo \"{vmPiloteIp}  {vmPilotePrivateRegistryDomain}\" >> /etc/hosts");
     }
 
-    public void InstallHosts()
+    public void CleanHosts(string vmPilotePrivateRegistryDomain)
     {
-        this.SshSudoBashCommand($"echo \"{vmPilote.Ip}  {vmPilote.PrivateRegistryDomain}\" >> /etc/hosts");
-    }
-
-    public void CleanHosts()
-    {
-        this.SshSudoBashCommand($"sed -i \"/ {vmPilote.PrivateRegistryDomain}/d\" /etc/hosts");
+        this.SshSudoBashCommand($"sed -i \"/ {vmPilotePrivateRegistryDomain}/d\" /etc/hosts");
     }
 }

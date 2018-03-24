@@ -8,22 +8,15 @@ namespace citest
     {
         static void Main(string[] args)
         {
-
-            //var t = new GandiXmlRPC();
-            //t.SystemListMethods();
-            //t.VersionInfo();
-            //t.AccountInfo();
-            //t.VmCount();
-            //t.CreateVm("pilote");
-
-            //Task.WaitAll(t.Test());
-
             
-            var runner = new TestRunner();
+            //var runner = new TestRunner();
             //var test = new Scenario1<VBoxInfrastructure>(runner);
-            var test = new Scenario1<GandiInfrastructure>(runner);
-            test.RunAll();
+            //var test = new Scenario1<GandiInfrastructure>(runner);
+            //test.RunAll();
             
+
+            var test = new TestInstallVault<VBoxInfrastructure, AskParametersMock>();
+            test.Run();
         }   
     }
 }

@@ -4,15 +4,13 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using ciinfra;
+using Renci.SshNet;
 
 public class GandiInfrastructure : IInfrastructure
 {
     private readonly GandiXmlRPC xmlRPC;
     private readonly VmPilote vmPilote;
-
-    public string DomainName => "company.com";
-    public string CidataDirectory => "/home/admin/cidata";
-
 
     public GandiInfrastructure(
         GandiXmlRPC xmlRPC,
@@ -20,54 +18,8 @@ public class GandiInfrastructure : IInfrastructure
     {
         this.xmlRPC = xmlRPC;
         this.vmPilote = vmPilote;
-
-        this.vmPilote.VmName = "pilote";
-        //this.vmPilote.Ip = new IPAddress(new byte[]{10,0,2,5});
-        this.vmPilote.PortForward = 22;
         this.vmPilote.PrivateRegistryPort = 5443;
         this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";
-        //this.vmPilote.SshUri = new Uri($"tcp://127.0.0.1:{vmPilote.PortForward}");
-        this.vmPilote.SshUser = SecretStore.GetSecret("piloteUser");
-        this.vmPilote.SshPassword = SecretStore.GetSecret("piloteUserPassword");
-
-        DiscoverVmPilote();
-    }
-
-    private void DiscoverVmPilote()
-    {
-
-        var vmInfo = xmlRPC.TryVmInfo(vmPilote.VmName);
-        if (vmInfo != null)
-        {
-            int ifaceId = vmInfo["ifaces_id"][0];
-            var ifaceInfo = xmlRPC.IfaceInfo(ifaceId);
-            var ipv4 = ifaceInfo.ips[0]["ip"];
-            this.vmPilote.Ip = IPAddress.Parse(ipv4);
-        }
-    }
-
-    public void TryToStartVmPilote()
-    {
-        var vmList = xmlRPC.VmList();
-    }
-
-    public void CreateVmPilote()
-    {
-        var vmInfo = xmlRPC.TryVmInfo(vmPilote.VmName);
-
-        //CheckVmDoesNotExists(vmName);
-        xmlRPC.CreateVm(this.vmPilote.VmName,
-            8000,
-            SecretStore.GetSecret("piloteRootPassword"),
-            SecretStore.GetSecret("piloteUser"),
-            SecretStore.GetSecret("piloteUserPassword")
-        );
-        Thread.Sleep(30000);
-        var vmInfo1 = xmlRPC.TryVmInfo(vmPilote.VmName);
-        Thread.Sleep(30000);
-        var vmInfo2 = xmlRPC.TryVmInfo(vmPilote.VmName);
-        Thread.Sleep(1000);
-        DiscoverVmPilote();
     }
 
     public IVmPilote GetVmPilote()
@@ -75,10 +27,49 @@ public class GandiInfrastructure : IInfrastructure
         return this.vmPilote;
     }
 
-    public void DeleteVmPilote()
+    public void CreateVm(InfrastructureKey key, string vmName, string adminuser, string adminpassword)
+    {
+        xmlRPC.CreateVm(vmName,
+            8000,
+            SecretStore.GetSecret("piloteRootPassword"),
+            adminuser,
+            adminpassword
+        );
+        Thread.Sleep(30000);
+        var vmInfo1 = xmlRPC.TryVmInfo(vmName);
+        Thread.Sleep(30000);
+        var vmInfo2 = xmlRPC.TryVmInfo(vmName);
+        Thread.Sleep(1000);
+    }
+
+    public string GetVmIp(InfrastructureKey key, string vmName)
+    {
+        var vmInfo = xmlRPC.TryVmInfo(vmName);
+        if (vmInfo != null)
+        {
+            int ifaceId = vmInfo["ifaces_id"][0];
+            var ifaceInfo = xmlRPC.IfaceInfo(ifaceId);
+            var ipv4 = ifaceInfo.ips[0]["ip"];
+            return ipv4;
+        }
+        throw new Exception("Vm not found");
+    }
+
+    public Uri GetVmSshUri(InfrastructureKey key, string vmName)
+    {
+        var ip = GetVmIp(key, vmName);
+        return new Uri("tcp://" + ip + ":22");
+    }
+
+    public void TryToStartVm(InfrastructureKey key, string vmName)
+    {
+        var vmList = xmlRPC.VmList();
+    }
+
+    public void DeleteVm(InfrastructureKey key, string vmName)
     {
         /*
-        var vmId = xmlRPC.TryVmId(vmPilote.VmName);
+        var vmId = xmlRPC.TryVmId(vmName);
         if (vmId > 0)
         {
             xmlRPC.VmStop(vmId);
@@ -86,28 +77,27 @@ public class GandiInfrastructure : IInfrastructure
         }*/
     }
 
-    public void CreateVmWebServer()
+    public IVmPilote GetVmPilote(SshConnection sshConnection)
     {
         throw new NotImplementedException();
     }
 
-    
-    public void DeleteVmWebServer()
+    public IVmWebServer GetVmWebServer(SshConnection sshConnection)
     {
         throw new NotImplementedException();
     }
 
-    
-
-    public IVmWebServer GetVmWebServer()
+    public SshClient Ssh(InfrastructureKey key, string vmName, string user, string password)
     {
-        throw new NotImplementedException();
-    }
+        var sshUri = this.GetVmSshUri(key, vmName);
+        var connectionInfo = new ConnectionInfo(
+            sshUri.Host, 
+            sshUri.Port, 
+            user,
+            new PasswordAuthenticationMethod(user, password));
 
-    
-
-    public void TryToStartVmWebServer()
-    {
-        throw new NotImplementedException();
+        var sshClient = new SshClient(connectionInfo);
+        sshClient.Connect();
+        return sshClient;
     }
 }
