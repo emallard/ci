@@ -21,15 +21,22 @@ public class TestInfraPiloteVm<T, U>
         var infrastructure = container.Resolve<IInfrastructure>();
         var askParameters = container.Resolve<IAskParameters>();
 
-        var infrastructureKey = new InfrastructureKey(askParameters.Ask("infrastructureKey"));
-        infrastructure.CreateVm(infrastructureKey, "pilote", askParameters.Ask("piloteAdminUser"), askParameters.Ask("piloteAdminPassword"));
-        
-        var piloteSshConnection = new SshConnection();
-        piloteSshConnection.SshUri = infrastructure.GetVmSshUri("pilote");
-        piloteSshConnection.user = askParameters.Ask("piloteAdminUser");
-        piloteSshConnection.password = askParameters.Ask("piloteAdminPassword");
+        var infrastructureKey = new InfrastructureKey(askParameters.InfrastructureKey);
+        infrastructure.CreateVm(
+            infrastructureKey, 
+            askParameters.PiloteRootPassword, 
+            askParameters.PiloteVmName, 
+            askParameters.PiloteAdminUser, 
+            askParameters.PiloteAdminPassword);
 
-        var vmPilote = infrastructure.GetVmPilote(piloteSshConnection);
+        var sshUri = infrastructure.GetVmSshUri(infrastructureKey, askParameters.PiloteVmName);
+        var sshConnection = new SshConnection() {
+            SshUri = sshUri,
+            User = askParameters.PiloteAdminUser,
+            Password = askParameters.PiloteAdminPassword
+        };
+
+        var vmPilote = infrastructure.GetVmPilote(sshConnection);
         vmPilote.InstallHosts();
         vmPilote.InstallDocker();
         vmPilote.InstallMirrorRegistry();
@@ -40,22 +47,10 @@ public class TestInfraPiloteVm<T, U>
 
     void TestOk() 
     {
-        // Run http request
     }
 
     void Prerequisite() 
     {
-        // Check that VM call "webserver is setup
-        ciSystem.CheckVmSsh(ciSystem.Pilote);
-        ciSystem.CheckVmSsh(ciSystem.WebServer);
-
-        ciSystem.CheckCiexe(ciSystem.Pilote);
-        ciSystem.CheckCiexe(ciSystem.WebServer);
-
-        ciSystem.CheckPrivateRegistry(ciSystem.Pilote);
-        ciSystem.CheckPrivateRegistryConnection(ciSystem.WebServer, ciSystem.Pilote);
-
-        ciSystem.CheckTraefik(ciSystem.WebServer);
     }
 
     private IContainer Init()

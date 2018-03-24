@@ -110,7 +110,7 @@ public class VBoxInfrastructure : IInfrastructure
         throw new Exception("Unknown VM");
     }
 
-    public void CreateVm(InfrastructureKey key, string vmName, string adminuser, string adminpassword)
+    public void CreateVm(InfrastructureKey key, string vmName, string rootPassword, string adminuser, string adminpassword)
     {
         var ip = GetVmIp(key, vmName);
         var portForward = GetVmSshUri(key, vmName).Port;

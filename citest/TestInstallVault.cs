@@ -17,23 +17,7 @@ public class TestInstallVault<T, U>
     
     public void Run()
     {
-        var container = Init();
-        var infrastructure = container.Resolve<IInfrastructure>();
-        var askParameters = container.Resolve<IAskParameters>();
-        infrastructure.CreateVm("pilote", askParameters.Ask("piloteAdminUser"), askParameters.Ask("piloteAdminPassword"));
         
-        var piloteSshConnection = new SshConnection();
-        piloteSshConnection.SshUri = infrastructure.GetVmSshUri("pilote");
-        piloteSshConnection.user = askParameters.Ask("piloteAdminUser");
-        piloteSshConnection.password = askParameters.Ask("piloteAdminPassword");
-
-        var vmPilote = infrastructure.GetVmPilote(piloteSshConnection);
-        vmPilote.InstallHosts();
-        vmPilote.InstallDocker();
-        vmPilote.InstallMirrorRegistry();
-        vmPilote.InstallDotNetCoreSdk();
-        vmPilote.CloneOrPullCiSources();
-        vmPilote.BuildCiUsingSdk();
     }
 
     void TestOk() 
@@ -43,17 +27,7 @@ public class TestInstallVault<T, U>
 
     void Prerequisite() 
     {
-        // Check that VM call "webserver is setup
-        ciSystem.CheckVmSsh(ciSystem.Pilote);
-        ciSystem.CheckVmSsh(ciSystem.WebServer);
-
-        ciSystem.CheckCiexe(ciSystem.Pilote);
-        ciSystem.CheckCiexe(ciSystem.WebServer);
-
-        ciSystem.CheckPrivateRegistry(ciSystem.Pilote);
-        ciSystem.CheckPrivateRegistryConnection(ciSystem.WebServer, ciSystem.Pilote);
-
-        ciSystem.CheckTraefik(ciSystem.WebServer);
+        
     }
 
     private IContainer Init()

@@ -41,8 +41,8 @@ public class VBoxVm : IVm {
         var connectionInfo = new ConnectionInfo(
             sshConnection.SshUri.Host, 
             sshConnection.SshUri.Port, 
-            sshConnection.user,
-            new PasswordAuthenticationMethod(sshConnection.user, sshConnection.password));
+            sshConnection.User,
+            new PasswordAuthenticationMethod(sshConnection.User, sshConnection.Password));
         return connectionInfo;
     }
     

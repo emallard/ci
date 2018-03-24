@@ -12,6 +12,11 @@ namespace cisystem
         public CiPilote Pilote;
         CiSystemConfig config;
 
+        public void Configure(CiSystemConfig config)
+        {
+            this.config = config;
+        }
+
         public void CheckPrivateRegistry(CiPilote pilote)
         {
 

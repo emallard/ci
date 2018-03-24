@@ -15,17 +15,17 @@ public enum PythonResultType
 
 public class PythonCall
 {
-    public dynamic GetObject(string commandLine)
+    public dynamic GetObject(string apiKey, string commandLine)
     {
-        return Run(PythonResultType.Object, commandLine);
+        return Run(apiKey, PythonResultType.Object, commandLine);
     }
 
-    public dynamic GetArray(string commandLine)
+    public dynamic GetArray(string apiKey, string commandLine)
     {
-        return Run(PythonResultType.Array, commandLine);
+        return Run(apiKey, PythonResultType.Array, commandLine);
     }
 
-    private dynamic Run(PythonResultType resultType, string commandLine)
+    private dynamic Run(string apiKey, PythonResultType resultType, string commandLine)
     {
         var path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
         var filename = Path.Combine(path, "tmp.py");
@@ -33,7 +33,6 @@ public class PythonCall
         filecode += "    " + commandLine;
         File.WriteAllText(filename, filecode);
 
-        var apiKey = SecretStore.GetSecret("apikey");
         var process = new Process()
         {
             StartInfo = new ProcessStartInfo

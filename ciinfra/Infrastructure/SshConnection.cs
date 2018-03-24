@@ -9,7 +9,7 @@ namespace ciinfra
     public class SshConnection
     {
         public Uri SshUri;
-        public string user;
-        public string password;
+        public string User;
+        public string Password;
     }
 }

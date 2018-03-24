@@ -9,7 +9,7 @@ using Renci.SshNet;
 public interface IInfrastructure {
 
 
-    void CreateVm(InfrastructureKey key, string vmName, string adminuser, string adminpassword);
+    void CreateVm(InfrastructureKey key, string vmName, string rootPassword, string adminuser, string adminpassword);
     string GetVmIp(InfrastructureKey key, string vmName);
     Uri GetVmSshUri(InfrastructureKey key, string vmName);
     SshClient Ssh(InfrastructureKey key, string vmName, string user, string password);

@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ciinfra;
 
 // http://doc.rpc.gandi.net/hosting/usage.html#create-the-vm
 // http://doc.rpc.gandi.net/hosting/reference.html
@@ -18,34 +19,34 @@ using Newtonsoft.Json.Linq;
 public class GandiXmlRPC
 {
 
-    public void AccountInfo()
+    public void AccountInfo(string apikey)
     {
         var call = new PythonCall();
-        var info = call.GetObject("printjson(api.version.info(apikey))");
+        var info = call.GetObject(apikey, "printjson(api.version.info(apikey))");
         Console.WriteLine(info.api_version);
     }
 
-    public dynamic VmList()
+    public dynamic VmList(string apikey)
     {
         var code = 
 @"
     printjson(api.hosting.vm.list(apikey))
 ";
-        var d = new PythonCall().GetArray(code);
+        var d = new PythonCall().GetArray(apikey, code);
         return d;
     }
 
-    public int VmId(string vmName)
+    public int VmId(string apikey, string vmName)
     {
-        var id = TryVmId(vmName);
+        var id = TryVmId(apikey, vmName);
         if (id == -1)
             throw new Exception("vm not found " + vmName);
         return id;
     }
 
-    public int TryVmId(string vmName)
+    public int TryVmId(string apikey, string vmName)
     {
-        var list = VmList();
+        var list = VmList(apikey);
         for (var i = 0; i < list.Count; ++i)
         {
             if (list[i]["hostname"] == vmName)
@@ -54,28 +55,28 @@ public class GandiXmlRPC
         return -1;
     }
 
-    public dynamic TryVmInfo(string vmName)
+    public dynamic TryVmInfo(string apikey, string vmName)
     {
-        var vmId = TryVmId(vmName);
+        var vmId = TryVmId(apikey, vmName);
         if (vmId >= 0)
         {
-            return VmInfo(vmId);
+            return VmInfo(apikey, vmId);
         }
         return null;
     }
 
-    public dynamic VmInfo(int vmId)
+    public dynamic VmInfo(string apikey, int vmId)
     {
         var code = 
 @"
     vmId = %VMID%
     printjson(api.hosting.vm.info(apikey, vmId))
 ";
-        var d = new PythonCall().GetObject(code.Replace("%VMID%", vmId.ToString()));
+        var d = new PythonCall().GetObject(apikey, code.Replace("%VMID%", vmId.ToString()));
         return d;
     }
 
-    public void CreateVm(string vmName, int diskSizeInMb, string rootPassword, string user, string userPassword)
+    public void CreateVm(string apikey, string vmName, int diskSizeInMb, string rootPassword, string user, string userPassword)
     {
 
         var code = 
@@ -117,40 +118,40 @@ public class GandiXmlRPC
         code = code.Replace("%diskSizeInMb%", diskSizeInMb.ToString());
         
         var call = new PythonCall();
-        var d = call.GetArray(code);
+        var d = call.GetArray(apikey, code);
 
     }
 
 
-    public dynamic VmStop(int vmId)
+    public dynamic VmStop(string apikey, int vmId)
     {
         var code = 
 @"
     printjson(hosting.vm.stop(apikey, %VMID%))
 ";
-        var d = new PythonCall().GetObject(code.Replace("%VMID%", vmId.ToString()));
+        var d = new PythonCall().GetObject(apikey, code.Replace("%VMID%", vmId.ToString()));
         return d;
     }
 
 
-    public dynamic VmDelete(int vmId)
+    public dynamic VmDelete(string apikey, int vmId)
     {
         var code = 
 @"
     printjson(hosting.vm.delete(apikey, %VMID%))
 ";
-        var d = new PythonCall().GetObject(code.Replace("%VMID%", vmId.ToString()));
+        var d = new PythonCall().GetObject(apikey, code.Replace("%VMID%", vmId.ToString()));
         return d;
     }
 
 
-    public dynamic IfaceInfo(int ifaceId)
+    public dynamic IfaceInfo(string apikey, int ifaceId)
     {
         var code = 
 @"
     printjson(api.hosting.iface.info(apikey, %IFACEID%))
 ";
-        var d = new PythonCall().GetObject(code.Replace("%IFACEID%", ifaceId.ToString()));
+        var d = new PythonCall().GetObject(apikey, code.Replace("%IFACEID%", ifaceId.ToString()));
         return d;
     }
 }

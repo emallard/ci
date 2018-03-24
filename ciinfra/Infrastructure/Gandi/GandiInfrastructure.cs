@@ -27,28 +27,29 @@ public class GandiInfrastructure : IInfrastructure
         return this.vmPilote;
     }
 
-    public void CreateVm(InfrastructureKey key, string vmName, string adminuser, string adminpassword)
+    public void CreateVm(InfrastructureKey key, string vmName, string rootPassword, string adminuser, string adminpassword)
     {
-        xmlRPC.CreateVm(vmName,
+        xmlRPC.CreateVm(key.Content,
+            vmName,
             8000,
-            SecretStore.GetSecret("piloteRootPassword"),
+            rootPassword,
             adminuser,
             adminpassword
         );
         Thread.Sleep(30000);
-        var vmInfo1 = xmlRPC.TryVmInfo(vmName);
+        var vmInfo1 = xmlRPC.TryVmInfo(key.Content, vmName);
         Thread.Sleep(30000);
-        var vmInfo2 = xmlRPC.TryVmInfo(vmName);
+        var vmInfo2 = xmlRPC.TryVmInfo(key.Content, vmName);
         Thread.Sleep(1000);
     }
 
     public string GetVmIp(InfrastructureKey key, string vmName)
     {
-        var vmInfo = xmlRPC.TryVmInfo(vmName);
+        var vmInfo = xmlRPC.TryVmInfo(key.Content, vmName);
         if (vmInfo != null)
         {
             int ifaceId = vmInfo["ifaces_id"][0];
-            var ifaceInfo = xmlRPC.IfaceInfo(ifaceId);
+            var ifaceInfo = xmlRPC.IfaceInfo(key.Content, ifaceId);
             var ipv4 = ifaceInfo.ips[0]["ip"];
             return ipv4;
         }
@@ -63,7 +64,7 @@ public class GandiInfrastructure : IInfrastructure
 
     public void TryToStartVm(InfrastructureKey key, string vmName)
     {
-        var vmList = xmlRPC.VmList();
+        var vmList = xmlRPC.VmList(key.Content);
     }
 
     public void DeleteVm(InfrastructureKey key, string vmName)

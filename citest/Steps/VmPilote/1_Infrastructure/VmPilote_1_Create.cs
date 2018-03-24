@@ -22,9 +22,13 @@ public class VmPilote_1_Create : IStep {
 
     public void Test()
     {
-        var infrastructureKey = new InfrastructureKey(askParameters.Ask("infrastructureKey"));
-        var sshUri = infrastructure.GetVmSshUri(infrastructureKey, "pilote");
-        using (var client = infrastructure.Ssh(infrastructureKey, "pilote", "test", "test"))
+        var infrastructureKey = new InfrastructureKey(askParameters.InfrastructureKey);
+        var sshUri = infrastructure.GetVmSshUri(infrastructureKey, askParameters.PiloteVmName);
+        using (var client = infrastructure.Ssh(
+            infrastructureKey, 
+            askParameters.PiloteVmName, 
+            askParameters.PiloteAdminUser, 
+            askParameters.PiloteAdminPassword))
         {
             var result = client.RunCommand("echo coucou");
             Assert.IsTrue("coucou\n" == result.Result);
@@ -34,13 +38,18 @@ public class VmPilote_1_Create : IStep {
 
     public void Run()
     {
-        var infrastructureKey = new InfrastructureKey(askParameters.Ask("infrastructureKey"));
-        infrastructure.CreateVm(infrastructureKey, "pilote", "test", "test");
+        var infrastructureKey = new InfrastructureKey(askParameters.InfrastructureKey);
+        infrastructure.CreateVm(
+            infrastructureKey, 
+            askParameters.PiloteRootPassword, 
+            askParameters.PiloteVmName, 
+            askParameters.PiloteAdminUser, 
+            askParameters.PiloteAdminPassword);
     }
 
     public void Clean()
     {
-        var infrastructureKey = new InfrastructureKey(askParameters.Ask("infrastructureKey"));
-        infrastructure.DeleteVm(infrastructureKey, "pilote");
+        var infrastructureKey = new InfrastructureKey(askParameters.InfrastructureKey);
+        infrastructure.DeleteVm(infrastructureKey, askParameters.PiloteVmName);
     }
 }

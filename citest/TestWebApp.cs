@@ -25,6 +25,7 @@ public class TestWebApp {
 
     void Prerequisite() 
     {
+        /*
         // Check that VM call "webserver is setup
         ciSystem.CheckVmSsh(ciSystem.Pilote);
         ciSystem.CheckVmSsh(ciSystem.WebServer);
@@ -36,6 +37,7 @@ public class TestWebApp {
         ciSystem.CheckPrivateRegistryConnection(ciSystem.WebServer, ciSystem.Pilote);
 
         ciSystem.CheckTraefik(ciSystem.WebServer);
+        */
     }
 
     void Setup()
