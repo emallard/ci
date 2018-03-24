@@ -24,6 +24,7 @@ namespace citest
         public string PiloteAdminPassword => GetValue("PiloteAdminPassword");
         public Uri PiloteSshUri => new Uri(GetValue("PiloteSshUri"));
 
+        public Uri VaultUri => new Uri(GetValue("VaultUri"));
         public VaultToken PiloteCiVaultToken => new VaultToken(GetValue("PiloteCiVaultToken"));
         public Uri PrivateRegistryUri => new Uri(GetValue("PrivateRegistryUri"));
 

@@ -18,8 +18,10 @@ namespace citest
             CiCli cli)
         {
             this.keepResult = keepResult;
-            this.cli = cli.SetSshConnection(askParameters.PiloteSshConnection());
-            this.cli.SetVaultToken(new VaultToken(""));
+            this.cli = cli.Configure(
+                askParameters.PiloteSshConnection(),
+                askParameters.VaultUri,
+                new VaultToken(""));
         }
 
         public void Test()

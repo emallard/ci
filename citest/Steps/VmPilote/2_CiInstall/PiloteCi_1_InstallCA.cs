@@ -15,8 +15,10 @@ namespace citest
             AskParameters askParameters, 
             CiCli cli)
         {
-            this.cli = cli.SetSshConnection(askParameters.PiloteSshConnection());
-            cli.SetVaultToken(new VaultToken(""));
+            this.cli = cli.Configure(
+                askParameters.PiloteSshConnection(),
+                new Uri("a"),
+                new VaultToken(""));
         }
 
         public void Test()

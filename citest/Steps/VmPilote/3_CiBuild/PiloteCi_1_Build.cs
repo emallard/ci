@@ -11,8 +11,10 @@ namespace citest
 
         public PiloteCi_1_Build(AskParameters askParameters, CiCli cli)
         {
-            this.cli = cli.SetSshConnection(askParameters.PiloteSshConnection());
-            cli.SetVaultToken(askParameters.PiloteCiVaultToken);
+            this.cli = cli.Configure(
+                askParameters.PiloteSshConnection(),
+                askParameters.VaultUri,
+                askParameters.PiloteCiVaultToken);
         }
 
         public void Test()

@@ -116,7 +116,7 @@ namespace ciinfra
             }
         }
 
-        public string SshScriptWithStdIn(string scriptContent, string scriptName, string stdInInputName, string stdInInputValue) 
+        public string SshScriptWithStdIn(string scriptContent, string scriptName, string[] inputs) 
         {
             using (var scpClient = Scp())
             {
@@ -127,7 +127,7 @@ namespace ciinfra
             using (var client = Ssh())
             {
                 var wrapper = new SshClientWrapper(client);
-                var result = wrapper.RunWithStdIn("sh " + scriptName, stdInInputName, stdInInputValue);
+                var result = wrapper.RunWithStdIn("sh " + scriptName, inputs);
                 return result;
             }
         }

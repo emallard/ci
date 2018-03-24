@@ -16,6 +16,7 @@ namespace cicli
         // 2) a directory to store data.
         
         SshConnection connection;
+        Uri vaultUri;
         VaultToken vaultToken;
 
         string volume1;
@@ -77,17 +78,14 @@ namespace cicli
             this.vault = vault;
         }
 
-        public CiCli SetSshConnection(SshConnection connection)
+        public CiCli Configure(SshConnection connection, Uri vaultUri, VaultToken vaultToken)
         {
             this.connection = connection;
+            this.vaultToken = vaultToken;
+            this.vaultUri = vaultUri;
             return this;
         }
 
-        public CiCli SetVaultToken(VaultToken vaultToken)
-        {
-            this.vaultToken = vaultToken;
-            return this;
-        }
 
         public string SshCall(CiCliCommand command)
         {
@@ -95,8 +93,9 @@ namespace cicli
                 .SetConnection(this.connection)
                 .SshScriptWithStdIn(
                     DockerRun(command.CommandLine), 
-                    command.CommandLine + ".sh", "token : ", 
-                    vaultToken.Content.ToString());
+                    command.CommandLine + ".sh", new string[]{
+                        "uri ", vaultUri.ToString(),
+                        "token : ", vaultToken.Content.ToString()});
         }
 
         public string SshCommand(string command)

@@ -27,9 +27,12 @@ namespace ciexe
             if (args[0] == "help")
             {
                 // initialize vaultToken
+                Console.Write("uri : ");
+                var readVaultUri = Console.ReadLine();
                 Console.Write("token : ");
                 var readVaultToken = Console.ReadLine();
-                getDI().Resolve<Vault>().SetToken(new VaultToken() { Content = readVaultToken });
+                getDI().Resolve<Vault>().SetUriAndToken(new Uri(readVaultUri), new VaultToken() { Content = readVaultToken });
+                
                 var list = getDI().Resolve<CiCli>().CommandList();
                 Console.WriteLine(list);
                 return;
@@ -44,7 +47,7 @@ namespace ciexe
             var builder = new ContainerBuilder();
             
             builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();   
-            builder.RegisterType<IVaultBackend>().As<VaultBackendTestImpl>();   
+            builder.RegisterType<IVaultSource>().As<VaultSourceTestImpl>();   
                     
             builder.RegisterModule<CiCliModule>();
 

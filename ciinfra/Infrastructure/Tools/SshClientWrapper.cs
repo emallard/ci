@@ -59,7 +59,7 @@ namespace ciinfra
         }
 
 
-        public string RunWithStdIn(string command, string stdInInputName, string stdInInputValue)
+        public string RunWithStdIn(string command, string[] inputs)
         {
             var promptRegex = new Regex(@"\][#$>]"); // regular expression for matching terminal prompt
             var modes = new Dictionary<Renci.SshNet.Common.TerminalModes, uint>();
@@ -67,11 +67,15 @@ namespace ciinfra
             {
                 var output1 = new StreamReader(stream).ReadToEnd();
                 stream.WriteLine(command);
-                var output2 = stream.Expect(stdInInputName);
-                var output3 = new StreamReader(stream).ReadToEnd();
-                stream.WriteLine(stdInInputValue);
+                for (var i = 0; i<inputs.Length; i+=2 )
+                {
+                    var output2 = stream.Expect(inputs[i]);
+                    var output3 = new StreamReader(stream).ReadToEnd();
+                    Console.WriteLine(output3);
+                    stream.WriteLine(inputs[i+1]);
+                }
                 var output = stream.Expect("test@ubuntu");
-                Console.WriteLine(output3 + output);
+                Console.WriteLine(output);
                 return output;
             }
         }

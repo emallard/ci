@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace cilib
 {
-    public interface IVaultBackend
+    public interface IVaultSource
     {
-        string ReadSecret(VaultToken token, string path);
+        string ReadSecret(Uri uri, VaultToken token, string path);
 
-        void SetSecret(VaultToken token, string path, string secret);
+        void SetSecret(Uri uri, VaultToken token, string path, string secret);
 
-        void AddPolicy(VaultToken token, VaultPolicy policy);
+        void AddPolicy(Uri uri, VaultToken token, VaultPolicy policy);
 
-        VaultToken CreateTokenForPolicy(VaultToken token, VaultPolicy policy);
+        VaultToken CreateTokenForPolicy(Uri uri, VaultToken token, VaultPolicy policy);
     }
 }

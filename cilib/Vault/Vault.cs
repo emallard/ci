@@ -8,37 +8,39 @@ namespace cilib
 {
     public class Vault
     {
-        private readonly IVaultBackend backend;
+        private readonly IVaultSource backend;
         private VaultToken token;
+        private Uri uri;
 
-        public Vault(IVaultBackend backend)
+        public Vault(IVaultSource backend)
         {
             this.backend = backend;
         }
 
-        public void SetToken(VaultToken token)
+        public void SetUriAndToken(Uri uri, VaultToken token)
         {
+            this.uri = uri;
             this.token = token;
         }
 
         public string ReadSecret(string path)
         {
-            return this.backend.ReadSecret(token, path);
+            return this.backend.ReadSecret(uri, token, path);
         }
 
         public void SetSecret(string path, string secret)
         {
-            this.backend.SetSecret(token, path, secret);
+            this.backend.SetSecret(uri, token, path, secret);
         }
 
         public void AddPolicy(VaultPolicy policy)
         {
-            this.backend.AddPolicy(token, policy);
+            this.backend.AddPolicy(uri, token, policy);
         }
 
         public VaultToken CreateTokenForPolicy(VaultPolicy policy)
         {
-            return this.backend.CreateTokenForPolicy(token, policy);
+            return this.backend.CreateTokenForPolicy(uri, token, policy);
         }
     }
 }
