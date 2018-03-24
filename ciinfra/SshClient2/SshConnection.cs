@@ -8,8 +8,8 @@ namespace ciinfra
 {
     public class SshConnection
     {
-        public Uri SshUri;
-        public string User;
-        public string Password;
+        public Uri SshUri {get; set;}
+        public string User  {get; set;}
+        public string Password  {get; set;}
     }
 }

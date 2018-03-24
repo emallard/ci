@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Docker.DotNet;
 using Newtonsoft.Json;
 
-static class StreamUtil
+namespace cilib
+{
+    static class StreamUtil
     {
         public static async Task MonitorStreamAsync(Task<Stream> streamTask, DockerClient client, CancellationToken cancel, IProgress<string> progress)
         {
@@ -58,3 +60,4 @@ static class StreamUtil
             
         }
     }
+}

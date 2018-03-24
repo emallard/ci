@@ -9,17 +9,48 @@ using System.Text;
 
 namespace ciinfra
 {
-    public static class IVmExtension {
+    public class SshClient2
+    {
+        SshConnection sshConnection;
 
-        public static void Ssh(this IVm vm, Action<SshClient> action)
+        public SshClient2()
         {
-            using (var client = vm.Ssh())
-                action(client);
         }
 
-        public static string SshCommand(this IVm vm, string command)
+        public SshClient2 SetConnection(SshConnection sshConnection)
         {
-            using (var client = vm.Ssh())
+            this.sshConnection = sshConnection;
+            return this;
+        }
+
+        public SshClient Ssh()
+        {
+            var sshClient = new SshClient(GetConnectionInfo(sshConnection));
+            sshClient.Connect();
+            return sshClient;
+        }
+
+        public ScpClient Scp()
+        {
+            var scpClient = new ScpClient(GetConnectionInfo(sshConnection));
+            scpClient.Connect();
+            return scpClient;
+        }
+
+        protected ConnectionInfo GetConnectionInfo(SshConnection sshConnection)
+        {
+            var connectionInfo = new ConnectionInfo(
+                sshConnection.SshUri.Host, 
+                sshConnection.SshUri.Port, 
+                sshConnection.User,
+                new PasswordAuthenticationMethod(sshConnection.User, sshConnection.Password));
+            return connectionInfo;
+        }
+
+
+        public string SshCommand(string command)
+        {
+            using (var client = Ssh())
             {
                 var cmd = client.RunCommand(command);
                 if (cmd.ExitStatus != 0)
@@ -28,38 +59,38 @@ namespace ciinfra
             }
         }
 
-        public static string SshSudoBashCommand(this IVm vm, string command)
+        public string SshSudoBashCommand(string command)
         {
-            using (var client = vm.Ssh())
+            using (var client = Ssh())
             {
                 var result = new SshClientWrapper(client).RunSudoBash(command);
                 return result;
             }
         }
 
-        public static string RunEmbeddedResourceWithSudo(this IVm vm, EmbeddedResource resource) 
+        public string RunEmbeddedResourceWithSudo(EmbeddedResource resource) 
         {
             
-            using (var scpClient = vm.Scp())
+            using (var scpClient = Scp())
             {
                 scpClient.Upload(resource.Stream(), resource.Name);
             }
 
-            using (var client = vm.Ssh())
+            using (var client = Ssh())
             {
                 return new SshClientWrapper(client).RunSudo("sh " + resource.Name);
             }
         }
 
-        public static string RunEmbeddedResource(this IVm vm, EmbeddedResource resource) 
+        public string RunEmbeddedResource(EmbeddedResource resource) 
         {
             
-            using (var scpClient = vm.Scp())
+            using (var scpClient = Scp())
             {
                 scpClient.Upload(resource.Stream(), resource.Name);
             }
 
-            using (var client = vm.Ssh())
+            using (var client = Ssh())
             {
                 var cmd = client.RunCommand("sh " + resource.Name);
                 if (cmd.ExitStatus != 0)
@@ -68,15 +99,15 @@ namespace ciinfra
             }
         }
 
-        public static string SshScript(this IVm vm, string scriptContent, string scriptName) 
+        public string SshScript(string scriptContent, string scriptName) 
         {
-            using (var scpClient = vm.Scp())
+            using (var scpClient = Scp())
             {
                 var stream = new MemoryStream(Encoding.UTF8.GetBytes(scriptContent));
                 scpClient.Upload(stream, scriptName);
             }
 
-            using (var client = vm.Ssh())
+            using (var client = Ssh())
             {
                 var cmd = client.RunCommand("sh " + scriptName);
                 if (cmd.ExitStatus != 0)
@@ -85,15 +116,15 @@ namespace ciinfra
             }
         }
 
-        public static string SshScriptWithStdIn(this IVm vm, string scriptContent, string scriptName, string stdInInputName, string stdInInputValue) 
+        public string SshScriptWithStdIn(string scriptContent, string scriptName, string stdInInputName, string stdInInputValue) 
         {
-            using (var scpClient = vm.Scp())
+            using (var scpClient = Scp())
             {
                 var stream = new MemoryStream(Encoding.UTF8.GetBytes(scriptContent));
                 scpClient.Upload(stream, scriptName);
             }
 
-            using (var client = vm.Ssh())
+            using (var client = Ssh())
             {
                 var wrapper = new SshClientWrapper(client);
                 var result = wrapper.RunWithStdIn("sh " + scriptName, stdInInputName, stdInInputValue);

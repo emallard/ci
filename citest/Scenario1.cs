@@ -6,6 +6,7 @@ using System.Linq;
 using System.Diagnostics;
 using Autofac;
 using cicli;
+using ciinfra;
 
 namespace citest
 {
@@ -75,10 +76,12 @@ namespace citest
 
             // From : no VM 
             // To   : Image with CI installed
+            /*
             runner.Run<VmWebServer_1_Create>();
             runner.Run<VmWebServer_1_Hosts>();
             runner.Run<VmWebServer_2_Docker>();
             runner.Run<VmWebServer_3_MirrorRegistry>();
+            */
         }
 
         private IContainer Init()

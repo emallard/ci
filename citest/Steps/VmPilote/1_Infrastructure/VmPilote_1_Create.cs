@@ -6,50 +6,56 @@ using System.Linq;
 using citest;
 using ciinfra;
 
-public class VmPilote_1_Create : IStep {
+namespace citest
+{
+    public class VmPilote_1_Create : IStep {
 
-    private readonly IInfrastructure infrastructure;
-    private readonly IAskParameters askParameters;
-    private readonly IVmPilote vmPilote;
+        private readonly IInfrastructure infrastructure;
+        private readonly AskParameters askParameters;
+        private readonly IKeepResult keepResult;
+        private readonly IVmPilote vmPilote;
 
-    public VmPilote_1_Create(
-        IInfrastructure infrastructure,
-        IAskParameters askParameters)
-    {
-        this.infrastructure = infrastructure;
-        this.askParameters = askParameters;
-    }
-
-    public void Test()
-    {
-        var infrastructureKey = new InfrastructureKey(askParameters.InfrastructureKey);
-        var sshUri = infrastructure.GetVmSshUri(infrastructureKey, askParameters.PiloteVmName);
-        using (var client = infrastructure.Ssh(
-            infrastructureKey, 
-            askParameters.PiloteVmName, 
-            askParameters.PiloteAdminUser, 
-            askParameters.PiloteAdminPassword))
+        public VmPilote_1_Create(
+            IInfrastructure infrastructure,
+            AskParameters askParameters,
+            IKeepResult keepResult)
         {
-            var result = client.RunCommand("echo coucou");
-            Assert.IsTrue("coucou\n" == result.Result);
+            this.infrastructure = infrastructure;
+            this.askParameters = askParameters;
+            this.keepResult = keepResult;
         }
-        
-    }
 
-    public void Run()
-    {
-        var infrastructureKey = new InfrastructureKey(askParameters.InfrastructureKey);
-        infrastructure.CreateVm(
-            infrastructureKey, 
-            askParameters.PiloteRootPassword, 
-            askParameters.PiloteVmName, 
-            askParameters.PiloteAdminUser, 
-            askParameters.PiloteAdminPassword);
-    }
+        public void Test()
+        {
+            using (var client = infrastructure.Ssh(
+                askParameters.InfrastructureKey, 
+                askParameters.PiloteVmName, 
+                askParameters.PiloteAdminUser, 
+                askParameters.PiloteAdminPassword))
+            {
+                var result = client.RunCommand("echo coucou");
+                Assert.IsTrue("coucou\n" == result.Result);
+            }
+            
+        }
 
-    public void Clean()
-    {
-        var infrastructureKey = new InfrastructureKey(askParameters.InfrastructureKey);
-        infrastructure.DeleteVm(infrastructureKey, askParameters.PiloteVmName);
+        public void Run()
+        {
+            infrastructure.CreateVm(
+                askParameters.InfrastructureKey, 
+                askParameters.PiloteRootPassword, 
+                askParameters.PiloteVmName, 
+                askParameters.PiloteAdminUser, 
+                askParameters.PiloteAdminPassword);
+
+            keepResult.Keep("PiloteSshUri", infrastructure.GetVmSshUri(askParameters.InfrastructureKey, askParameters.PiloteVmName).ToString());
+        }
+
+        public void Clean()
+        {
+            infrastructure.DeleteVm(
+                askParameters.InfrastructureKey, 
+                askParameters.PiloteVmName);
+        }
     }
 }

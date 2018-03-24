@@ -4,23 +4,27 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using cilib;
 
-public class CiCliModule : Module {
+namespace cicli
+{
+    public class CiCliModule : Module {
 
-    protected override void Load(ContainerBuilder builder)
-    {
-        builder.RegisterAssemblyTypes(this.GetType().Assembly);
-        builder.RegisterModule<CiLibModule>();
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(this.GetType().Assembly);
+            builder.RegisterModule<CiLibModule>();
+        }
+        
     }
-    
-}
 
-public class CiCliModuleCiExeTest : Module {
+    public class CiCliModuleCiExeTest : Module {
 
-    protected override void Load(ContainerBuilder builder)
-    {
-        builder.RegisterAssemblyTypes(this.GetType().Assembly);
-        builder.RegisterModule<CiLibModuleCiExeTest>();
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(this.GetType().Assembly);
+            builder.RegisterModule<CiLibModuleCiExeTest>();
+        }
+        
     }
-    
 }

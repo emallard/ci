@@ -1,74 +1,77 @@
 using System;
 using System.Diagnostics;
 
-public class ShellHelper
+namespace ciinfra
 {
-    public string Bash(string cmd)
+    public class ShellHelper
     {
-        Console.WriteLine(cmd);
-        var escapedArgs = cmd.Replace("\"", "\\\"");
-        
-        var process = new Process()
+        public string Bash(string cmd)
         {
-            StartInfo = new ProcessStartInfo
+            Console.WriteLine(cmd);
+            var escapedArgs = cmd.Replace("\"", "\\\"");
+            
+            var process = new Process()
             {
-                FileName = "/bin/bash",
-                Arguments = $"-c \"{escapedArgs}\"",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-            }
-        };
-        process.Start();
-        string result = process.StandardOutput.ReadToEnd();
-        process.WaitForExit();
-        return result;
-    }
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{escapedArgs}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process.Start();
+            string result = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            return result;
+        }
 
-    public string BashAndStdErr(string cmd, out string stdErr)
-    {
-        var escapedArgs = cmd.Replace("\"", "\\\"");
-        
-        var process = new Process()
+        public string BashAndStdErr(string cmd, out string stdErr)
         {
-            StartInfo = new ProcessStartInfo
+            var escapedArgs = cmd.Replace("\"", "\\\"");
+            
+            var process = new Process()
             {
-                FileName = "/bin/bash",
-                Arguments = $"-c \"{escapedArgs}\"",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-            }
-        };
-        process.Start();
-        string result = process.StandardOutput.ReadToEnd();
-        stdErr = process.StandardError.ReadToEnd();
-        process.WaitForExit();
-        return result;
-    }
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{escapedArgs}\"",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            process.Start();
+            string result = process.StandardOutput.ReadToEnd();
+            stdErr = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+            return result;
+        }
 
-    public string BashAndStdIn(string cmd, string stdIn)
-    {
-        var escapedArgs = cmd.Replace("\"", "\\\"");
-        
-        var process = new Process()
+        public string BashAndStdIn(string cmd, string stdIn)
         {
-            StartInfo = new ProcessStartInfo
+            var escapedArgs = cmd.Replace("\"", "\\\"");
+            
+            var process = new Process()
             {
-                FileName = "/bin/bash",
-                Arguments = $"-c \"{escapedArgs}\"",
-                RedirectStandardOutput = true,
-                RedirectStandardInput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-            }
-        };
-        
-        process.Start();
-        process.StandardInput.Write(stdIn);
-        string result = process.StandardOutput.ReadToEnd();
-        process.WaitForExit();
-        return result;
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{escapedArgs}\"",
+                    RedirectStandardOutput = true,
+                    RedirectStandardInput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            
+            process.Start();
+            process.StandardInput.Write(stdIn);
+            string result = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            return result;
+        }
     }
 }

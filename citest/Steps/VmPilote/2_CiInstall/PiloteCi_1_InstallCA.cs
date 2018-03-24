@@ -1,27 +1,28 @@
 using System;
 using Autofac;
 using cicli;
+using ciinfra;
+using cilib;
 using Renci.SshNet;
 
 namespace citest
 {
     public class PiloteCi_1_InstallCA : IStep
     {
-        private readonly IInfrastructure infrastructure;
-        private readonly IVmPilote vmPilote;
         private readonly CiCli cli;
 
-        public PiloteCi_1_InstallCA(IInfrastructure infrastructure, CiCli cli)
+        public PiloteCi_1_InstallCA(
+            AskParameters askParameters, 
+            CiCli cli)
         {
-            this.infrastructure = infrastructure;
-            this.vmPilote = infrastructure.GetVmPilote();
-            this.cli = cli.SetVm(vmPilote);
+            this.cli = cli.SetSshConnection(askParameters.PiloteSshConnection());
+            cli.SetVaultToken(new VaultToken(""));
         }
 
         public void Test()
         {
-            var infraCidata = infrastructure.CidataDirectory;
-            var result = vmPilote.SshCommand("cat " + infraCidata + "/tls/myCA.pem");
+            var infraCidata = "/cidata";
+            var result = cli.SshCommand("cat " + infraCidata + "/tls/myCA.pem");
             Assert.IsTrue(result.Length > 3);
         }
 

@@ -1,6 +1,8 @@
 using System;
 using Autofac;
 using cicli;
+using ciinfra;
+using cilib;
 using Xunit;
 
 namespace ciexetest

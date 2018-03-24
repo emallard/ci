@@ -3,19 +3,16 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using ciinfra;
+using cilib;
 
 namespace citest
 {
-    public class AskParametersFromSecrets : IAskParameters
+    public class AskParametersFromSecrets : IAskParametersSource
     {
-        public string InfrastructureKey => SecretStore.GetSecret("InfrastructureKey");
-
-        public string PiloteVmName => SecretStore.GetSecret("PiloteVmName");
-
-        public string PiloteRootPassword => SecretStore.GetSecret("PiloteRootPassword");
-
-        public string PiloteAdminUser => SecretStore.GetSecret("PiloteAdminUser");
-
-        public string PiloteAdminPassword => SecretStore.GetSecret("PiloteAdminPassword");
+        public string GetValue(string key)
+        {
+            return SecretStore.GetSecret(key);
+        }
     }
 }

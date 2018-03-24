@@ -1,5 +1,6 @@
 using System;
 using Autofac;
+using ciinfra;
 using Renci.SshNet;
 
 namespace citest
@@ -9,10 +10,12 @@ namespace citest
         private readonly IInfrastructure infrastructure;
         private readonly IVmPilote vmPilote;
 
-        public VmPilote_5_PiloteCi_Build(IInfrastructure infrastructure)
+        public VmPilote_5_PiloteCi_Build(
+            IInfrastructure infrastructure,
+            AskParameters askParameters)
         {
             this.infrastructure = infrastructure;
-            this.vmPilote = infrastructure.GetVmPilote();
+            this.vmPilote = infrastructure.GetVmPilote(askParameters.PiloteSshConnection());
         }
 
         public void Test()

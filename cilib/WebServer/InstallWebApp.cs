@@ -4,17 +4,19 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 
-public class InstallWebApp {
-    
-   
-   public async Task Install()
-   {
-       await Task.CompletedTask;
-   }
+namespace cilib
+{
+    public class InstallWebApp {
+        
+        public async Task Install()
+        {
+            await Task.CompletedTask;
+        }
 
-   public async Task CleanInstall()
-   {
-       await Task.CompletedTask;
-   }
+        public async Task CleanInstall()
+        {
+            await Task.CompletedTask;
+        }
 
+    }
 }

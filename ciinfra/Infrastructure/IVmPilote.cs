@@ -6,28 +6,26 @@ using System.Linq;
 using Renci.SshNet;
 using ciinfra;
 
-public interface IVmPilote : IVm {
-/*
-    string VmName {get; }
-    IPAddress Ip { get; }
-    int PortForward {get ;}
-*/
+namespace ciinfra
+{
+    public interface IVmPilote : IVm {
 
-    string PrivateRegistryDomain {get ;}
-    int PrivateRegistryPort {get ;}
+        string PrivateRegistryDomain {get ;}
+        int PrivateRegistryPort {get ;}
 
-    void InstallHosts();
-    void CleanHosts();
-    void InstallDocker();
-    void InstallMirrorRegistry();
+        void InstallHosts();
+        void CleanHosts();
+        void InstallDocker();
+        void InstallMirrorRegistry();
 
-    void CloneOrPullCiSources();
-    void CleanCiSources();
+        void CloneOrPullCiSources();
+        void CleanCiSources();
 
-    void BuildCiImage();
-    void CleanCiImage();
+        void BuildCiImage();
+        void CleanCiImage();
 
-    // Alternative Build using installed dotnetcore
-    void InstallDotNetCoreSdk();
-    void BuildCiUsingSdk();
+        // Alternative Build using installed dotnetcore
+        void InstallDotNetCoreSdk();
+        void BuildCiUsingSdk();
+    }
 }

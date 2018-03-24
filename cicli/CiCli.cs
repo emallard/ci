@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using cilib;
+using ciinfra;
 
 namespace cicli
 {
@@ -14,7 +15,8 @@ namespace cicli
         // 1) to be able to use the docker socket ans thus the docker engine api
         // 2) a directory to store data.
         
-        IVm vm;
+        SshConnection connection;
+        VaultToken vaultToken;
 
         string volume1;
         string volume2;
@@ -37,9 +39,6 @@ namespace cicli
         private readonly Vault vault;
 
         public CiCli(
-
-            IInfrastructure infrastructure,
-
             InstallCA installCA,
             InstallRegistry installRegistry,
             InstallVault installVault,
@@ -53,7 +52,7 @@ namespace cicli
         {
 
             volume1 = "--volume /var/run/docker.sock:/var/run/docker.sock ";
-            volume2 = "--volume " + "/cidata"/*infrastructure.CidataDirectory*/ + ":/cidata ";
+            volume2 = "--volume " + "/cidata" + ":/cidata ";
 
             this.InstallCA = Create<InstallCA>("install-ca", async () => await installCA.Install());
             this.CleanCA = Create<InstallCA>("clean-ca", async () => await installCA.Clean());
@@ -78,15 +77,33 @@ namespace cicli
             this.vault = vault;
         }
 
-        public CiCli SetVm(IVm vm)
+        public CiCli SetSshConnection(SshConnection connection)
         {
-            this.vm = vm;
+            this.connection = connection;
             return this;
         }
 
-        public void SshCall(CiCliCommand command, VaultToken vaultToken)
+        public CiCli SetVaultToken(VaultToken vaultToken)
         {
-            vm.SshScriptWithStdIn(DockerRun(command.CommandLine), command.CommandLine + ".sh", "token : ", vaultToken.Content.ToString());
+            this.vaultToken = vaultToken;
+            return this;
+        }
+
+        public string SshCall(CiCliCommand command)
+        {
+            return new SshClient2()
+                .SetConnection(this.connection)
+                .SshScriptWithStdIn(
+                    DockerRun(command.CommandLine), 
+                    command.CommandLine + ".sh", "token : ", 
+                    vaultToken.Content.ToString());
+        }
+
+        public string SshCommand(string command)
+        {
+            return new SshClient2()
+                .SetConnection(this.connection)
+                .SshCommand(command);
         }
 
         public Task ExecuteFromCommandLine(string commandLine)

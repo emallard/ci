@@ -7,22 +7,25 @@ using System.Reflection;
 using System.IO;
 using System.Text;
 
-public class EmbeddedResources
+namespace ciinfra
 {
-
-    public static EmbeddedResource InstallDocker = new EmbeddedResource("Infrastructure.Common.InstallDocker.sh");
-
-    static EmbeddedResources() 
+    public class EmbeddedResources
     {
-        var assembly = typeof(EmbeddedResources).Assembly;
-        var names = assembly.GetManifestResourceNames();
-        var fields = typeof(EmbeddedResources).GetFields();
 
-        foreach (var f in fields)
+        public static EmbeddedResource InstallDocker = new EmbeddedResource("Infrastructure.Common.InstallDocker.sh");
+
+        static EmbeddedResources() 
         {
-            var fvalue = (EmbeddedResource) f.GetValue(null);
-            if (!names.Any(n => n == "ciinfra." + fvalue.Name))
-                throw new Exception($"Resource not found : {fvalue}");
+            var assembly = typeof(EmbeddedResources).Assembly;
+            var names = assembly.GetManifestResourceNames();
+            var fields = typeof(EmbeddedResources).GetFields();
+
+            foreach (var f in fields)
+            {
+                var fvalue = (EmbeddedResource) f.GetValue(null);
+                if (!names.Any(n => n == "ciinfra." + fvalue.Name))
+                    throw new Exception($"Resource not found : {fvalue}");
+            }
         }
     }
 }

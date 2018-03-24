@@ -7,23 +7,25 @@ using System.Linq;
 
 // When running ciexe inside a container, /cidiata will be in /cidata
 // But when debugging, /cidata will bein /home/test/cidata
-
-public interface ICiLibCiDataDirectory
+namespace cilib
 {
-    string Path { get; }
-}
-
-public class CiLibCiDataDirectory : ICiLibCiDataDirectory
-{
-    public CiLibCiDataDirectory(string path)
+    public interface ICiLibCiDataDirectory
     {
-        Path = path;
+        string Path { get; }
     }
 
-    public override string ToString()
+    public class CiLibCiDataDirectory : ICiLibCiDataDirectory
     {
-        return Path;
-    }
+        public CiLibCiDataDirectory(string path)
+        {
+            Path = path;
+        }
 
-    public string Path { get; }
+        public override string ToString()
+        {
+            return Path;
+        }
+
+        public string Path { get; }
+    }
 }

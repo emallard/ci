@@ -7,29 +7,30 @@ namespace citest
 {
     public class PiloteCi_3_InstallPrivateRegistry : IStep
     {
-        private readonly IInfrastructure infrastructure;
-        private readonly IVmPilote vmPilote;
         private readonly CiCli cli;
+        private readonly AskParameters askParameters;
 
-        public PiloteCi_3_InstallPrivateRegistry(IInfrastructure infrastructure, CiCli cli)
+        public PiloteCi_3_InstallPrivateRegistry(
+            AskParameters askParameters, 
+            CiCli cli)
         {
-            this.infrastructure = infrastructure;
-            this.vmPilote = infrastructure.GetVmPilote();
-            this.cli = cli.SetVm(vmPilote);
+            this.cli = cli.SetSshConnection(askParameters.PiloteSshConnection());
+            cli.SetVaultToken(askParameters.PiloteCiVaultToken);
+            this.askParameters = askParameters;
         }
 
         public void Test()
         {
-            var domain = vmPilote.PrivateRegistryDomain;
-            var port = vmPilote.PrivateRegistryPort;
-            // First, test insecure
+
+            var uri = askParameters.PrivateRegistryUri.ToString() + "/v2/";
+            // First, test insecure, it doesn't check certificate
             {
-                var result = vmPilote.SshCommand($"curl --insecure https://{domain}:{port}/v2/");
+                var result = cli.SshCommand($"curl --insecure {uri}");
                 Assert.IsTrue(result.StartsWith("{"));
             }
             // Then test secure
             {
-                var result = vmPilote.SshCommand($"curl https://{domain}:{port}/v2/");
+                var result = cli.SshCommand($"curl {uri}");
                 Assert.IsTrue(result.StartsWith("{"));
             }
         }

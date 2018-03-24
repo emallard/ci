@@ -7,10 +7,11 @@ using cisystem;
 using Autofac;
 using citest;
 using ciinfra;
+using cicli;
 
 public class TestInfraPiloteVm<T, U> 
     where T : IInfrastructure 
-    where U : IAskParameters {
+    where U : IAskParametersSource {
 
     CiSystemConfig ciSystemConfig;
     CiSystem ciSystem;
@@ -19,24 +20,16 @@ public class TestInfraPiloteVm<T, U>
     {
         var container = Init();
         var infrastructure = container.Resolve<IInfrastructure>();
-        var askParameters = container.Resolve<IAskParameters>();
+        var askParameters = container.Resolve<AskParameters>();
 
-        var infrastructureKey = new InfrastructureKey(askParameters.InfrastructureKey);
         infrastructure.CreateVm(
-            infrastructureKey, 
+            askParameters.InfrastructureKey, 
             askParameters.PiloteRootPassword, 
             askParameters.PiloteVmName, 
             askParameters.PiloteAdminUser, 
             askParameters.PiloteAdminPassword);
 
-        var sshUri = infrastructure.GetVmSshUri(infrastructureKey, askParameters.PiloteVmName);
-        var sshConnection = new SshConnection() {
-            SshUri = sshUri,
-            User = askParameters.PiloteAdminUser,
-            Password = askParameters.PiloteAdminPassword
-        };
-
-        var vmPilote = infrastructure.GetVmPilote(sshConnection);
+        var vmPilote = infrastructure.GetVmPilote(askParameters.PiloteSshConnection());
         vmPilote.InstallHosts();
         vmPilote.InstallDocker();
         vmPilote.InstallMirrorRegistry();
@@ -58,7 +51,7 @@ public class TestInfraPiloteVm<T, U>
         var builder = new ContainerBuilder();
         
         builder.RegisterType<T>().As<IInfrastructure>();
-        builder.RegisterType<U>().As<IAskParameters>();
+        builder.RegisterType<U>().As<IAskParametersSource>();
         
 
         //builder.RegisterModule<CiInfraModule>();

@@ -11,7 +11,7 @@ namespace cicli
     {
         string CommandLine {get ;}
         Func<Task> Action {get ;}
-        void SshCall(VaultToken vaultToken);
+        string SshCall();
     }
 
     public class CiCliCommand<T> : CiCliCommand{
@@ -27,9 +27,9 @@ namespace cicli
             this.cli = cli;
         }
 
-        public void SshCall(VaultToken vaultToken)
+        public string SshCall()
         {
-            cli.SshCall(this, vaultToken);
+            return cli.SshCall(this);
         }
     }
 }

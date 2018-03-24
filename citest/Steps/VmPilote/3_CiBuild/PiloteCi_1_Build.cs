@@ -7,20 +7,17 @@ namespace citest
 {
     public class PiloteCi_1_Build : IStep
     {
-        private readonly IInfrastructure infrastructure;
-        private readonly IVmPilote vmPilote;
         private readonly CiCli cli;
 
-        public PiloteCi_1_Build(IInfrastructure infrastructure, CiCli cli)
+        public PiloteCi_1_Build(AskParameters askParameters, CiCli cli)
         {
-            this.infrastructure = infrastructure;
-            this.vmPilote = infrastructure.GetVmPilote();
-            this.cli = cli.SetVm(vmPilote);
+            this.cli = cli.SetSshConnection(askParameters.PiloteSshConnection());
+            cli.SetVaultToken(askParameters.PiloteCiVaultToken);
         }
 
         public void Test()
         {
-            var result = vmPilote.SshCommand("docker images -a");
+            var result = cli.SshCommand("docker images -a");
             Assert.Contains("dotnetcore_0", result);
         }
 

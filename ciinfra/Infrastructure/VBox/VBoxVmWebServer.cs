@@ -9,20 +9,23 @@ using System.Text.RegularExpressions;
 using System.IO;
 using ciinfra;
 
-public class VBoxVmWebServer : VBoxVm, IVmWebServer {
+namespace ciinfra
+{
+    public class VBoxVmWebServer : VBoxVm, IVmWebServer {
 
 
-    public VBoxVmWebServer()
-    {
-    }
+        public VBoxVmWebServer()
+        {
+        }
 
-    public void InstallHosts(string vmPiloteIp, string vmPilotePrivateRegistryDomain)
-    {
-        this.SshSudoBashCommand($"echo \"{vmPiloteIp}  {vmPilotePrivateRegistryDomain}\" >> /etc/hosts");
-    }
+        public void InstallHosts(string vmPiloteIp, string vmPilotePrivateRegistryDomain)
+        {
+            this.SshSudoBashCommand($"echo \"{vmPiloteIp}  {vmPilotePrivateRegistryDomain}\" >> /etc/hosts");
+        }
 
-    public void CleanHosts(string vmPilotePrivateRegistryDomain)
-    {
-        this.SshSudoBashCommand($"sed -i \"/ {vmPilotePrivateRegistryDomain}/d\" /etc/hosts");
+        public void CleanHosts(string vmPilotePrivateRegistryDomain)
+        {
+            this.SshSudoBashCommand($"sed -i \"/ {vmPilotePrivateRegistryDomain}/d\" /etc/hosts");
+        }
     }
 }

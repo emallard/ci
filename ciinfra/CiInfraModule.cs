@@ -5,10 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 
-public class CiInfraModule : Module {
+namespace ciinfra
+{
+    public class CiInfraModule : Module {
 
-    protected override void Load(ContainerBuilder builder)
-    {
-        builder.RegisterAssemblyTypes(this.GetType().Assembly);
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(this.GetType().Assembly);
+        }
     }
 }

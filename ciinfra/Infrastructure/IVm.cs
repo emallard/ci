@@ -6,9 +6,12 @@ using System.Linq;
 using Renci.SshNet;
 using ciinfra;
 
-public interface IVm {
+namespace ciinfra
+{
+    public interface IVm {
 
-    void SetSshConnection(SshConnection sshConnection);
-    SshClient Ssh();
-    ScpClient Scp();
+        void SetSshConnection(SshConnection sshConnection);
+        SshClient Ssh();
+        ScpClient Scp();
+    }
 }

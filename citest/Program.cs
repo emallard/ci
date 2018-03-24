@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Autofac;
+using ciinfra;
 
 namespace citest
 {
@@ -15,7 +16,7 @@ namespace citest
             //test.RunAll();
             
 
-            var test = new TestInstallVault<VBoxInfrastructure, AskParametersMock>();
+            var test = new TestInstallVault<VBoxInfrastructure, AskParametersSourceMock>();
             test.Run();
         }   
     }

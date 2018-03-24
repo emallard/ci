@@ -7,30 +7,32 @@ using System.Reflection;
 using System.IO;
 using System.Text;
 
-public class EmbeddedResource
+namespace ciinfra
 {
-    public readonly string Name;
-
-    public EmbeddedResource(string name)
+    public class EmbeddedResource
     {
-        Name = name;
-    }
+        public readonly string Name;
 
-    public Stream Stream()
-    {
-        var stream = this.GetType().Assembly.GetManifestResourceStream("ciinfra." + Name);
-        if (stream == null)
-            throw new Exception("No stream for resource : " + "ciinfra." + Name);
-        return stream;
-    }
-
-    public string ReadAsText()
-    {
-        var resourceStream = this.GetType().Assembly.GetManifestResourceStream("ciinfra." + Name);
-        using (var reader = new StreamReader(resourceStream, Encoding.UTF8))
+        public EmbeddedResource(string name)
         {
-            return reader.ReadToEnd();
+            Name = name;
+        }
+
+        public Stream Stream()
+        {
+            var stream = this.GetType().Assembly.GetManifestResourceStream("ciinfra." + Name);
+            if (stream == null)
+                throw new Exception("No stream for resource : " + "ciinfra." + Name);
+            return stream;
+        }
+
+        public string ReadAsText()
+        {
+            var resourceStream = this.GetType().Assembly.GetManifestResourceStream("ciinfra." + Name);
+            using (var reader = new StreamReader(resourceStream, Encoding.UTF8))
+            {
+                return reader.ReadToEnd();
+            }
         }
     }
-
 }
