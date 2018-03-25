@@ -7,12 +7,12 @@ using citools;
 
 namespace ciinfra
 {
-    public class InfraPiloteInstallDocker : IStep
+    public class InfraPiloteMirrorRegistry : IStep
     {
         private readonly StepHelper helper;
         private readonly IInfrastructure infrastructure;
 
-        public InfraPiloteInstallDocker(
+        public InfraPiloteMirrorRegistry(
             StepHelper helper,
             IInfrastructure infrastructure)
         {
@@ -45,8 +45,8 @@ namespace ciinfra
             var sshConnection = await helper.NeedSshConnection(vaultUri, "pilote");
 
             var client = new SshClient2().SetConnection(sshConnection);
-            var result = client.SshCommand("docker run --rm hello-world");
-            StepAssert.Contains("Hello from Docker!", result);
+            var result = client.SshCommand("curl http://localhost:4999/v2/");
+            StepAssert.AreEqual("{}", result);
             await Task.CompletedTask;
         }
     }

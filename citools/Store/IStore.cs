@@ -6,14 +6,10 @@ using System.Linq;
 
 namespace citools
 {
-    public interface IStep 
+    public interface IStore
     {
-        Task Run();
+        Task<string> Read(Uri uri, string path);
 
-        Task TestRunOk();
-
-        Task TestAlreadyRun();
-
-        Task Clean();        
+        Task Write(Uri uri, string path, string value);
     }
 }
