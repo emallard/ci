@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using Docker.DotNet.Models;
-using ciinfra;
 
 namespace cilib
 {
@@ -13,18 +12,15 @@ namespace cilib
 
         private readonly DockerWrapper dockerWrapper;
         private readonly ICiLibCiDataDirectory cidataDir;
-        private readonly IInfrastructure infrastructure;
         string traefikRepoTag = "traefik:1.5";
         string containerName = "traefik";
 
         public InstallTraefik(
             DockerWrapper dockerWrapper,
-            ICiLibCiDataDirectory cidataDir,
-            IInfrastructure infrastructure)
+            ICiLibCiDataDirectory cidataDir)
         {
             this.dockerWrapper = dockerWrapper;
             this.cidataDir = cidataDir;
-            this.infrastructure = infrastructure;
         }
 
         public async Task Install() 

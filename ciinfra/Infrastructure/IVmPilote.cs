@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Renci.SshNet;
-using ciinfra;
 
 namespace ciinfra
 {

@@ -6,6 +6,7 @@ using System.Linq;
 using Renci.SshNet;
 using System.IO;
 using System.Text;
+using citools;
 
 namespace ciinfra
 {

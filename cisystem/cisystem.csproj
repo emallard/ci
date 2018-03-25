@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../cicli/cicli.csproj" />
+    <ProjectReference Include="../ciexecommands/ciexecommands.csproj" />
     <ProjectReference Include="../ciinfra/ciinfra.csproj" />
     <PackageReference Include="newtonsoft.json" Version="11.0.1" />
     <PackageReference Include="autofac" Version="4.6.2" />

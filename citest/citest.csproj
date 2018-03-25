@@ -6,9 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../cicli/cicli.csproj" />
+    <ProjectReference Include="../ciexecommands/ciexecommands.csproj" />
     <ProjectReference Include="../ciinfra/ciinfra.csproj" />
     <ProjectReference Include="../cisystem/cisystem.csproj" />
+    <ProjectReference Include="../citools/citools.csproj" />
     <PackageReference Include="autofac" Version="4.6.2" />
     <PackageReference Include="ssh.net" Version="2016.1.0" />
   </ItemGroup>

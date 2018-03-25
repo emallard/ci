@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
-using ciinfra;
 
 namespace cilib
 {
@@ -14,7 +13,6 @@ namespace cilib
         {
             builder.RegisterInstance<ICiLibCiDataDirectory>(new CiLibCiDataDirectory("/cidata"));
             builder.RegisterAssemblyTypes(this.GetType().Assembly);
-            builder.RegisterModule<CiInfraModule>();
         }
     }
 
@@ -24,7 +22,6 @@ namespace cilib
         {
             builder.RegisterInstance<ICiLibCiDataDirectory>(new CiLibCiDataDirectory("/home/test/cidata"));
             builder.RegisterAssemblyTypes(this.GetType().Assembly);
-            builder.RegisterModule<CiInfraModule>();
         }
     }
 }

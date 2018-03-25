@@ -7,7 +7,7 @@ using Renci.SshNet;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
-using ciinfra;
+using citools;
 
 namespace ciinfra
 {

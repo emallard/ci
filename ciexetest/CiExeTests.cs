@@ -1,9 +1,9 @@
 using System;
 using Autofac;
-using cicli;
 using ciinfra;
-using cilib;
+using ciexecommands;
 using Xunit;
+using citools;
 
 namespace ciexetest
 {
@@ -24,9 +24,9 @@ namespace ciexetest
         [Fact] public void CleanInstallWebApp1()    { Run(cli => cli.CleanInstallWebApp1); }
 
 
-        private void Run(Func<CiCli, CiCliCommand> commande)
+        private void Run(Func<CiExeCommands, CiExeCommand> commande)
         {
-            RunSync.Run<CiCli>(getDI(), cli =>  {
+            RunSync.Run<CiExeCommands>(getDI(), cli =>  {
                     var cmd = commande(cli);
                     // put break point here
                     return cmd.Action();
@@ -39,7 +39,7 @@ namespace ciexetest
             var builder = new ContainerBuilder();
             
             builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();           
-            builder.RegisterModule<CiCliModuleCiExeTest>();
+            builder.RegisterModule<CiExeCommandsModuleCiExeTest>();
 
             var container = builder.Build();
             return container;

@@ -2,9 +2,9 @@
 using System.Net;
 using System.Threading.Tasks;
 using Autofac;
-using cicli;
 using ciinfra;
-using cilib;
+using ciexecommands;
+using citools;
 
 namespace ciexe
 {
@@ -33,12 +33,12 @@ namespace ciexe
                 var readVaultToken = Console.ReadLine();
                 getDI().Resolve<Vault>().SetUriAndToken(new Uri(readVaultUri), new VaultToken() { Content = readVaultToken });
                 
-                var list = getDI().Resolve<CiCli>().CommandList();
+                var list = getDI().Resolve<CiExeCommands>().CommandList();
                 Console.WriteLine(list);
                 return;
             }
             
-            RunSync.Run<CiCli>(getDI(), cli => cli.ExecuteFromCommandLine(args[0]));            
+            RunSync.Run<CiExeCommands>(getDI(), cli => cli.ExecuteFromCommandLine(args[0]));            
         }
 
 
@@ -49,7 +49,7 @@ namespace ciexe
             builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();   
             builder.RegisterType<IVaultSource>().As<VaultSourceTestImpl>();   
                     
-            builder.RegisterModule<CiCliModule>();
+            builder.RegisterModule<CiExeCommandsModule>();
 
 
             var container = builder.Build();

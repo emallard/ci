@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using Renci.SshNet;
 using ciinfra;
+using citools;
 
 namespace ciinfra
 {

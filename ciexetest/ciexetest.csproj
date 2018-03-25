@@ -9,7 +9,8 @@
   <ItemGroup>
     <ProjectReference Include="../ciinfra/ciinfra.csproj" />
     <ProjectReference Include="../cilib/cilib.csproj" />
-    <ProjectReference Include="../cicli/cicli.csproj" />
+    <ProjectReference Include="../ciexecommands/ciexecommands.csproj" />
+    <ProjectReference Include="../citools/citools.csproj" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
