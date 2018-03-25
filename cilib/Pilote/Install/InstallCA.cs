@@ -14,18 +14,15 @@ namespace cilib
     {
         
         private readonly ShellHelper shellHelper;
-        private readonly IInfrastructure infrastructure;
         private readonly ICiLibCiDataDirectory cidataDir;
         private readonly Vault vault;
 
         public InstallCA(
             ShellHelper shellHelper,
-            IInfrastructure infrastructure,
             ICiLibCiDataDirectory cidataDir,
             Vault vault)
         {
             this.shellHelper = shellHelper;
-            this.infrastructure = infrastructure;
             this.cidataDir = cidataDir;
             this.vault = vault;
         }

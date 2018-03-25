@@ -20,7 +20,6 @@ namespace cilib
         private readonly DockerWrapper dockerWrapper;
         private readonly ShellHelper shellHelper;
         private readonly ICiLibCiDataDirectory cidataDir;
-        private readonly IInfrastructure infrastructure;
         private string repoTag = "registry:2";
         private string containerName = "privateregistry";
 
@@ -28,13 +27,11 @@ namespace cilib
         public InstallRegistry(
             DockerWrapper dockerWrapper,
             ShellHelper shellHelper,
-            ICiLibCiDataDirectory cidataDir,
-            IInfrastructure infrastructure)
+            ICiLibCiDataDirectory cidataDir)
         {
             this.dockerWrapper = dockerWrapper;
             this.shellHelper = shellHelper;
             this.cidataDir = cidataDir;
-            this.infrastructure = infrastructure;
         }
 
         public async Task Clean()
@@ -80,7 +77,7 @@ namespace cilib
                 shellHelper.Bash("mkdir -p {cidataDir}/privateregistry/var/lib/registry");
 
                 
-                var infraCidata = "/cidata";//infrastructure.CidataDirectory;
+                var infraCidata = "/cidata";
                 var p = new CreateContainerParameters();
                 p.Image = registryImage.ID;
 
