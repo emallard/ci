@@ -3,12 +3,11 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using ciinfra;
-using ciexecommands;
 
-namespace citest
+namespace citools
 {
-    public class AskParametersReadLine : IAskParametersSource
+
+    public class AskReadLine : IAsk
     {
         public string GetValue(string key)
         {

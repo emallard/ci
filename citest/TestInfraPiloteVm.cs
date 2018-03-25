@@ -7,7 +7,7 @@ using cisystem;
 using Autofac;
 using citest;
 using ciinfra;
-using cicli;
+using ciexecommands;
 
 public class TestInfraPiloteVm<T, U> 
     where T : IInfrastructure 
@@ -55,7 +55,7 @@ public class TestInfraPiloteVm<T, U>
         
 
         //builder.RegisterModule<CiInfraModule>();
-        builder.RegisterModule<CiCliModule>();
+        builder.RegisterModule<CiExeCommandsModule>();
         builder.RegisterAssemblyTypes(this.GetType().Assembly);
 
         var container = builder.Build();

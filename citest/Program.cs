@@ -15,9 +15,8 @@ namespace citest
             //var test = new Scenario1<GandiInfrastructure>(runner);
             //test.RunAll();
             
-
-            var test = new TestInstallVault<VBoxInfrastructure, AskParametersSourceMock>();
-            test.Run();
+            //var test = new TestInstallVault<VBoxInfrastructure, AskParametersSourceMock>();
+            //test.Run();
         }   
     }
 }

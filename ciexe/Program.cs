@@ -26,18 +26,20 @@ namespace ciexe
 
             if (args[0] == "help")
             {
-                // initialize vaultToken
-                Console.Write("uri : ");
-                var readVaultUri = Console.ReadLine();
-                Console.Write("token : ");
-                var readVaultToken = Console.ReadLine();
-                getDI().Resolve<Vault>().SetUriAndToken(new Uri(readVaultUri), new VaultToken() { Content = readVaultToken });
+
                 
                 var list = getDI().Resolve<CiExeCommands>().CommandList();
                 Console.WriteLine(list);
                 return;
             }
             
+            // initialize vault uri and vaultToken
+            Console.Write("uri : ");
+            var readVaultUri = Console.ReadLine();
+            Console.Write("token : ");
+            var readVaultToken = Console.ReadLine();
+            getDI().Resolve<Vault>().SetUriAndToken(new Uri(readVaultUri), new VaultToken() { Content = readVaultToken });
+
             RunSync.Run<CiExeCommands>(getDI(), cli => cli.ExecuteFromCommandLine(args[0]));            
         }
 
@@ -54,7 +56,6 @@ namespace ciexe
 
             var container = builder.Build();
             return container;
-            
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using citools;
 using VaultSharp;
@@ -55,14 +56,22 @@ namespace ciinit
 
         public string rootToken;
         public Uri vaultUri;
+        public string devopInfraPass;
+        public string devopAdminPass;
 
-        public CiInit()
+        private readonly IAsk ask;
+
+        public CiInit(IAsk ask)
         {
+            this.ask = ask;
         }
 
         public async Task TestRunOk()
         {
-            var client = Client();
+            // log with root token
+            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(rootToken);
+            var client = VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
+            
             var policy = await client.GetPolicyAsync("devop-infra");
             if (policy == null)
                 throw new TestRunException(this);
@@ -70,34 +79,46 @@ namespace ciinit
 
         public async Task TestAlreadyRun()
         {
-            var client = Client();
+            // log with root token
+            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(rootToken);
+            var client = VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
+
             var policy = await client.GetPolicyAsync("devop-infra");
             if (policy != null)
                 throw new AlreadyRunException(this);
         }
 
+        public void Need()
+        {   
+        }
+
         public void Ask()
         {   
-            // devop vault uri
-            // root-token
+            this.vaultUri = new Uri(this.ask.GetValue(CiInitAsk.VaultUri));
+            this.rootToken = this.ask.GetValue(CiInitAsk.RootToken);
+            this.devopInfraPass = this.ask.GetValue(CiInitAsk.DevInfraPassword);
+            this.devopAdminPass = this.ask.GetValue(CiInitAsk.DevAdminPassword);
         }
 
         public void Keep()
-        {
-            
+        {  
         }
 
         public async Task Run()
         {
-            var client = Client();
+            // log with root token
+            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(rootToken);
+            var client = VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
+
             var authenticationBackend = new AuthenticationBackend()
             {
-                AuthenticationPath = "/sys/auth/userpass",
+                AuthenticationPath = "auth/userpass",
                 BackendType = AuthenticationBackendType.UsernamePassword,
                 Description = "userpass"
             };
             await client.EnableAuthenticationBackendAsync(authenticationBackend);
 
+            // create policy devop-infra
             var devopInfraPolicy = new Policy()
             {
                 Name = "devop-infra-policy",
@@ -105,18 +126,28 @@ namespace ciinit
             };
             await client.WritePolicyAsync(devopInfraPolicy);
 
+            // create policy devop-admin
             var devopAdminPolicy = new Policy()
             {
                 Name = "devop-admin-policy",
                 Rules = "path \"secret/admin/*\" { capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]"
             };
             await client.WritePolicyAsync(devopAdminPolicy);
-        }
 
-        public IVaultClient Client()
-        {
-            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(rootToken);
-            return VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
+
+            // create user devop-infra
+            await client.WriteSecretAsync("auth/users/" + "devop-infra", new Dictionary<string, object>
+                    {
+                        { "password", this.devopInfraPass },
+                        { "policies", "devop-infra" }
+                    });
+
+            // create user devop-admin
+            await client.WriteSecretAsync("auth/users/" + "devop-admin", new Dictionary<string, object>
+                    {
+                        { "password", this.devopInfraPass },
+                        { "policies", "devop-admin" }
+                    });
         }
     }
 }

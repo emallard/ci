@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using Autofac;
-using cicli;
+using ciexecommands;
 using ciinfra;
 
 namespace citest
@@ -57,7 +57,7 @@ namespace citest
             }
 
             
-            
+            /*
             // From : Image with CI installed
             // To   : Vm with other software installed
             runner.Run<PiloteCi_1_InstallCA>();
@@ -68,7 +68,7 @@ namespace citest
             // To   : Container with production webapp 
             runner.Run<PiloteCi_1_Build>();
             runner.ForceRun<PiloteCi_2_Publish>();
-
+            */
 
 
             // Part 2 install app on webserver
@@ -91,7 +91,7 @@ namespace citest
             builder.RegisterType<T>().As<IInfrastructure>();
 
             //builder.RegisterModule<CiInfraModule>();
-            builder.RegisterModule<CiCliModule>();
+            builder.RegisterModule<CiExeCommandsModule>();
             builder.RegisterAssemblyTypes(this.GetType().Assembly);
 
             var container = builder.Build();
