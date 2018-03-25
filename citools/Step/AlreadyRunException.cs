@@ -8,8 +8,8 @@ namespace citools
 {
     public class AlreadyRunException : Exception
     {
-        public AlreadyRunException(Object obj) :
-            base(obj.GetType().Name)
+        public AlreadyRunException(IStep step, Exception inner) :
+            base(step.GetType().Name, inner)
         {
 
         }

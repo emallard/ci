@@ -1,7 +1,7 @@
 
 # Documentation of available commands
 
-- ci bootstrap
+- ci init
 
 - ci infra pilote create
 - ci infra pilote install-docker

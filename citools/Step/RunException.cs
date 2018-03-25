@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace citools
 {
-    public class TestRunException : Exception
+    public class RunException : Exception
     {
-        public TestRunException(Object obj) :
-            base(obj.GetType().Name)
+        public RunException(IStep step, Exception inner) :
+            base(step.GetType().Name, inner)
         {
 
         }

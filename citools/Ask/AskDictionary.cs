@@ -10,9 +10,10 @@ namespace citools
     public class AskDictionary : IAsk
     {
         public Dictionary<string, string> dic = new Dictionary<string, string>();
-        public string GetValue(string key)
+        public Task<string> GetValue(string key)
         {
-            return dic[key];
+            var val = dic[key];
+            return new Task<string>(() => val);
         }
     }
 }

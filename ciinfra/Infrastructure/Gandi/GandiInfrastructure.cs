@@ -90,6 +90,12 @@ namespace ciinfra
             throw new NotImplementedException();
         }
 
+        public bool VmExists(InfrastructureKey key, string vmName)
+        {
+            var vmInfo = xmlRPC.TryVmInfo(key.Content, vmName);
+            return vmInfo != null;
+        }
+
         public SshClient Ssh(InfrastructureKey key, string vmName, string user, string password)
         {
             var sshUri = this.GetVmSshUri(key, vmName);
@@ -103,5 +109,7 @@ namespace ciinfra
             sshClient.Connect();
             return sshClient;
         }
+
+        
     }
 }

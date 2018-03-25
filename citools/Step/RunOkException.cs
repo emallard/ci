@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace citools
 {
-    public class NeedException : Exception
+    public class RunOkException : Exception
     {
-        public NeedException(IStep step, Exception inner) :
+        public RunOkException(IStep step, Exception inner) :
             base(step.GetType().Name, inner)
         {
 

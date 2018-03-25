@@ -8,18 +8,18 @@ namespace citools
 {
     public interface IStep 
     {
-        void Need();
+        Task Need();
 
-        void Ask();
+        Task Ask();
 
-        void Run();
+        Task Run();
         
-        void Keep();
+        Task Keep();
 
-        void TestRunOk();
+        Task TestRunOk();
 
-        void TestAlreadyRun();
+        Task TestAlreadyRun();
 
-        void Clean();        
+        Task Clean();        
     }
 }

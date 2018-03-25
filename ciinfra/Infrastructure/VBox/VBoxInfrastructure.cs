@@ -42,6 +42,10 @@ namespace ciinfra
             this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";       
         }
 
+        public bool VmExists(InfrastructureKey key, string vmName)
+        {
+            return vBoxHelper.VmExists(vmName);
+        }
 
         public void TryToStartVm(InfrastructureKey key, string vmName)
         {
@@ -80,11 +84,6 @@ namespace ciinfra
             // check if clonable vm machine exists
             if (!File.Exists(clonableVmOvf))
                 throw new Exception($"{clonableVmOvf} doesn't exists. Please run VBoxClonableVm.sh");
-        }
-
-        private void CheckVmExists(string vmName)
-        {
-            vBoxHelper.CheckVmExists(vmName);
         }
 
         private void CheckVmDoesNotExists(string vmName)

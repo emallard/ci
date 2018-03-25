@@ -6,12 +6,11 @@ using System.Linq;
 
 namespace citools
 {
-    public class NeedException : Exception
+    public class StepAssertException : Exception 
     {
-        public NeedException(IStep step, Exception inner) :
-            base(step.GetType().Name, inner)
+        public StepAssertException(string message)
         {
-
+            
         }
     }
 }

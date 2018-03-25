@@ -8,6 +8,6 @@ namespace citools
 {
     public interface IAsk
     {
-        string GetValue(string key);
+        Task<string> GetValue(string key);
     }
 }

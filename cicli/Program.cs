@@ -25,7 +25,18 @@ namespace cicli
 
             if (args[0] == "init")
             {
-                getDI().Resolve<CiInit>().Run();
+                new StepRunner().RunSync<CiInit>(getDI());
+            }
+            else if (args[0] == "infra")
+            {
+                if (args[2] == "pilote")
+                {
+                    if (args[3] == "create")
+                    {
+                        new StepRunner().RunSync<InfraPiloteCreateVm>(getDI());
+                    }
+                }
+                
             }
 
         }

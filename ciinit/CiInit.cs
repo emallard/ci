@@ -51,7 +51,7 @@ curl \
 
 namespace ciinit
 {
-    public class CiInit
+    public class CiInit : IStep
     {
 
         public string rootToken;
@@ -73,8 +73,7 @@ namespace ciinit
             var client = VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
             
             var policy = await client.GetPolicyAsync("devop-infra");
-            if (policy == null)
-                throw new TestRunException(this);
+            StepAssert.IsTrue(policy != null);
         }
 
         public async Task TestAlreadyRun()
@@ -84,24 +83,25 @@ namespace ciinit
             var client = VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
 
             var policy = await client.GetPolicyAsync("devop-infra");
-            if (policy != null)
-                throw new AlreadyRunException(this);
+            StepAssert.IsTrue(policy == null);
         }
 
-        public void Need()
+        public async Task Need()
         {   
+            await Task.CompletedTask;
         }
 
-        public void Ask()
+        public async Task Ask()
         {   
-            this.vaultUri = new Uri(this.ask.GetValue(CiInitAsk.VaultUri));
-            this.rootToken = this.ask.GetValue(CiInitAsk.RootToken);
-            this.devopInfraPass = this.ask.GetValue(CiInitAsk.DevInfraPassword);
-            this.devopAdminPass = this.ask.GetValue(CiInitAsk.DevAdminPassword);
+            this.vaultUri = new Uri(await this.ask.GetValue(CiInitAsk.VaultUri));
+            this.rootToken = await this.ask.GetValue(CiInitAsk.RootToken);
+            this.devopInfraPass = await this.ask.GetValue(CiInitAsk.DevInfraPassword);
+            this.devopAdminPass = await this.ask.GetValue(CiInitAsk.DevAdminPassword);
         }
 
-        public void Keep()
+        public async Task Keep()
         {  
+            await Task.CompletedTask;
         }
 
         public async Task Run()
@@ -148,6 +148,11 @@ namespace ciinit
                         { "password", this.devopInfraPass },
                         { "policies", "devop-admin" }
                     });
+        }
+
+        public Task Clean()
+        {
+            throw new NotImplementedException();
         }
     }
 }
