@@ -8,8 +8,8 @@ namespace citools
 {
     public class RunException : Exception
     {
-        public RunException(IStep step, Exception inner) :
-            base(step.GetType().Name, inner)
+        public RunException(Exception inner) :
+            base("", inner)
         {
 
         }

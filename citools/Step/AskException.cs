@@ -8,8 +8,8 @@ namespace citools
 {
     public class AskException : Exception
     {
-        public AskException(IStep step, Exception inner) :
-            base(step.GetType().Name, inner)
+        public AskException(Exception inner) :
+            base("", inner)
         {
 
         }

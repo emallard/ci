@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ciinit
+namespace cisteps
 {
     public class CiInitAsk
     {

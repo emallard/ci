@@ -2,7 +2,7 @@
 using Autofac;
 using ciexecommands;
 using ciinfra;
-using ciinit;
+using cisteps;
 using citools;
 
 namespace cicli

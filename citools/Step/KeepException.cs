@@ -8,8 +8,8 @@ namespace citools
 {
     public class KeepException : Exception
     {
-        public KeepException(IStep step, Exception inner) :
-            base(step.GetType().Name, inner)
+        public KeepException(Exception inner) :
+            base("", inner)
         {
 
         }

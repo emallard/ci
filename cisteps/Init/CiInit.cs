@@ -49,7 +49,7 @@ curl \
 # fill stdin with {"password": "superSecretPassword"} Ctrl+D
 */
 
-namespace ciinit
+namespace cisteps
 {
     public class CiInit : IStep
     {

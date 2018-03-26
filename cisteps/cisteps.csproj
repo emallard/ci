@@ -1,17 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="../ciinfra/ciinfra.csproj" />
     <ProjectReference Include="../cilib/cilib.csproj" />
     <ProjectReference Include="../citools/citools.csproj" />
-    <ProjectReference Include="../cisteps/cisteps.csproj" />
     <ProjectReference Include="../ciexecommands/ciexecommands.csproj" />
     <PackageReference Include="autofac" Version="4.6.2" />
+    <PackageReference Include="Docker.Dotnet" Version="3.125.1" />
+    <PackageReference Include="newtonsoft.json" Version="11.0.1" />
+    <PackageReference Include="ssh.net" Version="2016.1.0" />
+    <PackageReference Include="VaultSharp" Version="0.6.4" />
   </ItemGroup>
+
 
 </Project>

@@ -8,8 +8,8 @@ namespace citools
 {
     public class NeedException : Exception
     {
-        public NeedException(IStep step, Exception inner) :
-            base(step.GetType().Name, inner)
+        public NeedException(Exception inner) :
+            base("", inner)
         {
 
         }

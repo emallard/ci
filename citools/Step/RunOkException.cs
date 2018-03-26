@@ -8,8 +8,8 @@ namespace citools
 {
     public class RunOkException : Exception
     {
-        public RunOkException(IStep step, Exception inner) :
-            base(step.GetType().Name, inner)
+        public RunOkException(Exception inner) :
+            base("", inner)
         {
 
         }
