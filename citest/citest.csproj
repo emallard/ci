@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="../ciexecommands/ciexecommands.csproj" />
     <ProjectReference Include="../ciinfra/ciinfra.csproj" />
+    <ProjectReference Include="../cisteps/cisteps.csproj" />
     <ProjectReference Include="../cisystem/cisystem.csproj" />
     <ProjectReference Include="../citools/citools.csproj" />
     <PackageReference Include="autofac" Version="4.6.2" />

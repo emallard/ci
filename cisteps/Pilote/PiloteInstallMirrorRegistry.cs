@@ -10,11 +10,11 @@ using VaultSharp.Backends.Authentication.Models.Token;
 
 namespace cisteps
 {
-    public class PiloteMirrorRegistry : IStep
+    public class PiloteInstallMirrorRegistry : IStep
     {
         private readonly PiloteStep pstep;
 
-        public PiloteMirrorRegistry(
+        public PiloteInstallMirrorRegistry(
             PiloteStep pstep)
         {
             this.pstep = pstep;

@@ -9,28 +9,48 @@ namespace citools
 {
     public class StepRunner
     {
-        
-        public async Task Run(IStep step)
+        public async Task SafeRun(params IStep[] steps)
         {
-            try { await step.TestAlreadyRun();}
-            catch (Exception e1) {throw new StepException(step, e1);}
-/*
-            try { await step.Need();}
-            catch (Exception e2) {throw new NeedException(step, e2);}
+            foreach (var s in steps)
+                await this.SafeRun(s);
+        }
 
-            try { await step.Ask();}
-            catch (Exception e3) {throw new AskException(step, e3);}
-*/
+        // Safe Run : doesn't do a step if TestRunOk is successful
+        public async Task SafeRun(IStep step)
+        {
+            try { 
+                await step.TestRunOk(); 
+                return;
+            }
+            catch (Exception) {}
+
+            await step.Run();
+        }
+
+        // Test Run : doesn't do a step if TestRunOk is successful
+        //            and clean before running the test
+        public async Task TestRun(IStep step)
+        {
+            try { 
+                await step.TestRunOk();
+                return;
+            }
+            catch (Exception) {}
+
+            await this.Clean(step);
+            await this.Run(step);
+        }
+
+        private async Task Run(IStep step)
+        {
             try { await step.Run();}
             catch (Exception e4) {throw new StepException(step, e4);}
-/*
-            try { await step.Keep();}
-            catch (Exception e5) {throw new KeepException(step, e5);}
-*/
-            try { await step.TestRunOk();}
-            catch (Exception e6) {throw new StepException(step, e6);}
+        }
 
-
+        private async Task Clean(IStep step)
+        {
+            try { await step.Clean();}
+            catch (Exception e4) {throw new StepException(step, e4);}
         }
 
         public void RunSync<T>(IContainer container) where T : IStep

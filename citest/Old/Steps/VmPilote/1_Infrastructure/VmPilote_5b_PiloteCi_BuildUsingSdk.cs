@@ -31,15 +31,6 @@ namespace citest
 
         public void Run()
         {
-            try
-            {
-                vmPilote.SshCommand("dotnet --version");
-            }
-            catch(Exception)
-            {
-                vmPilote.InstallDotNetCoreSdk();
-            }
-            
             vmPilote.CloneOrPullCiSources();
             vmPilote.BuildCiUsingSdk();
         }

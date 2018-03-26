@@ -8,6 +8,8 @@ using Autofac;
 using citest;
 using ciinfra;
 using ciexecommands;
+using cisteps;
+using citools;
 
 public class TestInfraPiloteVm<T, U> 
     where T : IInfrastructure 
@@ -16,34 +18,28 @@ public class TestInfraPiloteVm<T, U>
     CiSystemConfig ciSystemConfig;
     CiSystem ciSystem;
     
-    public void Run()
+    public async Task Run()
     {
         var container = Init();
-        var infrastructure = container.Resolve<IInfrastructure>();
+        var infrastructure = container.Resolve<InfraPiloteCreateVm>();
         var askParameters = container.Resolve<AskParameters>();
 
-        infrastructure.CreateVm(
-            askParameters.InfrastructureKey, 
-            askParameters.PiloteRootPassword, 
-            askParameters.PiloteVmName, 
-            askParameters.PiloteAdminUser, 
-            askParameters.PiloteAdminPassword);
+        var stepRunner = new StepRunner();
 
-        var vmPilote = infrastructure.GetVmPilote(askParameters.PiloteSshConnection());
-        vmPilote.InstallHosts();
-        vmPilote.InstallDocker();
-        vmPilote.InstallMirrorRegistry();
-        vmPilote.InstallDotNetCoreSdk();
-        vmPilote.CloneOrPullCiSources();
-        vmPilote.BuildCiUsingSdk();
-    }
+        await stepRunner.SafeRun(
+            container.Resolve<InfraPiloteCreateVm>());
 
-    void TestOk() 
-    {
-    }
+        await stepRunner.SafeRun(
+            container.Resolve<PiloteInstallDocker>());
 
-    void Prerequisite() 
-    {
+        await stepRunner.SafeRun(
+            container.Resolve<PiloteInstallMirrorRegistry>());
+
+        await stepRunner.SafeRun(
+            container.Resolve<PiloteInstallMirrorRegistry>());
+    
+        await stepRunner.SafeRun(
+            container.Resolve<PiloteInstallDotNetCoreSdk>());
     }
 
     private IContainer Init()
