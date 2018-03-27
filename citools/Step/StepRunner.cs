@@ -15,11 +15,11 @@ namespace citools
                 await this.SafeRun(s);
         }
 
-        // Safe Run : doesn't do a step if TestRunOk is successful
+        // Safe Run : doesn't do a step if CheckRunOk is successful
         public async Task SafeRun(IStep step)
         {
             try { 
-                await step.TestRunOk(); 
+                await step.CheckRunOk(); 
                 return;
             }
             catch (Exception) {}
@@ -27,12 +27,12 @@ namespace citools
             await step.Run();
         }
 
-        // Test Run : doesn't do a step if TestRunOk is successful
+        // Test Run : doesn't do a step if CheckRunOk is successful
         //            and clean before running the test
         public async Task TestRun(IStep step)
         {
             try { 
-                await step.TestRunOk();
+                await step.CheckRunOk();
                 return;
             }
             catch (Exception) {}

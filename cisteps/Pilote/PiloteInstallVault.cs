@@ -39,7 +39,7 @@ namespace cisteps
         }
 
 
-        public async Task TestRunOk()
+        public async Task CheckRunOk()
         {
             var client = await pstep.GetPiloteSshClient2();
             var result = client.SshCommand("curl http://127.0.0.1:8200/v1/");

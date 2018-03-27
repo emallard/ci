@@ -66,13 +66,13 @@ namespace cisteps
             this.ask = ask;
         }
 
-        public async Task TestRunOk()
+        public async Task CheckRunOk()
         {
             // log with root token
             IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(rootToken);
             var client = VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
             
-            var policy = await client.GetPolicyAsync("devop-infra");
+            var policy = await client.GetPolicyAsync("devop");
             StepAssert.IsTrue(policy != null);
         }
 
@@ -82,7 +82,7 @@ namespace cisteps
             IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(rootToken);
             var client = VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
 
-            var policy = await client.GetPolicyAsync("devop-infra");
+            var policy = await client.GetPolicyAsync("devop");
             StepAssert.IsTrue(policy == null);
         }
 
@@ -119,34 +119,37 @@ namespace cisteps
             await client.EnableAuthenticationBackendAsync(authenticationBackend);
 
             // create policy devop-infra
+            /*
             var devopInfraPolicy = new Policy()
             {
                 Name = "devop-infra-policy",
                 Rules = "path \"secret/infra/*\" { capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]"
             };
             await client.WritePolicyAsync(devopInfraPolicy);
+            */
 
-            // create policy devop-admin
+            // create devop-policy
             var devopAdminPolicy = new Policy()
             {
-                Name = "devop-admin-policy",
+                Name = "devop-policy",
                 Rules = "path \"secret/admin/*\" { capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]"
             };
             await client.WritePolicyAsync(devopAdminPolicy);
 
-
+            /*
             // create user devop-infra
             await client.WriteSecretAsync("auth/users/" + "devop-infra", new Dictionary<string, object>
                     {
                         { "password", this.devopInfraPass },
                         { "policies", "devop-infra" }
                     });
+            */
 
-            // create user devop-admin
-            await client.WriteSecretAsync("auth/users/" + "devop-admin", new Dictionary<string, object>
+            // create user devop
+            await client.WriteSecretAsync("auth/users/" + "devop", new Dictionary<string, object>
                     {
                         { "password", this.devopInfraPass },
-                        { "policies", "devop-admin" }
+                        { "policies", "devop" }
                     });
         }
 

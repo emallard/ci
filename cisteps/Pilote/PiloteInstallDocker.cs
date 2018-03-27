@@ -49,7 +49,7 @@ namespace cisteps
 
 
 
-        public async Task TestRunOk()
+        public async Task CheckRunOk()
         {
             var vaultUri = new Uri(await helper.Ask("vaultUri"));
             var vaultToken = await helper.Ask("vaultToken");

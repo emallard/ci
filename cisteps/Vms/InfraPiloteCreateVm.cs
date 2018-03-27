@@ -71,7 +71,7 @@ namespace cisteps
             await Task.CompletedTask;
         }
 
-        public async Task TestRunOk()
+        public async Task CheckRunOk()
         {
             var apikey = await helper.Ask(ApiKey);
             var piloteUser = await helper.Ask(AdminUser);

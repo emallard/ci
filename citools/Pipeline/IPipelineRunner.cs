@@ -6,14 +6,10 @@ using System.Linq;
 
 namespace citools
 {
-    public interface IStep 
+    public interface IPipelineRunner
     {
-        Task Run();
+        Task Run(IStep step);
 
-        Task CheckRunOk();
-
-        Task TestAlreadyRun();
-
-        Task Clean();        
+        //void Run(IPipeline pipeline);
     }
 }

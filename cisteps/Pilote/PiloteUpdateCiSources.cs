@@ -44,7 +44,7 @@ namespace cisteps
         }
 
 
-        public async Task TestRunOk()
+        public async Task CheckRunOk()
         {
             var client = await pstep.GetPiloteSshClient2();
             var result = client.SshCommand("cd ~/ci && git config --get remote.origin.url");

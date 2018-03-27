@@ -48,7 +48,7 @@ namespace cisteps
         }
 
 
-        public async Task TestRunOk()
+        public async Task CheckRunOk()
         {
             var client = await pstep.GetPiloteSshClient2();
 

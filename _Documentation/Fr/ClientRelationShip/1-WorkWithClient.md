@@ -11,3 +11,20 @@
 
 - Processus d'intégration continue
 - Cryptage des configurations
+
+##  Les logs, la supervision
+
+Qu'est-ce qui est loggué, pendant combien de temps, ça représente quoi en terme d'espace disque.
+
+## La maintenance
+
+Pourquoi, et combien ça coute
+
+
+## Développer en partenariat avec le client
+
+Le cahier des charges, le TDD, l'agile
+
+## Developper, en quoi ça consiste
+
+Créer des branches, écrire des tests
