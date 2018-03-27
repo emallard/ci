@@ -13,7 +13,7 @@ namespace citest
     {
         static void Main(string[] args)
         {
-            string moduleTypeStr = typeof(TestModule).Name;
+            string moduleTypeStr = typeof(MockModule).Name;
             string pipelineTypeStr = typeof(PipelineInit).Name;
             string pipelineRunnerTypeStr = typeof(PipelineRunnerCheck).Name;
 
@@ -26,7 +26,7 @@ namespace citest
                 pipelineRunnerTypeStr = lastRun[2];
             }
 
-            var module = typeof(TestModule).Assembly.GetType(moduleTypeStr);
+            var module = typeof(MockModule).Assembly.GetType(moduleTypeStr);
             var pipelineType = typeof(PipelineInit).Assembly.GetType(pipelineTypeStr);
             var pipelineRunnerType = typeof(PipelineRunnerTest).Assembly.GetType(pipelineRunnerTypeStr);
 
@@ -42,7 +42,7 @@ namespace citest
 
         static void Main1(string[] args)
         {
-            var module = typeof(TestModule);
+            var module = typeof(MockModule);
             var pipelineType = typeof(PipelineInit);
             var pipelineRunnerType = typeof(PipelineRunnerTest);
             Run(module, pipelineType, pipelineRunnerType).Wait();

@@ -18,7 +18,7 @@ namespace ciexecommands
         
         SshConnection connection;
         Uri vaultUri;
-        VaultToken vaultToken;
+        string vaultToken;
 
         string volume1;
         string volume2;
@@ -76,7 +76,7 @@ namespace ciexecommands
             this.CleanInstallWebApp1 = Create<InstallWebApp>("clean-webapp1", async () => await installWebApp.CleanInstall());
         }
 
-        public CiExeCommands Configure(SshConnection connection, Uri vaultUri, VaultToken vaultToken)
+        public CiExeCommands Configure(SshConnection connection, Uri vaultUri, string vaultToken)
         {
             this.connection = connection;
             this.vaultToken = vaultToken;
@@ -93,7 +93,7 @@ namespace ciexecommands
                     DockerRun(command.CommandLine), 
                     command.CommandLine + ".sh", new string[]{
                         "uri ", vaultUri.ToString(),
-                        "token : ", vaultToken.Content.ToString()});
+                        "token : ", vaultToken});
         }
 
         public string SshCommand(string command)

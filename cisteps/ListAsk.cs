@@ -6,11 +6,10 @@ using System.Linq;
 
 namespace cisteps
 {
-    public class CiInitAsk
+    public class ListAsk
     {
         public const string VaultUri = "vault uri";
         public const string RootToken = "root token";
-        public const string DevInfraPassword = "devop-infra password";
-        public const string DevAdminPassword = "devop-admin password";
+        public const string DevopPassword = "devop password";
     }
 }

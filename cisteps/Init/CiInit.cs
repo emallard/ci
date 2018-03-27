@@ -64,7 +64,7 @@ namespace cisteps
         public async Task CheckRunOk()
         {
             // log with root token
-            var rootToken = await this.ask.GetValue(CiInitAsk.RootToken);
+            var rootToken = await this.ask.GetValue(ListAsk.RootToken);
             var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
             var policy = await client.GetPolicyAsync("devop");
             StepAssert.IsTrue(policy != null);
@@ -73,7 +73,7 @@ namespace cisteps
         public async Task TestAlreadyRun()
         {
             // log with root token
-            var rootToken = await this.ask.GetValue(CiInitAsk.RootToken);
+            var rootToken = await this.ask.GetValue(ListAsk.RootToken);
             var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
             var policy = await client.GetPolicyAsync("devop");
             StepAssert.IsTrue(policy == null);
@@ -81,10 +81,9 @@ namespace cisteps
 
         public async Task Run()
         {   
-            var vaultUri = new Uri(await this.ask.GetValue(CiInitAsk.VaultUri));
-            var rootToken = await this.ask.GetValue(CiInitAsk.RootToken);
-            var devopInfraPass = await this.ask.GetValue(CiInitAsk.DevInfraPassword);
-            var devopAdminPass = await this.ask.GetValue(CiInitAsk.DevAdminPassword);
+            var vaultUri = new Uri(await this.ask.GetValue(ListAsk.VaultUri));
+            var rootToken = await this.ask.GetValue(ListAsk.RootToken);
+            var devopPass = await this.ask.GetValue(ListAsk.DevopPassword);
         
 
             // log with root token
@@ -95,12 +94,12 @@ namespace cisteps
             var devopAdminPolicy = new Policy()
             {
                 Name = "devop-policy",
-                Rules = "path \"secret/admin/*\" { capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]"
+                Rules = "path \"secret/devop/*\" { capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]"
             };
             await client.WritePolicyAsync(devopAdminPolicy);
 
             // create user devop
-            await client.WriteUser("devop", devopInfraPass,"devop-policy");
+            await client.WriteUser("devop", devopPass,"devop-policy");
         }
 
         public Task Clean()
