@@ -38,7 +38,6 @@ namespace ciexecommands
         public CiExeCommand CleanTraefik;
         public CiExeCommand InstallWebApp1;
         public CiExeCommand CleanInstallWebApp1;
-        private readonly Vault vault;
 
         public CiExeCommands(
             InstallCA installCA,
@@ -48,8 +47,7 @@ namespace ciexecommands
 
             // WebServer
             InstallTraefik installTraefik,
-            InstallWebApp installWebApp,
-            Vault vault
+            InstallWebApp installWebApp
             )
         {
 
@@ -76,7 +74,6 @@ namespace ciexecommands
 
             this.InstallWebApp1 = Create<InstallWebApp>("webserver-install-webapp1", async () => await installWebApp.Install());
             this.CleanInstallWebApp1 = Create<InstallWebApp>("clean-webapp1", async () => await installWebApp.CleanInstall());
-            this.vault = vault;
         }
 
         public CiExeCommands Configure(SshConnection connection, Uri vaultUri, VaultToken vaultToken)

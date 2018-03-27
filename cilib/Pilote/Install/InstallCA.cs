@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,22 +12,24 @@ namespace cilib
         
         private readonly ShellHelper shellHelper;
         private readonly ICiLibCiDataDirectory cidataDir;
-        private readonly Vault vault;
 
         public InstallCA(
             ShellHelper shellHelper,
-            ICiLibCiDataDirectory cidataDir,
-            Vault vault)
+            ICiLibCiDataDirectory cidataDir)
         {
             this.shellHelper = shellHelper;
             this.cidataDir = cidataDir;
-            this.vault = vault;
         }
 
         
-        public async Task Install() 
+        public Task Install()
         {
-            var domain = vault.ReadSecret("PrivateRegistryDomain");
+            throw new NotImplementedException();
+        }
+
+        public async Task Install(string privateRegistryDomain)
+        {
+            var domain = privateRegistryDomain;
             //var ip = infrastructure.GetVmPilote().Ip;
 
             var dir = cidataDir + "/tls";
@@ -84,37 +87,18 @@ namespace cilib
         }
 
 
-        public async Task CreateRootCA2() 
+        public async Task CreateRootCA2(string infrastructureDomainName) 
         {
             var myCAKey = shellHelper.Bash("openssl genrsa 2048");
             
             var myCAPem =  shellHelper.BashAndStdIn(
                 "openssl req -x509 -new -nodes -key /dev/stdin -sha256 -days 1825"
-                +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + vault.ReadSecret("InfrastructureDomainName") + "' ", myCAKey);
+                +" -subj '/C=US/ST=NY/L=Somewhere/organizationName=MyOrg/OU=MyDept/CN=" + infrastructureDomainName + "' ", myCAKey);
             
 
             await Task.CompletedTask;
         }
 
-        private async void StoreCAKeyInVault(string myCAKey)
-        {
-            //"openssl genrsa -des3 -out myCA.key 2048";
-
-/*
-            var vaultAddress = "http://127.0.0.1:8200";
-            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo("myroot");
-            var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(new System.Uri(vaultAddress), tokenAuthenticationInfo);
-*/
-            var mountpoint = "secret";// + Guid.NewGuid();
-            var path = mountpoint + "/CA";
-            var values = new Dictionary<string, object>
-            {
-                {"private.key", myCAKey}
-            };
-/*
-            await vaultClient.GenericWriteSecretAsync(path, values);
-*/
-        }
 
 
         public async Task InitNewHost(string host)

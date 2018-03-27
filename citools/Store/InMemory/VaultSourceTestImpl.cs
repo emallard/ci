@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace citools
 {
-    public class VaultSourceTestImpl : IVaultSource
+    public class VaultSourceTestImpl
     {
         List<VaultPolicy> policies = new List<VaultPolicy>();
         Dictionary<string, VaultPolicy> tokens = new Dictionary<string, VaultPolicy>();

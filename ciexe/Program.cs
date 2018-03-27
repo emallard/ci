@@ -38,8 +38,7 @@ namespace ciexe
             var readVaultUri = Console.ReadLine();
             Console.Write("token : ");
             var readVaultToken = Console.ReadLine();
-            getDI().Resolve<Vault>().SetUriAndToken(new Uri(readVaultUri), new VaultToken() { Content = readVaultToken });
-
+            
             RunSync.Run<CiExeCommands>(getDI(), cli => cli.ExecuteFromCommandLine(args[0]));            
         }
 
@@ -49,7 +48,6 @@ namespace ciexe
             var builder = new ContainerBuilder();
             
             builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();   
-            builder.RegisterType<IVaultSource>().As<VaultSourceTestImpl>();   
                     
             builder.RegisterModule<CiExeCommandsModule>();
 
