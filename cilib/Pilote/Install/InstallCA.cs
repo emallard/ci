@@ -3,9 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using citools;
-using VaultSharp.Backends.Authentication.Models;
-using VaultSharp.Backends.Authentication.Models.Token;
-using VaultSharp.Backends.Secret.Models;
 
 namespace cilib
 {
@@ -103,33 +100,20 @@ namespace cilib
         {
             //"openssl genrsa -des3 -out myCA.key 2048";
 
+/*
             var vaultAddress = "http://127.0.0.1:8200";
             IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo("myroot");
             var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(new System.Uri(vaultAddress), tokenAuthenticationInfo);
-
-
+*/
             var mountpoint = "secret";// + Guid.NewGuid();
             var path = mountpoint + "/CA";
             var values = new Dictionary<string, object>
             {
                 {"private.key", myCAKey}
             };
-
-            /*
-            await vaultClient.MountSecretBackendAsync(new SecretBackend()
-                {
-                    BackendType = SecretBackendType.Generic,
-                    MountPoint = mountpoint
-                });*/
-
+/*
             await vaultClient.GenericWriteSecretAsync(path, values);
-
-    /*
-            var readValues = await vaultClient.GenericReadSecretAsync(path);
-            var readData = readValues.Data; // gives back the dictionary
-
-            await vaultClient.GenericDeleteSecretAsync(path);
-    */
+*/
         }
 
 
@@ -152,10 +136,11 @@ namespace cilib
             dev.mergebot.com.csr (the certificate signing request), 
             and dev.mergebot.com.crt (the signed certificate).
     */
+    /*
             var vaultAddress = "http://127.0.0.1:8200";
             IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo("myroot");
             var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(new System.Uri(vaultAddress), tokenAuthenticationInfo);
-
+    */
     /*
             var mountpoint = "secret";// + Guid.NewGuid();
             var path = mountpoint + "/" + host;

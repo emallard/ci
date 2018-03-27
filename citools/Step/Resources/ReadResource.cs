@@ -9,16 +9,16 @@ namespace citools
 {
     public class ReadResource<T>
     {
-        private readonly Func<Uri, IAuthenticationInfo, Task<T>> func;
+        private readonly Func<IAuthenticationInfo, Task<T>> func;
 
-        public ReadResource(Func<Uri, IAuthenticationInfo, Task<T>> func)
+        public ReadResource(Func<IAuthenticationInfo, Task<T>> func)
         {
             this.func = func;
         }
         
-        public async Task<T> Read(Uri uri, IAuthenticationInfo auth)
+        public async Task<T> Read(IAuthenticationInfo auth)
         {
-            return await this.func(uri, auth);
+            return await this.func(auth);
         }
     }
 }

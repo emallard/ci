@@ -7,16 +7,20 @@ using citools;
 
 namespace cisteps
 {   
-    public class PipelineCreatePiloteVm : IPipeline
+    public class PipelineFull : IPipeline
     {
         Func<IPipelineRunner, Task> run;
 
-        PipelineCreatePiloteVm(
-            InfraPiloteCreateVm infraPiloteCreateVm
+        PipelineFull(
+            PipelineInit pipelineInit,
+            PipelineCreatePiloteVm pipelineCreatePiloteVm,
+            PipelineInstallPiloteVm pipelineInstallPiloteVm
             )
         {
             this.run = async (IPipelineRunner runner) => {
-                await runner.Run(infraPiloteCreateVm);
+                await pipelineInit.Run(runner);
+                await pipelineCreatePiloteVm.Run(runner);
+                await pipelineInstallPiloteVm.Run(runner);
             };
         }
         

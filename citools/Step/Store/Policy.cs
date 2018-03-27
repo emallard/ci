@@ -4,10 +4,12 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace citest
+namespace citools
 {
-    public interface IAskParametersSource
+    
+    public class Policy
     {
-        string GetValue(string key);
+        public string Name {get;set;}
+        public string Rules {get;set;}
     }
 }

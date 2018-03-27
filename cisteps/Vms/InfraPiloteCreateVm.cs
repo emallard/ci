@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using citools;
-using VaultSharp.Backends.Authentication.Models;
-using VaultSharp.Backends.Authentication.Models.Token;
 using ciinfra;
 
 namespace cisteps
@@ -42,7 +40,6 @@ namespace cisteps
 
         public async Task Run()
         {
-            var vaultUri = new Uri(await helper.Ask(VaultUri));
             var devopInfraToken = await helper.Ask(DevopInfraToken);
             
             var apikey = await helper.Ask(ApiKey);
@@ -57,11 +54,11 @@ namespace cisteps
 
 
             IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(devopInfraToken);
-            await listResources.InfrastructureApiKey.Write(vaultUri, tokenAuthenticationInfo, apikey);
-            await listResources.PiloteRootPassword.Write(vaultUri, tokenAuthenticationInfo, rootPassword);
-            await listResources.PiloteUser.Write(vaultUri, tokenAuthenticationInfo, piloteUser);
-            await listResources.PilotePassword.Write(vaultUri, tokenAuthenticationInfo, pilotePassword);
-            await listResources.PiloteSshUri.Write(vaultUri, tokenAuthenticationInfo, piloteSshUri);
+            await listResources.InfrastructureApiKey.Write(tokenAuthenticationInfo, apikey);
+            await listResources.PiloteRootPassword.Write(tokenAuthenticationInfo, rootPassword);
+            await listResources.PiloteUser.Write(tokenAuthenticationInfo, piloteUser);
+            await listResources.PilotePassword.Write(tokenAuthenticationInfo, pilotePassword);
+            await listResources.PiloteSshUri.Write(tokenAuthenticationInfo, piloteSshUri);
         }
 
         public async Task TestAlreadyRun()

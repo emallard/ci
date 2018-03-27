@@ -20,9 +20,10 @@ namespace cisteps
             this.pstep = pstep;
         }
 
-        public Task Clean()
+        public async Task Clean()
         {
-            throw new NotImplementedException();
+            var vmPilote = await pstep.GetVmPilote();
+            vmPilote.CleanCiSources();
         }
 
         public async Task Run()

@@ -6,10 +6,8 @@ using System.Linq;
 
 namespace citools
 {
-    public interface IStore
+    public interface IStoreClientFactory
     {
-        Task<string> Read(Uri uri, string path);
-
-        Task Write(Uri uri, string path, string value);
+        IStoreClient CreateClient(Uri uri, IAuthenticationInfo authenticationInfo);
     }
 }

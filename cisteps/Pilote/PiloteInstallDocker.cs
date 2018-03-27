@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using citools;
 using ciinfra;
-using VaultSharp.Backends.Authentication.Models;
-using VaultSharp.Backends.Authentication.Models.Token;
 
 namespace cisteps
 {
@@ -32,11 +30,9 @@ namespace cisteps
 
         public async Task Run()
         {
-            var vaultUri = new Uri(await helper.Ask("vaultUri"));
             var vaultToken = await helper.Ask("vaultToken");
             IAuthenticationInfo auth = new TokenAuthenticationInfo(vaultToken);
-
-            var sshConnection = await listResources.PiloteSshConnection.Read(vaultUri, auth);
+            var sshConnection = await listResources.PiloteSshConnection.Read(auth);
 
             infrastructure.GetVmPilote(sshConnection).InstallDocker();
         }
@@ -51,11 +47,10 @@ namespace cisteps
 
         public async Task CheckRunOk()
         {
-            var vaultUri = new Uri(await helper.Ask("vaultUri"));
             var vaultToken = await helper.Ask("vaultToken");
             IAuthenticationInfo auth = new TokenAuthenticationInfo(vaultToken);
 
-            var sshConnection = await listResources.PiloteSshConnection.Read(vaultUri, auth);
+            var sshConnection = await listResources.PiloteSshConnection.Read(auth);
 
             var client = new SshClient2().SetConnection(sshConnection);
             var result = client.SshCommand("docker run --rm hello-world");

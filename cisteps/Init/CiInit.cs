@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using citools;
-using VaultSharp;
-using VaultSharp.Backends.Authentication.Models;
-using VaultSharp.Backends.Authentication.Models.Token;
-using VaultSharp.Backends.System.Models;
 
 /*
 Enable user/pass authentication
@@ -53,25 +49,23 @@ namespace cisteps
 {
     public class CiInit : IStep
     {
-
-        public string rootToken;
-        public Uri vaultUri;
-        public string devopInfraPass;
-        public string devopAdminPass;
-
         private readonly IAsk ask;
+        private readonly IStoreResolver storeResolver;
 
-        public CiInit(IAsk ask)
+        public CiInit(
+            IAsk ask,
+            IStoreResolver storeResolver
+        )
         {
             this.ask = ask;
+            this.storeResolver = storeResolver;
         }
 
         public async Task CheckRunOk()
         {
             // log with root token
-            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(rootToken);
-            var client = VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
-            
+            var rootToken = await this.ask.GetValue(CiInitAsk.RootToken);
+            var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
             var policy = await client.GetPolicyAsync("devop");
             StepAssert.IsTrue(policy != null);
         }
@@ -79,54 +73,23 @@ namespace cisteps
         public async Task TestAlreadyRun()
         {
             // log with root token
-            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(rootToken);
-            var client = VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
-
+            var rootToken = await this.ask.GetValue(CiInitAsk.RootToken);
+            var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
             var policy = await client.GetPolicyAsync("devop");
             StepAssert.IsTrue(policy == null);
         }
 
-        public async Task Need()
-        {   
-            await Task.CompletedTask;
-        }
-
-        public async Task Ask()
-        {   
-            this.vaultUri = new Uri(await this.ask.GetValue(CiInitAsk.VaultUri));
-            this.rootToken = await this.ask.GetValue(CiInitAsk.RootToken);
-            this.devopInfraPass = await this.ask.GetValue(CiInitAsk.DevInfraPassword);
-            this.devopAdminPass = await this.ask.GetValue(CiInitAsk.DevAdminPassword);
-        }
-
-        public async Task Keep()
-        {  
-            await Task.CompletedTask;
-        }
-
         public async Task Run()
-        {
+        {   
+            var vaultUri = new Uri(await this.ask.GetValue(CiInitAsk.VaultUri));
+            var rootToken = await this.ask.GetValue(CiInitAsk.RootToken);
+            var devopInfraPass = await this.ask.GetValue(CiInitAsk.DevInfraPassword);
+            var devopAdminPass = await this.ask.GetValue(CiInitAsk.DevAdminPassword);
+        
+
             // log with root token
-            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(rootToken);
-            var client = VaultSharp.VaultClientFactory.CreateVaultClient(vaultUri, tokenAuthenticationInfo);
-
-            var authenticationBackend = new AuthenticationBackend()
-            {
-                AuthenticationPath = "auth/userpass",
-                BackendType = AuthenticationBackendType.UsernamePassword,
-                Description = "userpass"
-            };
-            await client.EnableAuthenticationBackendAsync(authenticationBackend);
-
-            // create policy devop-infra
-            /*
-            var devopInfraPolicy = new Policy()
-            {
-                Name = "devop-infra-policy",
-                Rules = "path \"secret/infra/*\" { capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]"
-            };
-            await client.WritePolicyAsync(devopInfraPolicy);
-            */
+            var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
+            await client.EnableUsernamePassword();
 
             // create devop-policy
             var devopAdminPolicy = new Policy()
@@ -136,21 +99,8 @@ namespace cisteps
             };
             await client.WritePolicyAsync(devopAdminPolicy);
 
-            /*
-            // create user devop-infra
-            await client.WriteSecretAsync("auth/users/" + "devop-infra", new Dictionary<string, object>
-                    {
-                        { "password", this.devopInfraPass },
-                        { "policies", "devop-infra" }
-                    });
-            */
-
             // create user devop
-            await client.WriteSecretAsync("auth/users/" + "devop", new Dictionary<string, object>
-                    {
-                        { "password", this.devopInfraPass },
-                        { "policies", "devop" }
-                    });
+            await client.WriteUser("devop", devopInfraPass,"devop-policy");
         }
 
         public Task Clean()

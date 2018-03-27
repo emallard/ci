@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using citools;
-using VaultSharp.Backends.Authentication.Models;
-using VaultSharp.Backends.Authentication.Models.Token;
 using ciinfra;
 
 namespace cisteps
@@ -32,11 +30,10 @@ namespace cisteps
 
         public async Task Run()
         {
-            var vaultUri = new Uri(await helper.Ask("vaultUri"));
             var vaultToken = await helper.Ask("vaultToken");
             IAuthenticationInfo auth = new TokenAuthenticationInfo(vaultToken);
 
-            var sshConnection = await listResources.PiloteSshConnection.Read(vaultUri, auth);
+            var sshConnection = await listResources.PiloteSshConnection.Read(auth);
 
             infrastructure.GetVmPilote(sshConnection).BuildCiUsingSdk();
             

@@ -12,7 +12,6 @@ namespace cisteps
         Func<IPipelineRunner, Task> run;
 
         PipelineInstallPiloteVm(
-            InfraPiloteCreateVm infraPiloteCreateVm,
             PiloteInstallDocker piloteInstallDocker,
             PiloteInstallMirrorRegistry piloteInstallMirrorRegistry,
             PiloteInstallPrivateRegistry piloteInstallPrivateRegistry,
@@ -20,14 +19,13 @@ namespace cisteps
             )
         {
             this.run = async (IPipelineRunner runner) => {
-                await runner.Run(infraPiloteCreateVm);
                 await runner.Run(piloteInstallDocker);
                 await runner.Run(piloteInstallMirrorRegistry);
                 await runner.Run(piloteInstallPrivateRegistry);
                 await runner.Run(piloteInstallDotNetCoreSdk);
             };
         }
-        
+
         public async Task Run(IPipelineRunner runner)
         {
             await this.run(runner);

@@ -4,33 +4,39 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using citools;
-using VaultSharp.Backends.Authentication.Models;
 
 namespace cisteps
 {
     public class ListResources
     {
-        public VaultResource InfrastructureApiKey = new VaultResource("infra/apikey");
-        public VaultResource PiloteRootPassword = new VaultResource("infra/piloteRootPassword");
         
-        public VaultResource PiloteSshUri = new VaultResource("admin/pilote/sshuri");
-        public VaultResource PiloteUser = new VaultResource("admin/pilote/user");
-        public VaultResource PilotePassword = new VaultResource("admin/pilote/password");
+        public StoreResource InfrastructureApiKey;
+        public StoreResource PiloteRootPassword;
+        
+        public StoreResource PiloteSshUri;
+        public StoreResource PiloteUser;
+        public StoreResource PilotePassword;
 
         public ReadResource<SshConnection> PiloteSshConnection;
 
 
-        public ListResources()
+        public ListResources(Func<StoreResource> createStoreResource)
         {
+            InfrastructureApiKey = createStoreResource().Path("vault/infra/apikey");
+            PiloteRootPassword = createStoreResource().Path("vault/infra/piloteRootPassword");
+            PiloteSshUri = createStoreResource().Path("vault/admin/pilote/sshuri");
+            PiloteUser = createStoreResource().Path("vault/admin/pilote/user");
+            PilotePassword = createStoreResource().Path("vault/admin/pilote/password");
+
             PiloteSshConnection = new ReadResource<SshConnection>(GetPiloteSshConnection);
         }
         
 
-        private async Task<SshConnection> GetPiloteSshConnection(Uri uri, IAuthenticationInfo authenticationInfo)
+        private async Task<SshConnection> GetPiloteSshConnection(IAuthenticationInfo authenticationInfo)
         {
-            var sshUri = await PiloteSshUri.Read(uri, authenticationInfo);
-            var user = await PiloteUser.Read(uri, authenticationInfo);
-            var password = await PilotePassword.Read(uri, authenticationInfo);
+            var sshUri = await PiloteSshUri.Read(authenticationInfo);
+            var user = await PiloteUser.Read(authenticationInfo);
+            var password = await PilotePassword.Read(authenticationInfo);
             return new SshConnection() {
                 SshUri = new Uri(sshUri),
                 User = user,
