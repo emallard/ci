@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Threading;
-using Renci.SshNet;
 using ciinfra;
 using citools;
 
@@ -14,8 +13,7 @@ namespace ciinfra
     public class VBoxInfrastructure : IInfrastructure
     {
         private readonly VBoxHelper vBoxHelper;
-        private readonly VmPilote vmPilote;
-        private readonly VBoxVmWebServer vmWebServer;
+        private readonly ISshClient sshClient;
         string vmDir = "/media/etienne/LinuxData/vm/";
         //string vmIso = "/media/etienne/LinuxData/ubuntu-16.04.3-server-amd64.iso";
         string clonableVm = "clonable";
@@ -27,15 +25,13 @@ namespace ciinfra
 
         public VBoxInfrastructure(
             VBoxHelper vBoxHelper,
-            VmPilote vmPilote,
-            VBoxVmWebServer vmWebServer)
+            ISshClient sshClient)
         {
             this.vBoxHelper = vBoxHelper;
-            this.vmPilote = vmPilote;
-            this.vmWebServer = vmWebServer;
+            this.sshClient = sshClient;
 
-            this.vmPilote.PrivateRegistryPort = 5443;
-            this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";       
+            //this.vmPilote.PrivateRegistryPort = 5443;
+            //this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";       
         }
 
         public bool VmExists(InfrastructureKey key, string vmName)
@@ -112,17 +108,19 @@ namespace ciinfra
             Thread.Sleep(20000);
             
             vBoxHelper.NatLocalSshPortForwarding("10.0.2.200", $"{portForward}");
-            var connectionInfo = new ConnectionInfo(
-                "127.0.0.1", 22200, "test",
-                new PasswordAuthenticationMethod("test", "test"));
-            using (var sshClient = new SshClient(connectionInfo))
+            var connection = new SshConnection()
             {
-                sshClient.Connect();
-                var command = $"sed 's/10.0.2.200/{ip}/g' /etc/network/interfaces > sed.tmp && cat sed.tmp > /etc/network/interfaces";
-                Console.WriteLine(command);
-                var cmd = sshClient.RunCommand(command);
-                Console.WriteLine("result : " + cmd.Result);
-            }
+                SshUri = new Uri("ssh://127.0.0.1:22200"),
+                User = "test",
+                Password = "test"
+            };
+            
+            sshClient.Connect(connection);
+            var command = $"sed 's/10.0.2.200/{ip}/g' /etc/network/interfaces > sed.tmp && cat sed.tmp > /etc/network/interfaces";
+            Console.WriteLine(command);
+            var cmd = sshClient.Command(command);
+            Console.WriteLine("result : " + cmd);
+            
 
             Console.WriteLine("restart vm");
             vBoxHelper.RestartVm(vmName);
@@ -130,18 +128,6 @@ namespace ciinfra
             vBoxHelper.NatLocalSshPortForwarding(ip, $"{portForward}");
         }
 
-        public SshClient Ssh(InfrastructureKey key, string vmName, string user, string password)
-        {
-            var sshUri = this.GetVmSshUri(key, vmName);
-            var connectionInfo = new ConnectionInfo(
-                sshUri.Host, 
-                sshUri.Port, 
-                user,
-                new PasswordAuthenticationMethod(user, password));
-
-            var sshClient = new SshClient(connectionInfo);
-            sshClient.Connect();
-            return sshClient;
-        }
+        
     }
 }

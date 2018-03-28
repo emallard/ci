@@ -3,12 +3,11 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using Renci.SshNet;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.IO;
 using citools;
-
+/*
 namespace ciinfra
 {
     public class VmPilote  {
@@ -31,3 +30,4 @@ namespace ciinfra
         
     }
 }
+*/

@@ -3,25 +3,22 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using Autofac.Core;
 using Autofac;
-using ciexecommands;
-using cilib;
 using ciinfra;
 using citools;
 
 namespace citest
 {
-    public class MockModule : Module {
-
+    public class VBoxIntegrationModule : Module
+    {
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterAssemblyTypes(this.GetType().Assembly);
-            //builder.RegisterModule<CiLibModule>();
+            builder.RegisterType<StoreResolverVault>().As<IStoreResolver>();
+            builder.RegisterType<AskMock>().As<IAsk>();
 
             builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();
-            builder.RegisterType<StoreResolverInMemory>().As<IStoreResolver>();
-            builder.RegisterType<AskMock>().As<IAsk>();
+            builder.RegisterType<RenciSshClient>().As<ISshClient>();
         }
-        
     }
 }

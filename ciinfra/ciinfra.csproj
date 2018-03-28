@@ -7,13 +7,7 @@
   <ItemGroup>
     <PackageReference Include="newtonsoft.json" Version="11.0.1" />
     <PackageReference Include="autofac" Version="4.6.2" />
-    <PackageReference Include="ssh.net" Version="2016.1.0" />
     <ProjectReference Include="../citools/citools.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Infrastructure\VBox\VBoxClone.sh" />
-    <EmbeddedResource Include="Infrastructure\Common\InstallDocker.sh" />
   </ItemGroup>
   
 </Project>

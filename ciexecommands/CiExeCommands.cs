@@ -38,6 +38,7 @@ namespace ciexecommands
         public CiExeCommand CleanTraefik;
         public CiExeCommand InstallWebApp1;
         public CiExeCommand CleanInstallWebApp1;
+        private readonly ISshClient sshClient;
 
         public CiExeCommands(
             InstallCA installCA,
@@ -47,7 +48,9 @@ namespace ciexecommands
 
             // WebServer
             InstallTraefik installTraefik,
-            InstallWebApp installWebApp
+            InstallWebApp installWebApp,
+
+            ISshClient sshClient
             )
         {
 
@@ -74,6 +77,7 @@ namespace ciexecommands
 
             this.InstallWebApp1 = Create<InstallWebApp>("webserver-install-webapp1", async () => await installWebApp.Install());
             this.CleanInstallWebApp1 = Create<InstallWebApp>("clean-webapp1", async () => await installWebApp.CleanInstall());
+            this.sshClient = sshClient;
         }
 
         public CiExeCommands Configure(SshConnection connection, Uri vaultUri, string vaultToken)
@@ -87,9 +91,9 @@ namespace ciexecommands
 
         public string SshCall(CiExeCommand command)
         {
-            return new SshClient2()
-                .SetConnection(this.connection)
-                .SshScriptWithStdIn(
+            return sshClient
+                .Connect(this.connection)
+                .ScriptWithStdIn(
                     DockerRun(command.CommandLine), 
                     command.CommandLine + ".sh", new string[]{
                         "uri ", vaultUri.ToString(),
@@ -98,9 +102,9 @@ namespace ciexecommands
 
         public string SshCommand(string command)
         {
-            return new SshClient2()
-                .SetConnection(this.connection)
-                .SshCommand(command);
+            return sshClient
+                .Connect(this.connection)
+                .Command(command);
         }
 
         public Task ExecuteFromCommandLine(string commandLine)

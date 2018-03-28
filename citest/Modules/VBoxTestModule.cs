@@ -10,16 +10,15 @@ using citools;
 
 namespace citest
 {
-    public class VBoxIntegrationModule : Module
+    public class VBoxTestModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterAssemblyTypes(this.GetType().Assembly);
-            //builder.RegisterModule<CiLibModule>();
+            builder.RegisterType<StoreResolverInMemory>().As<IStoreResolver>();
+            builder.RegisterType<AskMock>().As<IAsk>();
 
             builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();
-            builder.RegisterType<StoreResolverVault>().As<IStoreResolver>();
-
+            builder.RegisterType<RenciSshClient>().As<ISshClient>();
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Renci.SshNet;
 using citools;
 
 namespace ciinfra
@@ -78,20 +77,5 @@ namespace ciinfra
             return vmInfo != null;
         }
 
-        public SshClient Ssh(InfrastructureKey key, string vmName, string user, string password)
-        {
-            var sshUri = this.GetVmSshUri(key, vmName);
-            var connectionInfo = new ConnectionInfo(
-                sshUri.Host, 
-                sshUri.Port, 
-                user,
-                new PasswordAuthenticationMethod(user, password));
-
-            var sshClient = new SshClient(connectionInfo);
-            sshClient.Connect();
-            return sshClient;
-        }
-
-        
     }
 }

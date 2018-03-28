@@ -22,15 +22,18 @@ namespace cisteps
         private readonly AskHelper helper;
         private readonly IInfrastructure infrastructure;
         private readonly ListResources listResources;
+        private readonly ISshClient sshClient;
 
         public InfraPiloteCreateVm(
             AskHelper helper,
             IInfrastructure infrastructure,
-            ListResources listResources)
+            ListResources listResources,
+            ISshClient sshClient)
         {
             this.helper = helper;
             this.infrastructure = infrastructure;
             this.listResources = listResources;
+            this.sshClient = sshClient;
         }
 
         public Task Clean()
@@ -74,9 +77,9 @@ namespace cisteps
             var piloteUser = await helper.Ask(AdminUser);
             var pilotePassword = await helper.Ask(AdminPassword);
 
-            var client = infrastructure.Ssh(new InfrastructureKey(apikey), "pilote", piloteUser, pilotePassword);
-            var result = client.RunCommand("echo coucou");
-            StepAssert.AreEqual("coucou\n", result.Result);
+            var client = sshClient.Connect(infrastructure.GetVmSshConnection(new InfrastructureKey(apikey), "pilote", piloteUser, pilotePassword));
+            var result = client.Command("echo coucou");
+            StepAssert.AreEqual("coucou\n", result);
             await Task.CompletedTask;
         }
     }
