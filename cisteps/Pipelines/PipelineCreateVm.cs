@@ -11,7 +11,7 @@ namespace cisteps
     {
         Func<Task> run;
 
-        PipelineCreatePiloteVm(
+        public PipelineCreatePiloteVm(
             InfraPiloteCreateVm infraPiloteCreateVm,
             IStepRunner runner
             )

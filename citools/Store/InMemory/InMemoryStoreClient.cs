@@ -9,79 +9,47 @@ namespace citools
     public class InMemoryStoreClient : IStoreClient
     {
         private IAuthenticationInfo auth;
-        private Policy authPolicy;
+        private readonly InMemoryStore store;
 
-        Dictionary<string, Policy> policies = new Dictionary<string, Policy>();
-        Dictionary<string, string> tokens = new Dictionary<string, string>();
-        Dictionary<string, string> secrets = new Dictionary<string, string>();
-        Dictionary<string, string> usernamePasswords = new Dictionary<string, string>();
+        public InMemoryStoreClient(InMemoryStore store)
+        {
+            this.store = store;
+        }
         
-
-        public InMemoryStoreClient(IAuthenticationInfo auth)
+        public InMemoryStoreClient SetAuthentication(IAuthenticationInfo auth)
         {
             this.auth = auth;
-            if (auth is UserPasswordAuthenticationInfo)
-            {
-                var auth2 = (UserPasswordAuthenticationInfo) auth;
-                string policyName;
-                if (usernamePasswords.TryGetValue(auth2.User + ":" + auth2.Password, out policyName))
-                {
-                    policies.TryGetValue(policyName, out this.authPolicy);
-                }
-            }
+            return this;
         }
 
         public async Task EnableUsernamePassword()
         {
-            await Task.CompletedTask;
+            await store.EnableUsernamePassword(this.auth);
         }
 
-        public Task<Policy> GetPolicyAsync(string name)
+        public async Task<Policy> GetPolicyAsync(string name)
         {
-            return new Task<Policy>(() => {
-                Policy found;
-                if (policies.TryGetValue(name, out found))
-                    return found;
-                    
-                return null;
-            });
+            return await store.GetPolicyAsync(this.auth, name);
         }
 
-        public Task<string> ReadSecretAsync(string path)
+        public async Task<string> ReadSecretAsync(string path)
         {
-            CheckPathAndCapability(path, "read");
-            return new Task<string>(() => {
-                string found;
-                if (secrets.TryGetValue(path, out found))
-                    return found;
-                    
-                return null;
-            });
+            return await store.ReadSecretAsync(this.auth, path);
         }
 
-        public Task WritePolicyAsync(Policy policy)
+        public async Task WritePolicyAsync(Policy policy)
         {
-            return new Task(() => { policies[policy.Name] = policy ; });
+            await store.WritePolicyAsync(this.auth, policy);
         }
 
-        public Task WriteSecretAsync(string path, string value)
+        public async Task WriteSecretAsync(string path, string value)
         {
-            CheckPathAndCapability(path, "write");
-            return new Task(() => { secrets[path] = value ; });
+            await store.WriteSecretAsync(this.auth, path, value);
         }
 
-        public Task WriteUser(string user, string password, string policy)
+        public async Task WriteUser(string user, string password, string policy)
         {
-            return new Task(() => { usernamePasswords[user + ":" + password] = policy ; });
-            
-        }
-
-        private void CheckPathAndCapability(string path, string capability)
-        {
-            if (this.authPolicy == null)
-                throw new CapabilityException(path, capability); 
-            
-            var rules = authPolicy.Rules;
+            await store.WriteUser(this.auth, user, password, policy);
         }
     }
 }

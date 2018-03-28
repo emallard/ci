@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using citools;
 
-namespace cisteps
-{   
-    public class PipelineBuildAndDeploy : IPipeline
+namespace citools
+{
+    public class StepRunnerRunOnly : IStepRunner
     {
-        public async Task Run()
+        public async Task Run(IStep step)
         {
-            await Task.CompletedTask;
+            await step.Run();
         }
     }
 }

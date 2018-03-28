@@ -9,11 +9,12 @@ namespace citools
 
     public class AskReadLine : IAsk
     {
-        public Task<string> GetValue(string key)
+        public async Task<string> GetValue(string key)
         {
+            await Task.CompletedTask;
             Console.WriteLine(key);
             var val = Console.ReadLine();
-            return new Task<string>(() => val);
+            return val;
         }
     }
 }

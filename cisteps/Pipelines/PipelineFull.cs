@@ -11,7 +11,7 @@ namespace cisteps
     {
         Func<Task> run;
 
-        PipelineFull(
+        public PipelineFull(
             IStepRunner runner,
             PipelineInit pipelineInit,
             PipelineCreatePiloteVm pipelineCreatePiloteVm,

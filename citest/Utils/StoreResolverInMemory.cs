@@ -8,15 +8,12 @@ namespace citest
     public class StoreResolverInMemory : IStoreResolver
     {
         private readonly InMemoryStoreClientFactory inMemoryMemoryStoreClientFactory;
-        private readonly VaultStoreClientFactory vaultStoreClientFactory;
         Dictionary<string, string> mountingPoints = new Dictionary<string, string> ();
 
         public StoreResolverInMemory(
-            InMemoryStoreClientFactory inMemoryMemoryStoreClientFactory,
-            VaultStoreClientFactory vaultStoreClientFactory)
+            InMemoryStoreClientFactory inMemoryMemoryStoreClientFactory)
         {
             this.inMemoryMemoryStoreClientFactory = inMemoryMemoryStoreClientFactory;
-            this.vaultStoreClientFactory = vaultStoreClientFactory;
         }
 
         public IStoreClient CreateClient(string path, IAuthenticationInfo authenticationInfo)

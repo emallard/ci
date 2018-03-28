@@ -8,9 +8,18 @@ namespace citools
 {
     public class InMemoryStoreClientFactory : IStoreClientFactory
     {
+        private readonly Func<InMemoryStoreClient> createClient;
+
+        public InMemoryStoreClientFactory(
+           Func<InMemoryStoreClient> createClient
+        )
+        {
+            this.createClient = createClient;
+        }
+
         public IStoreClient CreateClient(Uri uri, IAuthenticationInfo authenticationInfo)
         {
-            throw new NotImplementedException();
+            return this.createClient().SetAuthentication(authenticationInfo);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace cisteps
     {
         Func<Task> run;
 
-        PipelineInstallPiloteVm(
+        public PipelineInstallPiloteVm(
             IStepRunner runner,
             PiloteInstallDocker piloteInstallDocker,
             PiloteInstallMirrorRegistry piloteInstallMirrorRegistry,

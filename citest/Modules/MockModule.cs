@@ -15,10 +15,10 @@ namespace citest
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<StoreResolverInMemory>().As<IStoreResolver>();
-            builder.RegisterType<AskMock>().As<IAsk>();
+            builder.RegisterType<StoreResolverInMemory>().As<IStoreResolver>().SingleInstance();
+            builder.RegisterType<AskMock>().As<IAsk>().SingleInstance();
 
-            builder.RegisterType<InfrastructureMock>().As<IInfrastructure>();
+            builder.RegisterType<InfrastructureMock>().As<IInfrastructure>().SingleInstance();
             builder.RegisterType<SshClientMock>().As<ISshClient>();
             
         }
