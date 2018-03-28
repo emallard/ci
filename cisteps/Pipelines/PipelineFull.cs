@@ -9,24 +9,25 @@ namespace cisteps
 {   
     public class PipelineFull : IPipeline
     {
-        Func<IPipelineRunner, Task> run;
+        Func<Task> run;
 
         PipelineFull(
+            IStepRunner runner,
             PipelineInit pipelineInit,
             PipelineCreatePiloteVm pipelineCreatePiloteVm,
             PipelineInstallPiloteVm pipelineInstallPiloteVm
             )
         {
-            this.run = async (IPipelineRunner runner) => {
-                await pipelineInit.Run(runner);
-                await pipelineCreatePiloteVm.Run(runner);
-                await pipelineInstallPiloteVm.Run(runner);
+            this.run = async () => {
+                await pipelineInit.Run();
+                await pipelineCreatePiloteVm.Run();
+                await pipelineInstallPiloteVm.Run();
             };
         }
         
-        public async Task Run(IPipelineRunner runner)
+        public async Task Run()
         {
-            await this.run(runner);
+            await this.run();
         }
     }
 }

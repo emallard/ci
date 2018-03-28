@@ -7,18 +7,15 @@ using citools;
 
 namespace citools
 {
-    public class PipelineRunnerTest : IPipelineRunner
+    public class StepRunnerSafe : IStepRunner
     {
         public async Task Run(IStep step)
         {
-            try {
-                await step.CheckRunOk();
+            try { 
+                await step.CheckRunOk(); 
                 return;
             }
             catch (Exception) {}
-
-            try { await step.Clean();}
-            catch (Exception e4) {throw new StepException(step, e4);}
 
             try { await step.Run();}
             catch (Exception e4) {throw new StepException(step, e4);}

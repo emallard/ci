@@ -21,10 +21,6 @@ namespace ciinfra
         string clonableVm = "clonable";
         string clonableVmOvf => Path.Combine(vmDir, clonableVm + ".ovf");
 
-        string WebServerVmName = "webserver";
-        string WebServerIp = "10.0.2.6";
-        int WebServerPortForward = 22006;
-
 
         public string DomainName => "mynetwork.local";
         public string CidataDirectory => "/home/test/cidata";

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace citools
 {
-    public interface IPipelineRunner
+    public interface IStepRunner
     {
         Task Run(IStep step);
 

@@ -20,7 +20,7 @@ namespace citest
 
             builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();
             builder.RegisterType<StoreResolverInMemory>().As<IStoreResolver>();
-            builder.RegisterType<StoreResolverInMemory>().As<IAsk>();
+            builder.RegisterType<AskMock>().As<IAsk>();
         }
         
     }

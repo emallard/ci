@@ -25,6 +25,7 @@ namespace cisteps
             this.listResources = listResources;
             this.infrastructure = infrastructure;
             this.ciExeCommands = ciExeCommands;
+            this.helper = helper;
         }
 
         public async Task<IVmPilote> GetVmPilote()

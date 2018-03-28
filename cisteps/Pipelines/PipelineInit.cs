@@ -16,9 +16,9 @@ namespace cisteps
             this.ciInit = ciInit;
         }
 
-        public async Task Run(IPipelineRunner runner)
+        public async Task Run()
         {
-            await runner.Run(this.ciInit);
+            await this.ciInit.Run();
         }
     }
 

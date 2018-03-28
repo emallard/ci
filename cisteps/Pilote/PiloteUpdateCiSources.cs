@@ -12,12 +12,10 @@ namespace cisteps
 {
     public class PiloteUpdateCiSources : IStep 
     {
-        private readonly AskHelper helper;
         private readonly ListResources listResources;
         private readonly PiloteStep pstep;
 
         public PiloteUpdateCiSources(
-            AskHelper helper,
             ListResources listResources,
             PiloteStep pstep)
         {

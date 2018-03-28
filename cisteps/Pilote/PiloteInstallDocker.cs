@@ -21,6 +21,7 @@ namespace cisteps
         {
             this.listResources = listResources;
             this.infrastructure = infrastructure;
+            this.helper = helper;
         }
 
         public Task Clean()

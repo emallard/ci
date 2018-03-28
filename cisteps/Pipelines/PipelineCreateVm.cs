@@ -9,20 +9,21 @@ namespace cisteps
 {   
     public class PipelineCreatePiloteVm : IPipeline
     {
-        Func<IPipelineRunner, Task> run;
+        Func<Task> run;
 
         PipelineCreatePiloteVm(
-            InfraPiloteCreateVm infraPiloteCreateVm
+            InfraPiloteCreateVm infraPiloteCreateVm,
+            IStepRunner runner
             )
         {
-            this.run = async (IPipelineRunner runner) => {
+            this.run = async () => {
                 await runner.Run(infraPiloteCreateVm);
             };
         }
         
-        public async Task Run(IPipelineRunner runner)
+        public async Task Run()
         {
-            await this.run(runner);
+            await this.run();
         }
     }
 }

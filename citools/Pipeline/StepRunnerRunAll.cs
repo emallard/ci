@@ -7,7 +7,7 @@ using citools;
 
 namespace citools
 {
-    public class PipelineRunnerRunAll : IPipelineRunner
+    public class StepRunnerRunAll : IStepRunner
     {
         public async Task Run(IStep step)
         {

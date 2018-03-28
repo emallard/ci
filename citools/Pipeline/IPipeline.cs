@@ -8,6 +8,6 @@ namespace citools
 {
     public interface IPipeline
     {
-        Task Run(IPipelineRunner runner);
+        Task Run();
     }
 }

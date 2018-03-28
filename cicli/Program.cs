@@ -22,7 +22,7 @@ namespace cicli
                 return;
             }
 
-
+/*
             if (args[0] == "init")
             {
                 new StepRunner().RunSync<CiInit>(getDI());
@@ -38,7 +38,7 @@ namespace cicli
                 }
                 
             }
-
+*/
         }
 
         private static IContainer getDI()

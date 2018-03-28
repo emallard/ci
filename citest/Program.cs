@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
 using ciinfra;
+using cilib;
 using cisteps;
 using citools;
 
@@ -15,7 +17,7 @@ namespace citest
         {
             string moduleTypeStr = typeof(MockModule).Name;
             string pipelineTypeStr = typeof(PipelineInit).Name;
-            string pipelineRunnerTypeStr = typeof(PipelineRunnerCheck).Name;
+            string pipelineRunnerTypeStr = typeof(StepRunnerCheck).Name;
 
             var fileName = "bin/lastRun";
             if (File.Exists(fileName))
@@ -26,9 +28,9 @@ namespace citest
                 pipelineRunnerTypeStr = lastRun[2];
             }
 
-            var module = typeof(MockModule).Assembly.GetType(moduleTypeStr);
-            var pipelineType = typeof(PipelineInit).Assembly.GetType(pipelineTypeStr);
-            var pipelineRunnerType = typeof(PipelineRunnerTest).Assembly.GetType(pipelineRunnerTypeStr);
+            var module = typeof(MockModule).Assembly.GetTypes().First(t => t.Name == moduleTypeStr);
+            var pipelineType = typeof(PipelineInit).Assembly.GetTypes().First(t => t.Name == pipelineTypeStr);
+            var pipelineRunnerType = typeof(StepRunnerTest).Assembly.GetTypes().First(t => t.Name == pipelineRunnerTypeStr);
 
             File.WriteAllLines(fileName, new string[] {
                 moduleTypeStr,
@@ -44,34 +46,26 @@ namespace citest
         {
             var module = typeof(MockModule);
             var pipelineType = typeof(PipelineInit);
-            var pipelineRunnerType = typeof(PipelineRunnerTest);
+            var pipelineRunnerType = typeof(StepRunnerTest);
             Run(module, pipelineType, pipelineRunnerType).Wait();
         }   
 
-        static async Task Run<TModule, TPipeline, TPipelineRunner>() 
-            where TModule : IModule, new()
-            where TPipeline : IPipeline
-            where TPipelineRunner : IPipelineRunner
-        {
-            var builder = new ContainerBuilder();
-            builder.RegisterModule<TModule>();
-
-            var container = builder.Build();
-            var pipeline = container.Resolve<TPipeline>();
-            var pipelineRunner = container.Resolve<TPipelineRunner>();
-            await pipeline.Run(pipelineRunner);
-        }
 
 
         static async Task Run(Type moduleType, Type pipelineType, Type pipelineRunnerType)
         {
             var builder = new ContainerBuilder();
+            builder.RegisterModule<CiLibModule>();
+            builder.RegisterModule<CiToolsModule>();
+            builder.RegisterModule<CiStepsModule>();
+            builder.RegisterModule<CiInfraModule>();
 
             var module =  (IModule)Activator.CreateInstance(moduleType);
+            builder.RegisterModule(module);
+            builder.RegisterType(pipelineRunnerType).As(typeof(IStepRunner));
             var container = builder.Build();
             var pipeline = (IPipeline) container.Resolve(pipelineType);
-            var pipelineRunner = (IPipelineRunner) container.Resolve(pipelineRunnerType);
-            await pipeline.Run(pipelineRunner);
+            await pipeline.Run();
         }
 
     }
