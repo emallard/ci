@@ -5,23 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using citools;
 using ciinfra;
+using cilib;
 
 namespace cisteps
 {
     public class PiloteInstallPrivateRegistry : IStep 
     {
-        private readonly AskHelper helper;
-        private readonly ListResources listResources;
-        private readonly IInfrastructure infrastructure;
-
         public PiloteInstallPrivateRegistry(
-            AskHelper helper,
-            ListResources listResources,
-            IInfrastructure infrastructure)
+            PiloteStep pstep,
+            SshCiexe sshPrivateRegistry)
         {
-            this.listResources = listResources;
-            this.infrastructure = infrastructure;
-            this.helper = helper;
         }
 
         public Task Clean()
@@ -31,13 +24,8 @@ namespace cisteps
 
         public async Task Run()
         {
-            var vaultToken = await helper.Ask("vaultToken");
-            IAuthenticationInfo auth = new TokenAuthenticationInfo(vaultToken);
-
-            var sshConnection = await listResources.PiloteSshConnection.Read(auth);
-
-            infrastructure.GetVmPilote(sshConnection).BuildCiUsingSdk();
-            
+            await Task.CompletedTask;
+            //sshPrivateRegistry.InstallPrivateRegistry(await pstep.GetPiloteSshConnection());
         }
 
 

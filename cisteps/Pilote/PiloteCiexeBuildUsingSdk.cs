@@ -7,38 +7,44 @@ using citools;
 using VaultSharp.Backends.Authentication.Models;
 using VaultSharp.Backends.Authentication.Models.Token;
 using ciinfra;
+using cilib;
 
 namespace cisteps
 {
     public class PiloteCiexeBuildUsingSdk : IStep 
     {
-        private readonly PiloteStep pstep;
+         private readonly PiloteStep pstep;
+        private readonly SshCiexe sshCiexe;
 
         public PiloteCiexeBuildUsingSdk(
-            PiloteStep pstep)
+            PiloteStep pstep,
+            SshCiexe sshCiexe)
         {
             this.pstep = pstep;
+            this.sshCiexe = sshCiexe;
         }
 
-        public Task Clean()
+        public async Task Clean()
         {
-            throw new NotImplementedException();
+            sshCiexe.CleanCiImage(await pstep.GetPiloteSshConnection());
         }
 
         public async Task Run()
         {
-            var vmPilote = await pstep.GetVmPilote();
+            var connection = await pstep.GetPiloteSshConnection();
+            pstep.sshClient.Connect(connection);
+
             try
             {
-                vmPilote.SshCommand("dotnet --version");
+                pstep.sshClient.Command("dotnet --version");
             }
             catch(Exception)
             {
-                vmPilote.InstallDotNetCoreSdk();
+                sshCiexe.InstallDotNetCoreSdk(connection);
             }
             
-            vmPilote.CloneOrPullCiSources();
-            vmPilote.BuildCiUsingSdk();
+            sshCiexe.CloneOrPullCiSources(connection);
+            sshCiexe.BuildCiUsingSdk(connection);
         }
 
 
@@ -50,14 +56,14 @@ namespace cisteps
 
         public async Task CheckRunOk()
         {
-            var client = await pstep.GetPiloteSshClient2();
+            var client = pstep.sshClient.Connect(await pstep.GetPiloteSshConnection());
 
             // is image here
-            var result = client.SshCommand("docker images");
+            var result = client.Command("docker images");
             StepAssert.Contains("ciexe", result);
 
             // try to run an image
-            result = client.SshCommand("docker run --rm --name ciexe ciexe hello");
+            result = client.Command("docker run --rm --name ciexe ciexe hello");
             StepAssert.Contains("hello", result);
 
             await Task.CompletedTask;

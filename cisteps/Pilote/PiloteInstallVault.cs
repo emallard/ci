@@ -41,8 +41,8 @@ namespace cisteps
 
         public async Task CheckRunOk()
         {
-            var client = await pstep.GetPiloteSshClient2();
-            var result = client.SshCommand("curl http://127.0.0.1:8200/v1/");
+            var client = pstep.sshClient.Connect(await pstep.GetPiloteSshConnection());
+            var result = client.Command("curl http://127.0.0.1:8200/v1/");
             StepAssert.Contains("{", result);
         }
 

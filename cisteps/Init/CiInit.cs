@@ -49,22 +49,22 @@ namespace cisteps
 {
     public class CiInit : IStep
     {
-        private readonly IAsk ask;
+        private readonly ListAsk listAsk;
         private readonly IStoreResolver storeResolver;
 
         public CiInit(
-            IAsk ask,
+            ListAsk listAsk,
             IStoreResolver storeResolver
         )
         {
-            this.ask = ask;
+            this.listAsk = listAsk;
             this.storeResolver = storeResolver;
         }
 
         public async Task CheckRunOk()
         {
             // log with root token
-            var rootToken = await this.ask.GetValue(ListAsk.RootToken);
+            var rootToken = await listAsk.RootToken.Ask();
             var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
             var policy = await client.GetPolicyAsync("devop");
             StepAssert.IsTrue(policy != null);
@@ -73,7 +73,7 @@ namespace cisteps
         public async Task TestAlreadyRun()
         {
             // log with root token
-            var rootToken = await this.ask.GetValue(ListAsk.RootToken);
+            var rootToken = await listAsk.RootToken.Ask();
             var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
             var policy = await client.GetPolicyAsync("devop");
             StepAssert.IsTrue(policy == null);
@@ -81,9 +81,9 @@ namespace cisteps
 
         public async Task Run()
         {   
-            var vaultUri = new Uri(await this.ask.GetValue(ListAsk.VaultUri));
-            var rootToken = await this.ask.GetValue(ListAsk.RootToken);
-            var devopPass = await this.ask.GetValue(ListAsk.DevopPassword);
+            var vaultUri = new Uri(await listAsk.VaultUri.Ask());
+            var rootToken = await listAsk.RootToken.Ask();
+            var devopPass = await listAsk.DevopPassword.Ask();
         
 
             // log with root token

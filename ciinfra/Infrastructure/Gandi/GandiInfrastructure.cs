@@ -12,21 +12,13 @@ namespace ciinfra
     public class GandiInfrastructure : IInfrastructure
     {
         private readonly GandiXmlRPC xmlRPC;
-        private readonly VmPilote vmPilote;
 
         public GandiInfrastructure(
-            GandiXmlRPC xmlRPC,
-            VmPilote vmPilote)
+            GandiXmlRPC xmlRPC)
         {
             this.xmlRPC = xmlRPC;
-            this.vmPilote = vmPilote;
-            this.vmPilote.PrivateRegistryPort = 5443;
-            this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";
-        }
-
-        public IVmPilote GetVmPilote()
-        {
-            return this.vmPilote;
+            //this.vmPilote.PrivateRegistryPort = 5443;
+            //this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";
         }
 
         public void CreateVm(InfrastructureKey key, string vmName, string rootPassword, string adminuser, string adminpassword)
@@ -78,16 +70,6 @@ namespace ciinfra
                 xmlRPC.VmStop(vmId);
                 xmlRPC.VmDelete(vmId);
             }*/
-        }
-
-        public IVmPilote GetVmPilote(SshConnection sshConnection)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IVmWebServer GetVmWebServer(SshConnection sshConnection)
-        {
-            throw new NotImplementedException();
         }
 
         public bool VmExists(InfrastructureKey key, string vmName)

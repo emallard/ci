@@ -5,23 +5,21 @@ using System.Collections.Generic;
 using System.Linq;
 using citools;
 using ciinfra;
+using cilib;
 
 namespace cisteps
 {
     public class PiloteInstallDocker : IStep
     {
-        private readonly AskHelper helper;
-        private readonly ListResources listResources;
-        private readonly IInfrastructure infrastructure;
+        private readonly PiloteStep pstep;
+        private readonly SshDocker sshDocker;
 
         public PiloteInstallDocker(
-            AskHelper helper,
-            ListResources listResources,
-            IInfrastructure infrastructure)
+            PiloteStep pstep,
+            SshDocker sshDocker)
         {
-            this.listResources = listResources;
-            this.infrastructure = infrastructure;
-            this.helper = helper;
+            this.pstep = pstep;
+            this.sshDocker = sshDocker;
         }
 
         public Task Clean()
@@ -31,11 +29,7 @@ namespace cisteps
 
         public async Task Run()
         {
-            var vaultToken = await helper.Ask("vaultToken");
-            IAuthenticationInfo auth = new TokenAuthenticationInfo(vaultToken);
-            var sshConnection = await listResources.PiloteSshConnection.Read(auth);
-
-            infrastructure.GetVmPilote(sshConnection).InstallDocker();
+            sshDocker.InstallDocker(await pstep.GetPiloteSshConnection());
         }
 
 
@@ -44,17 +38,10 @@ namespace cisteps
             await Task.CompletedTask;
         }
 
-
-
         public async Task CheckRunOk()
         {
-            var vaultToken = await helper.Ask("vaultToken");
-            IAuthenticationInfo auth = new TokenAuthenticationInfo(vaultToken);
-
-            var sshConnection = await listResources.PiloteSshConnection.Read(auth);
-
-            var client = new SshClient2().SetConnection(sshConnection);
-            var result = client.SshCommand("docker run --rm hello-world");
+            pstep.sshClient.Connect(await pstep.GetPiloteSshConnection());
+            var result = pstep.sshClient.Command("docker run --rm hello-world");
             StepAssert.Contains("Hello from Docker!", result);
             await Task.CompletedTask;
         }

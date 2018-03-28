@@ -7,29 +7,31 @@ using citools;
 using VaultSharp.Backends.Authentication.Models;
 using VaultSharp.Backends.Authentication.Models.Token;
 using ciinfra;
+using cilib;
 
 namespace cisteps
 {
     public class PiloteCiexeSource : IStep 
     {
         private readonly PiloteStep pstep;
+        private readonly SshCiexe sshCiexe;
 
         public PiloteCiexeSource(
-            PiloteStep pstep)
+            PiloteStep pstep,
+            SshCiexe sshCiexe)
         {
             this.pstep = pstep;
+            this.sshCiexe = sshCiexe;
         }
 
         public async Task Clean()
         {
-            var vmPilote = await pstep.GetVmPilote();
-            vmPilote.CleanCiSources();
+            sshCiexe.CleanCiSources(await pstep.GetPiloteSshConnection());
         }
 
         public async Task Run()
         {
-            var vmPilote = await pstep.GetVmPilote();
-            vmPilote.CloneOrPullCiSources();
+            sshCiexe.CloneOrPullCiSources(await pstep.GetPiloteSshConnection());
         }
 
 
@@ -41,9 +43,9 @@ namespace cisteps
 
         public async Task CheckRunOk()
         {
-            var client = await pstep.GetPiloteSshClient2();
+            var client = pstep.sshClient.Connect(await pstep.GetPiloteSshConnection());
 
-            var result = client.SshCommand("cd ~/ci && git config --get remote.origin.url");
+            var result = client.Command("cd ~/ci && git config --get remote.origin.url");
             StepAssert.Contains("https://github.com/emallard/ci.git", result);
         }
 

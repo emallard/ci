@@ -21,8 +21,8 @@ namespace ciinfra
         void TryToStartVm(InfrastructureKey key, string vmName);
         void DeleteVm(InfrastructureKey key, string vmName);
 
-        IVmPilote GetVmPilote(SshConnection sshConnection);
-        IVmWebServer GetVmWebServer(SshConnection sshConnection);
+        //IVmPilote GetVmPilote(SshConnection sshConnection);
+        //IVmWebServer GetVmWebServer(SshConnection sshConnection);
 
     }
 }

@@ -11,43 +11,29 @@ namespace cisteps
 {
     public class PiloteStep
     {
-        private readonly AskHelper helper;
-        private readonly ListResources listResources;
-        private readonly IInfrastructure infrastructure;
-        private readonly CiExeCommands ciExeCommands;
+        public readonly ListAsk listAsk;
+        public readonly ListResources listResources;
+        public readonly CiExeCommands ciExeCommands;
+        public readonly ISshClient sshClient;
 
         public PiloteStep(
-            AskHelper helper,
+            ListAsk listAsk,
             ListResources listResources,
-            IInfrastructure infrastructure,
-            CiExeCommands ciExeCommands)
+            CiExeCommands ciExeCommands,
+            ISshClient sshClient)
         {
             this.listResources = listResources;
-            this.infrastructure = infrastructure;
             this.ciExeCommands = ciExeCommands;
-            this.helper = helper;
-        }
-
-        public async Task<IVmPilote> GetVmPilote()
-        {
-            var vmpilote = infrastructure.GetVmPilote(await GetPiloteSshConnection());
-            return vmpilote;
+            this.sshClient = sshClient;
+            this.listAsk = listAsk;
         }
 
         public async Task<SshConnection> GetPiloteSshConnection()
         {
-            var vaultToken = await helper.Ask("vaultToken");
-            IAuthenticationInfo auth = new TokenAuthenticationInfo(vaultToken);
-
+            IAuthenticationInfo auth = new TokenAuthenticationInfo(await listAsk.VaultToken.Ask());
             return await listResources.PiloteSshConnection.Read(auth);
         }
 
-        public async Task<SshClient2> GetPiloteSshClient2()
-        {
-            var sshConnection = await GetPiloteSshConnection();
-            var client = new SshClient2().SetConnection(sshConnection);
-            return client;
-        }
 
 /*
         public async Task<CiExeCommands> GetPiloteCiexe()

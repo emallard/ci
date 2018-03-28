@@ -53,18 +53,6 @@ namespace ciinfra
             vBoxHelper.DeleteVm(vmName);
         }
 
-        public IVmPilote GetVmPilote(SshConnection sshConnection)
-        {
-            this.vmPilote.SetSshConnection(sshConnection);
-            return this.vmPilote;
-        }
-
-        public IVmWebServer GetVmWebServer(SshConnection sshConnection)
-        {
-            this.vmWebServer.SetSshConnection(sshConnection);
-            return this.vmWebServer;
-        }
-
         // 
         //  Private
         //

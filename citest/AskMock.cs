@@ -10,13 +10,22 @@ namespace citest
 {
     public class AskMock : IAsk
     {
+        private readonly ListAsk listAsk;
+
+        public AskMock(
+            ListAsk listAsk
+        )
+        {
+            this.listAsk = listAsk;
+        }
+
         public Task<string> GetValue(string key)
         {
             return new Task<string>(() =>
             {
-                if (key == ListAsk.RootToken) return "unused";
-                if (key == ListAsk.VaultUri) return "unused";
-                if (key == ListAsk.DevopPassword) return "devoppass";
+                if (key == listAsk.RootToken.Name()) return "unused";
+                if (key == listAsk.VaultUri.Name()) return "unused";
+                if (key == listAsk.DevopPassword.Name()) return "devoppass";
 
                 throw new Exception("unknown ask in mock : " + key);
             });

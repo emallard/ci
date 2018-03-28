@@ -11,7 +11,7 @@ using ciinfra;
 
 namespace ciinfra
 {
-    public class VBoxVmWebServer : VBoxVm, IVmWebServer {
+    public class VBoxVmWebServer {
 
 
         public VBoxVmWebServer()
@@ -20,12 +20,12 @@ namespace ciinfra
 
         public void InstallHosts(string vmPiloteIp, string vmPilotePrivateRegistryDomain)
         {
-            this.SshSudoBashCommand($"echo \"{vmPiloteIp}  {vmPilotePrivateRegistryDomain}\" >> /etc/hosts");
+            //this.SshSudoBashCommand($"echo \"{vmPiloteIp}  {vmPilotePrivateRegistryDomain}\" >> /etc/hosts");
         }
 
         public void CleanHosts(string vmPilotePrivateRegistryDomain)
         {
-            this.SshSudoBashCommand($"sed -i \"/ {vmPilotePrivateRegistryDomain}/d\" /etc/hosts");
+            //this.SshSudoBashCommand($"sed -i \"/ {vmPilotePrivateRegistryDomain}/d\" /etc/hosts");
         }
     }
 }
