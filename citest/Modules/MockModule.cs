@@ -23,6 +23,8 @@ namespace citest
 
             builder.RegisterType<InfrastructureMock>().As<IInfrastructure>().SingleInstance();
             builder.RegisterType<SshClientMock>().As<ISshClient>();
+            builder.RegisterType<VmMockLoggerConsole>().As<IVmMockLogger>().SingleInstance();
+
 
             builder.RegisterType<StepLoggerAllConsole>().As<IStepLogger>().SingleInstance();
         }

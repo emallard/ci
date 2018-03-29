@@ -22,9 +22,16 @@ namespace citest
         public async Task<string> GetValue(string key)
         {
             await Task.CompletedTask;
-            if (key == listAsk.Value.RootToken.Name()) return "unused";
-            if (key == listAsk.Value.VaultUri.Name()) return "http://unused";
-            if (key == listAsk.Value.DevopPassword.Name()) return "devoppass";
+            if (key == listAsk.Value.LocalVaultRootToken.Name()) return InMemoryStore.RootToken;
+            if (key == listAsk.Value.LocalVaultUri.Name()) return "http://localVaultUri";
+
+            if (key == listAsk.Value.LocalVaultDevopUser.Name()) return "devop";
+            if (key == listAsk.Value.LocalVaultDevopPassword.Name()) return "devoppass";
+
+            if (key == listAsk.Value.InfraApiKey.Name()) return "infrapiKey";
+            if (key == listAsk.Value.PiloteRootPassword.Name()) return "rootpass";
+            if (key == listAsk.Value.PiloteAdminUser.Name()) return "piloteadmin";
+            if (key == listAsk.Value.PiloteAdminPassword.Name()) return "piloteadminpass";
 
             throw new Exception("unknown ask in mock : " + key);
         }

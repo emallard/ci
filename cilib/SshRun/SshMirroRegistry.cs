@@ -21,7 +21,7 @@ namespace cilib
             var mirrorPort = 4999;
             // Mirror runs on port 4999 
             var mirrorDir = "/home/test/mirror";
-            var cmd = sshClient.Command($"mkdir {mirrorDir}");
+            var cmd = sshClient.Connect(connection).Command($"mkdir {mirrorDir}");
             
             cmd = sshClient.Command(
                 $"docker run -p {mirrorPort}:5000 -d --restart=always --name registry "

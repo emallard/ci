@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using citools;
 
 namespace ciinfra
 {
@@ -10,17 +11,27 @@ namespace ciinfra
     {
 
         public List<VmMock> Vms = new List<VmMock>();
+        private readonly Func<VmMock> createVmMock;
+
+        public InfrastructureMock(Func<VmMock> createVmMock)
+        {
+            this.createVmMock = createVmMock;
+        }
 
         public void CreateVm(InfrastructureKey key, string vmName, string rootPassword, string adminuser, string adminpassword)
         {
-            Vms.Add(new VmMock() {
-                Name = vmName,
-                SshUri = new Uri("ssh://" + vmName + "sshuri")});
+            var mock = createVmMock();
+            mock.Name = vmName;
+            mock.SshUri = new Uri("ssh://" + vmName + "sshuri");
+            mock.RootPassword = rootPassword;
+            mock.AdminUser = adminuser;
+            mock.AdminPassword = adminpassword;
+            Vms.Add(mock);
         }
 
         public void DeleteVm(InfrastructureKey key, string vmName)
         {
-            var found = Vms.FirstOrDefault(vm => vm.Name == vmName);
+            var found = GetVmMockByName(vmName);
             Vms.Remove(found);
         }
 
@@ -46,12 +57,22 @@ namespace ciinfra
 
         public VmMock GetVmMockByName(string name)
         {
-            return Vms.FirstOrDefault(vm => vm.Name == name);
+            var found = Vms.FirstOrDefault(vm => vm.Name == name);
+            if (found == null)
+                throw new Exception("VmMock not found by Name");
+            return found;
         }
 
-        public VmMock GetVmMockBySshUri(Uri uri)
+        public VmMock GetVmMockBySshConnection(SshConnection connection)
         {
-            return Vms.FirstOrDefault(vm => vm.SshUri.OriginalString == uri.OriginalString);
+            var found = Vms.FirstOrDefault(vm => vm.SshUri.ToString() == connection.SshUri.ToString());
+            if (found == null)
+                throw new Exception("VmMock not found by Uri");
+
+            if (connection.User != found.AdminUser || connection.Password != found.AdminPassword)
+                throw new Exception("Ssh Bad username / password");
+
+            return found;
         }
     }
 }

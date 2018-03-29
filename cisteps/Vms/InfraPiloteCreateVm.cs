@@ -10,27 +10,18 @@ namespace cisteps
 {
     public class InfraPiloteCreateVm : IStep
     {
-        public const string VaultUri = "vault uri";
-        public const string DevopInfraToken = "devop-infra token";
-
-        public const string ApiKey = "apikey";
-        public const string RootPassword = "root password";
-        public const string AdminUser = "admin user";
-        public const string AdminPassword = "admin password";
-
-
-        private readonly AskHelper helper;
-        private readonly IInfrastructure infrastructure;
+        private readonly ListAsk listAsk;
         private readonly ListResources listResources;
+        private readonly IInfrastructure infrastructure;
         private readonly ISshClient sshClient;
 
         public InfraPiloteCreateVm(
-            AskHelper helper,
-            IInfrastructure infrastructure,
+            ListAsk listAsk,
             ListResources listResources,
+            IInfrastructure infrastructure,
             ISshClient sshClient)
         {
-            this.helper = helper;
+            this.listAsk = listAsk;
             this.infrastructure = infrastructure;
             this.listResources = listResources;
             this.sshClient = sshClient;
@@ -43,39 +34,45 @@ namespace cisteps
 
         public async Task Run()
         {
-            var devopInfraToken = await helper.Ask(DevopInfraToken);
+            //var devopInfraToken = await helper.Ask(DevopInfraToken);
             
-            var apikey = await helper.Ask(ApiKey);
-            var rootPassword = await helper.Ask(RootPassword);
-            var piloteUser = await helper.Ask(AdminUser);
-            var pilotePassword = await helper.Ask(AdminPassword);
+            var apikey = await listAsk.InfraApiKey.Ask();
+            var piloteRootPassword = await listAsk.PiloteRootPassword.Ask();
+            var piloteUser = await listAsk.PiloteAdminUser.Ask();
+            var pilotePassword = await listAsk.PiloteAdminPassword.Ask();
+       
        
             
-            infrastructure.CreateVm(new InfrastructureKey(apikey), "pilote", rootPassword, piloteUser, pilotePassword);
+            infrastructure.CreateVm(new InfrastructureKey(apikey), "pilote", piloteRootPassword, piloteUser, pilotePassword);
             var uri = infrastructure.GetVmSshUri(new InfrastructureKey(apikey), "pilote");
             var piloteSshUri = uri.ToString();
 
 
-            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(devopInfraToken);
-            await listResources.InfrastructureApiKey.Write(tokenAuthenticationInfo, apikey);
-            await listResources.PiloteRootPassword.Write(tokenAuthenticationInfo, rootPassword);
-            await listResources.PiloteUser.Write(tokenAuthenticationInfo, piloteUser);
-            await listResources.PilotePassword.Write(tokenAuthenticationInfo, pilotePassword);
-            await listResources.PiloteSshUri.Write(tokenAuthenticationInfo, piloteSshUri);
+            //IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo(devopInfraToken);
+            IAuthenticationInfo auth = new UserPasswordAuthenticationInfo(
+                await listAsk.LocalVaultDevopUser.Ask(),
+                await listAsk.LocalVaultDevopPassword.Ask());
+            
+
+            await listResources.InfrastructureApiKey.Write(auth, apikey);
+            await listResources.PiloteRootPassword.Write(auth, piloteRootPassword);
+            await listResources.PiloteUser.Write(auth, piloteUser);
+            await listResources.PilotePassword.Write(auth, pilotePassword);
+            await listResources.PiloteSshUri.Write(auth, piloteSshUri);
         }
 
         public async Task TestAlreadyRun()
         {
-            var apikey = await helper.Ask(ApiKey);
+            var apikey = await listAsk.InfraApiKey.Ask();
             infrastructure.VmExists(new InfrastructureKey(apikey), "pilote");
             await Task.CompletedTask;
         }
 
         public async Task CheckRunOk()
         {
-            var apikey = await helper.Ask(ApiKey);
-            var piloteUser = await helper.Ask(AdminUser);
-            var pilotePassword = await helper.Ask(AdminPassword);
+            var apikey = await listAsk.InfraApiKey.Ask();
+            var piloteUser = await listAsk.PiloteAdminUser.Ask();
+            var pilotePassword = await listAsk.PiloteAdminPassword.Ask();
 
             var client = sshClient.Connect(infrastructure.GetVmSshConnection(new InfrastructureKey(apikey), "pilote", piloteUser, pilotePassword));
             var result = client.Command("echo coucou");

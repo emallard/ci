@@ -21,7 +21,7 @@ namespace cilib
             // How to run sudo commands
             // https://stackoverflow.com/questions/41555597/how-to-run-commands-by-sudo-and-enter-password-by-ssh-net-c-sharp
 
-            var outputInstall = this.sshClient.SudoScript(this.script, "installdocker.sh");
+            var outputInstall = this.sshClient.Connect(connection).SudoScript(this.script, "installdocker.sh");
 
             this.sshClient.SudoReboot();
         }

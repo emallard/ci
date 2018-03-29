@@ -12,14 +12,16 @@ namespace ciinfra
         private readonly InfrastructureMock infrastructure;
         SshConnection sshConnection;
 
-        public SshClientMock(InfrastructureMock infrastructure)
+        public SshClientMock(IInfrastructure infrastructure)
         {
-            this.infrastructure = infrastructure;
+            if (!(infrastructure is InfrastructureMock))
+                throw new Exception("SshClientMock must be used with InfrastructureMock");
+            this.infrastructure = (InfrastructureMock) infrastructure;
         }
 
         public string Command(string command)
         {
-            this.infrastructure.GetVmMockBySshUri(sshConnection.SshUri).Command(command);
+            GetVmMock().Command(command);
             return "";
         }
 
@@ -31,32 +33,39 @@ namespace ciinfra
 
         public string Script(string scriptContent, string scriptName)
         {
-            this.infrastructure.GetVmMockBySshUri(sshConnection.SshUri).Command(scriptContent);
+            GetVmMock().Command(scriptContent);
             return "";
         }
 
         public string ScriptWithStdIn(string scriptContent, string scriptName, string[] inputs)
         {
-            this.infrastructure.GetVmMockBySshUri(sshConnection.SshUri).Command(
+            GetVmMock().Command(
                 "script with inputs :" + string.Join(",", inputs) + "\n" + scriptContent);
             return "";
         }
 
         public string SudoBash(string command)
         {
-            this.infrastructure.GetVmMockBySshUri(sshConnection.SshUri).Command("sudo bash : " + command);
+            GetVmMock().Command("sudo bash : " + command);
             return "";
         }
 
         public void SudoReboot()
         {
-
+            GetVmMock().Reboot();
         }
 
         public string SudoScript(string scriptContent, string scriptName)
         {
-            this.infrastructure.GetVmMockBySshUri(sshConnection.SshUri).Command("sudo script\n " + scriptContent);
+            GetVmMock().Command("sudo script\n " + scriptContent);
             return "";
+        }
+
+        private VmMock GetVmMock()
+        {
+            if (sshConnection == null)
+                throw new Exception("Don't forget to use SshClient.Connect to set SshConnectionInfo");
+            return this.infrastructure.GetVmMockBySshConnection(sshConnection);
         }
     }
 }

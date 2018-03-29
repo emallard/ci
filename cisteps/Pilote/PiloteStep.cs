@@ -30,7 +30,11 @@ namespace cisteps
 
         public async Task<SshConnection> GetPiloteSshConnection()
         {
-            IAuthenticationInfo auth = new TokenAuthenticationInfo(await listAsk.VaultToken.Ask());
+            //IAuthenticationInfo auth = new TokenAuthenticationInfo(await listAsk.LocalVaultToken.Ask());
+
+            IAuthenticationInfo auth = new UserPasswordAuthenticationInfo(
+                await listAsk.LocalVaultDevopUser.Ask(),
+                await listAsk.LocalVaultDevopPassword.Ask());
             return await listResources.PiloteSshConnection.Read(auth);
         }
 

@@ -13,9 +13,16 @@ namespace citools
         Dictionary<string, string> secrets = new Dictionary<string, string>();
         Dictionary<string, string> usernamePasswords = new Dictionary<string, string>();
         
+        public const string RootToken = "inmemory-root-token";
+
         public InMemoryStore()
         {
-            
+            var rootPolicy = new Policy() {
+                Name = "root",
+                Rules = "path \"secret/*\" { capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]"
+            };
+            policies.Add(rootPolicy.Name, rootPolicy);
+            tokens.Add(RootToken, "root");
         }
 
         public async Task EnableUsernamePassword(IAuthenticationInfo auth)
@@ -74,14 +81,27 @@ namespace citools
             Policy found;
             if (auth is UserPasswordAuthenticationInfo)
             {
-                var auth2 = (UserPasswordAuthenticationInfo) auth;
+                var userPassword = (UserPasswordAuthenticationInfo) auth;
                 string policyName;
-                if (usernamePasswords.TryGetValue(auth2.User + ":" + auth2.Password, out policyName))
+                if (usernamePasswords.TryGetValue(userPassword.User + ":" + userPassword.Password, out policyName))
                 {
                     policies.TryGetValue(policyName, out found);
+                    return found;
                 }
             }
+            if (auth is TokenAuthenticationInfo)
+            {
+                var token = (TokenAuthenticationInfo) auth;
+                string policyName;
+                if (tokens.TryGetValue(token.Token, out policyName))
+                {
+                    policies.TryGetValue(policyName, out found);
+                    return found;
+                }
+            }
+
             throw new Exception("InMemoryStore notSupported IAuthenticationInfo");
+            
         }
 
         private void CheckPathAndCapability(Policy policy, string path, string capability)
@@ -90,6 +110,8 @@ namespace citools
                 throw new CapabilityException(path, capability); 
             
             var rules = policy.Rules;
+            
+            // TODO check rules with Regexp
         }
     }
 }

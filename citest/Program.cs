@@ -66,14 +66,14 @@ namespace citest
             builder.RegisterType<ListResources>().SingleInstance();
             builder.RegisterType<InMemoryStore>().SingleInstance();
 
-            builder.RegisterModule<LogRequestsModule>();
+            //builder.RegisterModule<LogRequestsModule>();
 
             var module =  (IModule)Activator.CreateInstance(moduleType);
             builder.RegisterModule(module);
             builder.RegisterType(stepRunnerType).As<IStepRunner>();
             var container = builder.Build();
             
-            container.Resolve<PipelineInstallPiloteVm>();
+            //container.Resolve<PipelineInstallPiloteVm>();
             //container.Resolve<IStepRunner>();
 
 

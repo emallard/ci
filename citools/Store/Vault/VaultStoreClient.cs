@@ -45,7 +45,7 @@ namespace citools
         {
             var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(uri, this.authenticationInfo);
 
-            var result = await vaultClient.ReadSecretAsync("/secrets/" + path);
+            var result = await vaultClient.ReadSecretAsync(path);
             return (string) result.Data["value"];
         }
 
@@ -54,7 +54,7 @@ namespace citools
         {
             var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(uri, this.authenticationInfo);
 
-            await vaultClient.WriteSecretAsync("/secrets/" + path, new Dictionary<string, object>
+            await vaultClient.WriteSecretAsync(path, new Dictionary<string, object>
                     {{ "value", value }});
         }
 

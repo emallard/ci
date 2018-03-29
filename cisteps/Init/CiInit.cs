@@ -64,26 +64,28 @@ namespace cisteps
         public async Task CheckRunOk()
         {
             // log with root token
-            var rootToken = await listAsk.RootToken.Ask();
+            var rootToken = await listAsk.LocalVaultRootToken.Ask();
             var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
-            var policy = await client.GetPolicyAsync("devop");
+            var devopUser = await listAsk.LocalVaultDevopUser.Ask();
+            var policy = await client.GetPolicyAsync(devopUser);
             StepAssert.IsTrue(policy != null);
         }
 
         public async Task TestAlreadyRun()
         {
             // log with root token
-            var rootToken = await listAsk.RootToken.Ask();
+            var rootToken = await listAsk.LocalVaultRootToken.Ask();
             var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
-            var policy = await client.GetPolicyAsync("devop");
+            var devopUser = await listAsk.LocalVaultDevopUser.Ask();
+            var policy = await client.GetPolicyAsync(devopUser);
             StepAssert.IsTrue(policy == null);
         }
 
         public async Task Run()
         {   
-            var vaultUri = new Uri(await listAsk.VaultUri.Ask());
-            var rootToken = await listAsk.RootToken.Ask();
-            var devopPass = await listAsk.DevopPassword.Ask();
+            var vaultUri = new Uri(await listAsk.LocalVaultUri.Ask());
+            var rootToken = await listAsk.LocalVaultRootToken.Ask();
+            var devopPass = await listAsk.LocalVaultDevopPassword.Ask();
         
 
             // log with root token

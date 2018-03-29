@@ -9,17 +9,31 @@ namespace cisteps
 {
     public class ListAsk
     {
-        public AskResource VaultUri;
-        public AskResource RootToken;
-        public AskResource DevopPassword;
-        public AskResource VaultToken;
+        public AskResource LocalVaultUri;
+        public AskResource LocalVaultRootToken;
+        public AskResource LocalVaultDevopUser;
+        public AskResource LocalVaultDevopPassword;
+        //public AskResource LocalVaultToken;
+
+        public AskResource InfraApiKey;
+        public AskResource PiloteRootPassword;
+        public AskResource PiloteAdminUser;
+        public AskResource PiloteAdminPassword;
 
         public ListAsk(Func<AskResource> createAskResource)
         {
-            VaultUri = createAskResource().Name("vault uri");
-            RootToken = createAskResource().Name("root token");
-            DevopPassword = createAskResource().Name("devop password");
-            VaultToken = createAskResource().Name("vault token");
+            LocalVaultUri = createAskResource().Name("vault uri");
+            LocalVaultRootToken = createAskResource().Name("root token");
+            LocalVaultDevopUser = createAskResource().Name("devop user");
+            LocalVaultDevopPassword = createAskResource().Name("devop password");
+            //LocalVaultToken = createAskResource().Name("vault token");
+
+
+            InfraApiKey = createAskResource().Name("apikey");
+            PiloteRootPassword = createAskResource().Name("pilote root password");
+            PiloteAdminUser = createAskResource().Name("pilote admin user");
+            PiloteAdminPassword = createAskResource().Name("pilote admin password");
+
         }
     }
 }
