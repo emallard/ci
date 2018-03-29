@@ -11,7 +11,7 @@ namespace citools
         IAsk ask;
         string name;
 
-        public AskResource(IAsk ask)
+        public AskResource(IAsk ask, IAskResourceLogger logger)
         {
             this.ask = ask;
         }

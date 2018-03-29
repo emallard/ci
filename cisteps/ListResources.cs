@@ -22,11 +22,11 @@ namespace cisteps
 
         public ListResources(Func<StoreResource> createStoreResource)
         {
-            InfrastructureApiKey = createStoreResource().Path("vault/devop/apikey");
-            PiloteRootPassword = createStoreResource().Path("vault/devop/piloteRootPassword");
-            PiloteSshUri = createStoreResource().Path("vault/devop/pilote/sshuri");
-            PiloteUser = createStoreResource().Path("vault/devop/pilote/user");
-            PilotePassword = createStoreResource().Path("vault/devop/pilote/password");
+            InfrastructureApiKey = createStoreResource().Path("vault/secrets/devop/apikey");
+            PiloteRootPassword = createStoreResource().Path( "vault/secrets/devop/piloteRootPassword");
+            PiloteSshUri = createStoreResource().Path("vault/secrets/devop/pilote/sshuri");
+            PiloteUser = createStoreResource().Path("vault/secrets/devop/pilote/user");
+            PilotePassword = createStoreResource().Path("vault/secrets/devop/pilote/password");
 
             PiloteSshConnection = new ReadResource<SshConnection>(GetPiloteSshConnection);
         }

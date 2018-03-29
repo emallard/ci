@@ -20,7 +20,10 @@ namespace citest
         {
             var p1 = path.Split('/')[0];
             if (p1 == "vault")
-                return inMemoryMemoryStoreClientFactory.CreateClient(new Uri("http://localhost:8200"), authenticationInfo);
+            {
+                var client = inMemoryMemoryStoreClientFactory.CreateClient(new Uri("http://localhost:8200"), authenticationInfo);
+                return client;
+            }
                 
             throw new Exception("unknown path to create client"); 
         }

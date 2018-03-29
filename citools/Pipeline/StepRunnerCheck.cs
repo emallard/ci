@@ -9,9 +9,17 @@ namespace citools
 {
     public class StepRunnerCheck : IStepRunner
     {
+        private readonly IStepLogger logger;
+
+        public StepRunnerCheck(IStepLogger logger)
+        {
+            this.logger = logger;
+        }
+        
+
         public async Task Run(IStep step)
         {
-            await step.CheckRunOk();
+            await logger.LogCheckOk(step);
         }
     }
 }
