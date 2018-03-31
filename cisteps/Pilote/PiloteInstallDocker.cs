@@ -38,7 +38,7 @@ namespace cisteps
             await Task.CompletedTask;
         }
 
-        public async Task CheckRunOk()
+        public async Task Check()
         {
             pstep.sshClient.Connect(await pstep.GetPiloteSshConnection());
             var result = pstep.sshClient.Command("docker run --rm hello-world");

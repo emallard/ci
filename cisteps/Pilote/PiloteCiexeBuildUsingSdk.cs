@@ -54,7 +54,7 @@ namespace cisteps
         }
 
 
-        public async Task CheckRunOk()
+        public async Task Check()
         {
             var client = pstep.sshClient.Connect(await pstep.GetPiloteSshConnection());
 

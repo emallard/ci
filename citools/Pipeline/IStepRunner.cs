@@ -9,7 +9,5 @@ namespace citools
     public interface IStepRunner
     {
         Task Run(IStep step);
-
-        //void Run(IPipeline pipeline);
     }
 }

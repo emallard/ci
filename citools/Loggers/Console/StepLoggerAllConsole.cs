@@ -11,7 +11,7 @@ namespace citools
         public async Task LogCheckOk(IStep step)
         {
             Console.WriteLine("Step Check " + step.GetType().Name);
-            await step.CheckRunOk();
+            await step.Check();
             Console.WriteLine("Step Check OK");
         }
 

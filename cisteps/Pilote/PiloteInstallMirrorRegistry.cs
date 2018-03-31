@@ -41,7 +41,7 @@ namespace cisteps
         }
 
 
-        public async Task CheckRunOk()
+        public async Task Check()
         {
             pstep.sshClient.Connect(await pstep.GetPiloteSshConnection());
             var result = pstep.sshClient.Command("curl http://localhost:4999/v2/");

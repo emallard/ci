@@ -10,10 +10,10 @@ namespace citools
     {
         Task Run();
 
-        Task CheckRunOk();
+        Task Check();
 
-        Task TestAlreadyRun();
+        Task Clean();
 
-        Task Clean();        
+        //Task TestAlreadyRun();
     }
 }

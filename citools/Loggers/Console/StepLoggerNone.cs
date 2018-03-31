@@ -10,7 +10,7 @@ namespace citools
     {
         public async Task LogCheckOk(IStep step)
         {
-            await step.CheckRunOk();
+            await step.Check();
         }
 
         public async Task LogClean(IStep step)

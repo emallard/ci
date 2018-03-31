@@ -8,10 +8,10 @@ namespace citools
 {
     public class AskResourceLoggerConsole : IAskResourceLogger 
     {
-        public async Task Log(string ask)
+        public async Task LogAskResource(AskResource askResource)
         {
             await Task.CompletedTask;
-            Console.WriteLine("[Ask] " + ask);
+            Console.WriteLine("[Ask] " + askResource.Name());
         }
     }
 }

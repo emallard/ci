@@ -8,6 +8,6 @@ namespace citools
 {
     public interface IAskResourceLogger 
     {
-        Task Log(string ask);
+        Task LogAskResource(AskResource askResource);
     }
 }

@@ -35,7 +35,7 @@ namespace cisteps
         }
 
 
-        public async Task CheckRunOk()
+        public async Task Check()
         {
             await Task.CompletedTask;
         }

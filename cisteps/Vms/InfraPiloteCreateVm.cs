@@ -68,7 +68,7 @@ namespace cisteps
             await Task.CompletedTask;
         }
 
-        public async Task CheckRunOk()
+        public async Task Check()
         {
             var apikey = await listAsk.InfraApiKey.Ask();
             var piloteUser = await listAsk.PiloteAdminUser.Ask();

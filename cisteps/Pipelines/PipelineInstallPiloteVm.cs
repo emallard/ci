@@ -15,14 +15,12 @@ namespace cisteps
             IStepRunner runner,
             PiloteInstallDocker piloteInstallDocker,
             PiloteInstallMirrorRegistry piloteInstallMirrorRegistry,
-            PiloteInstallPrivateRegistry piloteInstallPrivateRegistry,
             PiloteInstallDotNetCoreSdk piloteInstallDotNetCoreSdk
             )
         {
             this.run = async () => {
                 await runner.Run(piloteInstallDocker);
                 await runner.Run(piloteInstallMirrorRegistry);
-                await runner.Run(piloteInstallPrivateRegistry);
                 await runner.Run(piloteInstallDotNetCoreSdk);
             };
         }

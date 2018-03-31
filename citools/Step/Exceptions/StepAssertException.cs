@@ -8,7 +8,7 @@ namespace citools
 {
     public class StepAssertException : Exception 
     {
-        public StepAssertException(string message)
+        public StepAssertException(string message) : base(message)
         {
             
         }

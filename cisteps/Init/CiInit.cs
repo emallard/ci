@@ -61,7 +61,7 @@ namespace cisteps
             this.storeResolver = storeResolver;
         }
 
-        public async Task CheckRunOk()
+        public async Task Check()
         {
             // log with root token
             var rootToken = await listAsk.LocalVaultRootToken.Ask();
