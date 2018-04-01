@@ -6,12 +6,8 @@ using System.Linq;
 
 namespace citools
 {
-    public interface IStep 
+    public interface IGit
     {
-        Task Run();
-
-        Task Check();
-
-        Task Clean();
+        void CloneOrPull(Uri gitUri, string directory);
     }
 }

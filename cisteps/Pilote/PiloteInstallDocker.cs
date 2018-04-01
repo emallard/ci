@@ -32,12 +32,6 @@ namespace cisteps
             sshDocker.InstallDocker(await pstep.GetPiloteSshConnection());
         }
 
-
-        public async Task TestAlreadyRun()
-        {
-            await Task.CompletedTask;
-        }
-
         public async Task Check()
         {
             pstep.sshClient.Connect(await pstep.GetPiloteSshConnection());

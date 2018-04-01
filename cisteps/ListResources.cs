@@ -9,7 +9,9 @@ namespace cisteps
 {
     public class ListResources
     {
-        
+        public StoreResource CAKey;
+        public StoreResource CAPem;
+
         public StoreResource InfrastructureApiKey;
         public StoreResource PiloteRootPassword;
         

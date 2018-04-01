@@ -24,7 +24,7 @@ namespace citest
             var builder = new ContainerBuilder();
             builder.RegisterModule<CommonModule>();
             
-            var logger = new FuncLogger().SetFunc(async o => await Clients.All.SendAsync("logMessage", o));
+            var logger = new FuncLogger().SetFunc(async o => await Clients.All.SendAsync("logMessage", new TypedLogDto(o)));
             builder.RegisterInstance(logger).As<ILogger>();
 
             builder.RegisterModule<MockModule>();

@@ -47,13 +47,6 @@ namespace cisteps
             sshCiexe.BuildCiUsingSdk(connection);
         }
 
-
-        public async Task TestAlreadyRun()
-        {
-            await Task.CompletedTask;
-        }
-
-
         public async Task Check()
         {
             var client = pstep.sshClient.Connect(await pstep.GetPiloteSshConnection());

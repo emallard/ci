@@ -34,17 +34,17 @@ namespace ciinfra
             //this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";       
         }
 
-        public bool VmExists(InfrastructureKey key, string vmName)
+        public bool VmExists(string key, string vmName)
         {
             return vBoxHelper.VmExists(vmName);
         }
 
-        public void TryToStartVm(InfrastructureKey key, string vmName)
+        public void TryToStartVm(string key, string vmName)
         {
             vBoxHelper.TryToStartVm(vmName);
         }
 
-        public void DeleteVm(InfrastructureKey key, string vmName)
+        public void DeleteVm(string key, string vmName)
         {
             vBoxHelper.DeleteVm(vmName);
         }
@@ -72,7 +72,7 @@ namespace ciinfra
         }
 
 
-        public string GetVmIp(InfrastructureKey key, string vmName)
+        public string GetVmIp(string key, string vmName)
         {
             if (vmName == "pilote")
                 return "10.0.2.5";
@@ -82,7 +82,7 @@ namespace ciinfra
             throw new Exception("Unknown VM");
         }
 
-        public Uri GetVmSshUri(InfrastructureKey key, string vmName)
+        public Uri GetVmSshUri(string key, string vmName)
         {
             if (vmName == "pilote")
                 return new Uri("tcp://10.0.2.5:22005");
@@ -92,7 +92,7 @@ namespace ciinfra
             throw new Exception("Unknown VM");
         }
 
-        public void CreateVm(InfrastructureKey key, string vmName, string rootPassword, string adminuser, string adminpassword)
+        public void CreateVm(string key, string vmName, string rootPassword, string adminuser, string adminpassword)
         {
             var ip = GetVmIp(key, vmName);
             var portForward = GetVmSshUri(key, vmName).Port;

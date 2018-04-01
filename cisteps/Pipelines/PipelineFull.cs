@@ -13,7 +13,7 @@ namespace cisteps
 
         public PipelineFull(
             IStepRunner runner,
-            PipelineInit pipelineInit,
+            PipelineDevopInit pipelineInit,
             PipelineCreatePiloteVm pipelineCreatePiloteVm,
             PipelineInstallPiloteVm pipelineInstallPiloteVm
             )

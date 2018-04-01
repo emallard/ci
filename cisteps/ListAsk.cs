@@ -15,6 +15,8 @@ namespace cisteps
         public AskResource LocalVaultDevopPassword;
         //public AskResource LocalVaultToken;
 
+        public AskResource CADomain;
+        
         public AskResource InfraApiKey;
         public AskResource PiloteRootPassword;
         public AskResource PiloteAdminUser;

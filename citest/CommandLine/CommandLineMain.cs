@@ -46,7 +46,7 @@ namespace citest
         static void Main1(string[] args)
         {
             var module = typeof(MockModule);
-            var pipelineType = typeof(PipelineInit);
+            var pipelineType = typeof(PipelineDevopInit);
             var stepRunnerType = typeof(StepRunnerTest);
             Run(module, pipelineType, stepRunnerType).Wait();
         }   

@@ -43,8 +43,8 @@ namespace cisteps
        
        
             
-            infrastructure.CreateVm(new InfrastructureKey(apikey), "pilote", piloteRootPassword, piloteUser, pilotePassword);
-            var uri = infrastructure.GetVmSshUri(new InfrastructureKey(apikey), "pilote");
+            infrastructure.CreateVm(apikey, "pilote", piloteRootPassword, piloteUser, pilotePassword);
+            var uri = infrastructure.GetVmSshUri(apikey, "pilote");
             var piloteSshUri = uri.ToString();
 
 
@@ -61,20 +61,13 @@ namespace cisteps
             await listResources.PiloteSshUri.Write(auth, piloteSshUri);
         }
 
-        public async Task TestAlreadyRun()
-        {
-            var apikey = await listAsk.InfraApiKey.Ask();
-            infrastructure.VmExists(new InfrastructureKey(apikey), "pilote");
-            await Task.CompletedTask;
-        }
-
         public async Task Check()
         {
             var apikey = await listAsk.InfraApiKey.Ask();
             var piloteUser = await listAsk.PiloteAdminUser.Ask();
             var pilotePassword = await listAsk.PiloteAdminPassword.Ask();
 
-            var client = sshClient.Connect(infrastructure.GetVmSshConnection(new InfrastructureKey(apikey), "pilote", piloteUser, pilotePassword));
+            var client = sshClient.Connect(infrastructure.GetVmSshConnection(apikey, "pilote", piloteUser, pilotePassword));
             var result = client.Command("echo coucou");
             StepAssert.AreEqual("coucou\n", result);
             await Task.CompletedTask;

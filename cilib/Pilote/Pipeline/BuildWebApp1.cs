@@ -14,18 +14,18 @@ namespace cilib
     public class BuildWebApp1 {
 
         private readonly DockerWrapper dockerWrapper;
-        private readonly GitHelper gitHelper;
+        private readonly IGit git;
         private readonly TarHelper tarHelper;
 
         string ImageName = "dotnetcore_0";
 
         public BuildWebApp1(
             DockerWrapper dockerWrapper,
-            GitHelper gitHelper,
+            IGit gitHelper,
             TarHelper tarHelper)
         {
             this.dockerWrapper = dockerWrapper;
-            this.gitHelper = gitHelper;
+            this.git = gitHelper;
             this.tarHelper = tarHelper;
         }
 

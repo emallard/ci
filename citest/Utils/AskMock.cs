@@ -22,6 +22,7 @@ namespace citest
         public async Task<string> GetValue(string key)
         {
             await Task.CompletedTask;
+            if (key == listAsk.Value.CADomain.Name()) return "http://maboitededev.com";
             if (key == listAsk.Value.LocalVaultRootToken.Name()) return InMemoryStore.RootToken;
             if (key == listAsk.Value.LocalVaultUri.Name()) return "http://localVaultUri";
 

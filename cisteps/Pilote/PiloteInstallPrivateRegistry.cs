@@ -28,13 +28,6 @@ namespace cisteps
             //sshPrivateRegistry.InstallPrivateRegistry(await pstep.GetPiloteSshConnection());
         }
 
-
-        public async Task TestAlreadyRun()
-        {
-            await Task.CompletedTask;
-        }
-
-
         public async Task Check()
         {
             await Task.CompletedTask;

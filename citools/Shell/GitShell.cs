@@ -4,11 +4,11 @@ using System.IO;
 
 namespace citools
 {
-    public class GitHelper
+    public class GitShell : IGit
     {
         private readonly ShellHelper shellHelper;
 
-        public GitHelper(
+        public GitShell(
             ShellHelper shellHelper
         )
         {

@@ -20,9 +20,9 @@ namespace ciinfra
             //this.vmPilote.PrivateRegistryDomain = "privateregistry.mynetwork.local";
         }
 
-        public void CreateVm(InfrastructureKey key, string vmName, string rootPassword, string adminuser, string adminpassword)
+        public void CreateVm(string key, string vmName, string rootPassword, string adminuser, string adminpassword)
         {
-            xmlRPC.CreateVm(key.Content,
+            xmlRPC.CreateVm(key,
                 vmName,
                 8000,
                 rootPassword,
@@ -30,37 +30,37 @@ namespace ciinfra
                 adminpassword
             );
             Thread.Sleep(30000);
-            var vmInfo1 = xmlRPC.TryVmInfo(key.Content, vmName);
+            var vmInfo1 = xmlRPC.TryVmInfo(key, vmName);
             Thread.Sleep(30000);
-            var vmInfo2 = xmlRPC.TryVmInfo(key.Content, vmName);
+            var vmInfo2 = xmlRPC.TryVmInfo(key, vmName);
             Thread.Sleep(1000);
         }
 
-        public string GetVmIp(InfrastructureKey key, string vmName)
+        public string GetVmIp(string key, string vmName)
         {
-            var vmInfo = xmlRPC.TryVmInfo(key.Content, vmName);
+            var vmInfo = xmlRPC.TryVmInfo(key, vmName);
             if (vmInfo != null)
             {
                 int ifaceId = vmInfo["ifaces_id"][0];
-                var ifaceInfo = xmlRPC.IfaceInfo(key.Content, ifaceId);
+                var ifaceInfo = xmlRPC.IfaceInfo(key, ifaceId);
                 var ipv4 = ifaceInfo.ips[0]["ip"];
                 return ipv4;
             }
             throw new Exception("Vm not found");
         }
 
-        public Uri GetVmSshUri(InfrastructureKey key, string vmName)
+        public Uri GetVmSshUri(string key, string vmName)
         {
             var ip = GetVmIp(key, vmName);
             return new Uri("tcp://" + ip + ":22");
         }
 
-        public void TryToStartVm(InfrastructureKey key, string vmName)
+        public void TryToStartVm(string key, string vmName)
         {
-            var vmList = xmlRPC.VmList(key.Content);
+            var vmList = xmlRPC.VmList(key);
         }
 
-        public void DeleteVm(InfrastructureKey key, string vmName)
+        public void DeleteVm(string key, string vmName)
         {
             /*
             var vmId = xmlRPC.TryVmId(vmName);
@@ -71,9 +71,9 @@ namespace ciinfra
             }*/
         }
 
-        public bool VmExists(InfrastructureKey key, string vmName)
+        public bool VmExists(string key, string vmName)
         {
-            var vmInfo = xmlRPC.TryVmInfo(key.Content, vmName);
+            var vmInfo = xmlRPC.TryVmInfo(key, vmName);
             return vmInfo != null;
         }
 

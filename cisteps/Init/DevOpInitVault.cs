@@ -47,18 +47,21 @@ curl \
 
 namespace cisteps
 {
-    public class DevOpInit : IStep
+    public class DevOpInitVault : IStep
     {
         private readonly ListAsk listAsk;
         private readonly IStoreResolver storeResolver;
+        private readonly Installer installer;
 
-        public DevOpInit(
+        public DevOpInitVault(
             ListAsk listAsk,
-            IStoreResolver storeResolver
+            IStoreResolver storeResolver,
+            Installer installer
         )
         {
             this.listAsk = listAsk;
             this.storeResolver = storeResolver;
+            this.installer = installer;
         }
 
         public async Task Check()
@@ -71,22 +74,14 @@ namespace cisteps
             StepAssert.IsTrue(policy != null);
         }
 
-        public async Task TestAlreadyRun()
-        {
-            // log with root token
-            var rootToken = await listAsk.LocalVaultRootToken.Ask();
-            var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
-            var devopUser = await listAsk.LocalVaultDevopUser.Ask();
-            var policy = await client.GetPolicyAsync(devopUser);
-            StepAssert.IsTrue(policy == null);
-        }
-
         public async Task Run()
         {   
             var vaultUri = new Uri(await listAsk.LocalVaultUri.Ask());
             var rootToken = await listAsk.LocalVaultRootToken.Ask();
             var devopPass = await listAsk.LocalVaultDevopPassword.Ask();
         
+            // install vault
+            installer.Install("OpenSsl");
 
             // log with root token
             var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));

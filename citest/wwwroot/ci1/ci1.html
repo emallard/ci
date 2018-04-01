@@ -9,10 +9,11 @@
     
     <div class="menu">
         <button id="runButton">Run</button>
+        Logs : <button id="restart">&lt;&lt;</button><button id="next">&gt;</button>
     </div>
 
     <div class="svg">
-        <svg src="ci1.svg"></svg>
+        <svg id="svg" src="ci1.svg"></svg>
     </div>
 
 
@@ -20,6 +21,14 @@
     
     
     <script type="text/javascript">
+
+        var logMessages = [];
+        var logIndex = 0;
+        
+        document.querySelector('#restart').addEventListener('click', function () {logIndex = 0;});
+        document.querySelector('#next').addEventListener('click', function () {logIndex++; displayLog(logMessages, logIndex);});
+
+
         document.addEventListener('DOMContentLoaded', function () {
 
             // Start the connection.
@@ -27,7 +36,7 @@
                 // Create a function that the hub can call to broadcast messages.
                 connection.on('logMessage', function (l) {
                     
-                    console.log(l);
+                    logMessages.push(l);
 
                     // Add the message to the page.
                     //var liElement = document.createElement('li');

@@ -18,7 +18,7 @@ namespace ciinfra
             this.createVmMock = createVmMock;
         }
 
-        public void CreateVm(InfrastructureKey key, string vmName, string rootPassword, string adminuser, string adminpassword)
+        public void CreateVm(string key, string vmName, string rootPassword, string adminuser, string adminpassword)
         {
             var mock = createVmMock();
             mock.Name = vmName;
@@ -29,28 +29,28 @@ namespace ciinfra
             Vms.Add(mock);
         }
 
-        public void DeleteVm(InfrastructureKey key, string vmName)
+        public void DeleteVm(string key, string vmName)
         {
             var found = GetVmMockByName(vmName);
             Vms.Remove(found);
         }
 
-        public string GetVmIp(InfrastructureKey key, string vmName)
+        public string GetVmIp(string key, string vmName)
         {
             return "192.168." + vmName;
         }
 
-        public Uri GetVmSshUri(InfrastructureKey key, string vmName)
+        public Uri GetVmSshUri(string key, string vmName)
         {
             return GetVmMockByName(vmName).SshUri;
         }
 
-        public void TryToStartVm(InfrastructureKey key, string vmName)
+        public void TryToStartVm(string key, string vmName)
         {
 
         }
 
-        public bool VmExists(InfrastructureKey key, string vmName)
+        public bool VmExists(string key, string vmName)
         {
             return null != GetVmMockByName(vmName);
         }
