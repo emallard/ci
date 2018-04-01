@@ -9,9 +9,9 @@ namespace citools
 {
     public class StepRunnerCleanAll : IStepRunner
     {
-        private readonly IStepLogger logger;
+        private readonly StepLogger logger;
 
-        public StepRunnerCleanAll(IStepLogger logger)
+        public StepRunnerCleanAll(StepLogger logger)
         {
             this.logger = logger;
         }

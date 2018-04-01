@@ -56,15 +56,7 @@ namespace citest
         static async Task Run(Type moduleType, Type pipelineType, Type stepRunnerType)
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule<CiLibModule>();
-            builder.RegisterModule<CiToolsModule>();
-            builder.RegisterModule<CiStepsModule>();
-            builder.RegisterModule<CiInfraModule>();
-            builder.RegisterModule<CiExeCommandsModule>();
-
-            builder.RegisterType<ListAsk>().SingleInstance();
-            builder.RegisterType<ListResources>().SingleInstance();
-            builder.RegisterType<InMemoryStore>().SingleInstance();
+            builder.RegisterModule<CommonModule>();
 
             //builder.RegisterModule<LogRequestsModule>();
 

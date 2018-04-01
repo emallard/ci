@@ -9,9 +9,9 @@ namespace citools
 {
     public class StepRunnerRunAll : IStepRunner
     {
-        private readonly IStepLogger logger;
+        private readonly StepLogger logger;
 
-        public StepRunnerRunAll(IStepLogger logger)
+        public StepRunnerRunAll(StepLogger logger)
         {
             this.logger = logger;
         }
@@ -20,7 +20,7 @@ namespace citools
         public async Task Run(IStep step)
         {
             try {
-                await logger.LogCheckOk(step);
+                await logger.LogCheck(step);
                 return;
             }
             catch (Exception) {}

@@ -9,9 +9,9 @@ namespace cisteps
 {
     public class PipelineInit : IPipeline
     {
-        private readonly CiInit ciInit;
+        private readonly DevOpInit ciInit;
 
-        public PipelineInit(CiInit ciInit)
+        public PipelineInit(DevOpInit ciInit)
         {
             this.ciInit = ciInit;
         }

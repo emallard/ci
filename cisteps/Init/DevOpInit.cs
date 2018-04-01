@@ -47,12 +47,12 @@ curl \
 
 namespace cisteps
 {
-    public class CiInit : IStep
+    public class DevOpInit : IStep
     {
         private readonly ListAsk listAsk;
         private readonly IStoreResolver storeResolver;
 
-        public CiInit(
+        public DevOpInit(
             ListAsk listAsk,
             IStoreResolver storeResolver
         )

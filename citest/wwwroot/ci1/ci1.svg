@@ -183,11 +183,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.175"
-     inkscape:cx="1246.9878"
-     inkscape:cy="-692.15102"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="605.42092"
+     inkscape:cy="966.32803"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g5260-5-7"
      showgrid="false"
      inkscape:window-width="1855"
      inkscape:window-height="1056"
@@ -226,13 +226,13 @@
          sodipodi:linespacing="125%"
          id="text4138"
          y="106.85942"
-         x="293.44495"
+         x="281.44495"
          style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            y="106.85942"
-           x="293.44495"
+           x="281.44495"
            id="tspan4140"
-           sodipodi:role="line">CiInit</tspan></text>
+           sodipodi:role="line">DevOpInit</tspan></text>
     </g>
     <g
        id="g4292"
@@ -343,32 +343,33 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="135.68454"
-       y="-678.65662"
+       x="36.398838"
+       y="-697.94232"
        id="text4297"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4299"
-         x="135.68454"
-         y="-678.65662">Initialisation des machines participants à l'infrastructure cible</tspan><tspan
+         x="36.398838"
+         y="-697.94232">Initialisation des machines participants à l'infrastructure cible</tspan><tspan
          sodipodi:role="line"
-         x="135.68454"
-         y="-663.03162"
-         id="tspan6210">Lancer l'execution depuis la machine devop</tspan></text>
+         x="36.398838"
+         y="-682.31732"
+         id="tspan6210">Lancer l'execution depuis la machine devop.</tspan><tspan
+         sodipodi:role="line"
+         x="36.398838"
+         y="-666.69232"
+         id="tspan4438" /><tspan
+         sodipodi:role="line"
+         x="36.398838"
+         y="-651.06732"
+         id="tspan4440">L'objectif est de montrer toutes les serveurs impliqués dans l'infrastructure cible</tspan><tspan
+         sodipodi:role="line"
+         x="36.398838"
+         y="-635.44232"
+         id="tspan4442">Et de montrer comment les logiciels travaillent ensemble</tspan></text>
     <g
        id="g4282-9-2"
        transform="translate(-223.64555,286.64602)" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="711.68475"
-       y="-599.29065"
-       id="text4630"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4632"
-         x="711.68475"
-         y="-599.29065">Initialisation de la machine Devop</tspan></text>
     <rect
        style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:6, 6;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        id="rect4644"
@@ -488,26 +489,26 @@
     <rect
        style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        id="rect4136-5-6-85"
-       width="219.90178"
-       height="164.9964"
+       width="466.88406"
+       height="167.52177"
        x="722.72607"
        y="-541.10254" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="808.38776"
-       y="-522.99164"
+       x="737.67706"
+       y="-524.00177"
        id="text4138-3-2-6"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4140-5-9-1"
-         x="808.38776"
-         y="-522.99164">Vault</tspan></text>
+         x="737.67706"
+         y="-524.00177">Vault</tspan></text>
     <rect
        style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        id="rect4136-5-6-85-0"
-       width="238.57983"
-       height="203.57292"
+       width="486.78149"
+       height="210.71579"
        x="713.04852"
        y="-572.07959" />
     <text
@@ -523,23 +524,23 @@
          y="-554.22284">Devop</tspan></text>
     <g
        id="g5260"
-       transform="translate(356.42794,-707.57147)">
+       transform="translate(103.57083,-493.28578)">
       <rect
-         y="500.72021"
-         x="617.69739"
-         height="164.9964"
-         width="219.90178"
+         y="460.31412"
+         x="621.73798"
+         height="219.03955"
+         width="219.90187"
          id="rect4136-5-6-85-4"
          style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
       <text
          sodipodi:linespacing="125%"
          id="text4138-3-2-6-47"
-         y="518.83112"
-         x="703.35907"
+         y="478.42502"
+         x="708.91492"
          style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           y="518.83112"
-           x="703.35907"
+           y="478.42502"
+           x="708.91492"
            id="tspan4140-5-9-1-6"
            sodipodi:role="line">Vault</tspan></text>
     </g>
@@ -585,12 +586,12 @@
     </g>
     <g
        id="g5260-5-1"
-       transform="translate(99.098865,-474.2624)">
+       transform="translate(350.95597,-668.83382)">
       <rect
          y="500.72021"
          x="617.69739"
-         height="164.9964"
-         width="219.90178"
+         height="102.13927"
+         width="217.04465"
          id="rect4136-5-6-85-4-9-7"
          style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
       <text
@@ -609,27 +610,27 @@
        id="g5260-5-7"
        transform="translate(357.39473,-494.85552)">
       <rect
-         y="500.72021"
-         x="617.69739"
-         height="164.9964"
-         width="219.90178"
+         y="463.57736"
+         x="612.69739"
+         height="217.13925"
+         width="214.18745"
          id="rect4136-5-6-85-4-9-4"
          style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
       <text
          sodipodi:linespacing="125%"
          id="text4138-3-2-6-47-6-1"
-         y="518.83112"
-         x="678.10529"
+         y="483.11682"
+         x="669.53387"
          style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           y="518.83112"
-           x="678.10529"
+           y="483.11682"
+           x="669.53387"
            id="tspan4140-5-9-1-6-2-8"
            sodipodi:role="line">Private Registry</tspan></text>
     </g>
     <g
        id="g5260-5-1-4"
-       transform="translate(27.060886,-915.67419)">
+       transform="translate(277.63229,-1113.2456)">
       <g
          id="g5421"
          transform="translate(77.142857,406.42857)">
@@ -790,7 +791,7 @@
        y="319.17337" />
     <g
        id="g4267-4"
-       transform="translate(-13.649421,180.08709)">
+       transform="translate(-71.649421,180.08709)">
       <rect
          y="238.43542"
          x="250.04912"
@@ -812,7 +813,7 @@
     </g>
     <g
        id="g4277-0"
-       transform="translate(-16.924988,223.24345)">
+       transform="translate(-74.924988,223.24345)">
       <rect
          y="335.57831"
          x="249.33484"
@@ -834,7 +835,7 @@
     </g>
     <g
        id="g4282-94"
-       transform="translate(154.17647,88.700529)">
+       transform="translate(96.17647,88.700529)">
       <rect
          y="384.14972"
          x="250.7634"
@@ -855,7 +856,7 @@
            sodipodi:role="line">InstallDotnetSdk</tspan></text>
     </g>
     <g
-       transform="translate(156.08555,172.67668)"
+       transform="translate(98.08555,172.67668)"
        id="g4574-6">
       <rect
          y="384.14972"
@@ -881,18 +882,18 @@
        id="rect4136-3-1-2-1-6-8"
        width="151.33032"
        height="42.853535"
-       x="406.84894"
+       x="348.84894"
        y="606.82629" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="428.22498"
+       x="370.22498"
        y="632.79443"
        id="text4138-6-2-6-06-1-9"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4140-7-7-1-3-5-2"
-         x="428.22498"
+         x="370.22498"
          y="632.79443">BuildCiImage</tspan></text>
     <g
        transform="translate(-0.25390077,329.92858)"
@@ -937,36 +938,36 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="730.78064"
-       y="65.401398"
+       x="983.35205"
+       y="-124.17001"
        id="text6212"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6214"
-         x="730.78064"
-         y="65.401398">InstallVault</tspan></text>
+         x="983.35205"
+         y="-124.17001">InstallVault</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="730.36792"
-       y="79.347023"
+       x="982.93933"
+       y="-110.22438"
        id="text6212-3"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6214-3"
-         x="730.36792"
-         y="79.347023">InstallPrivateRegistry</tspan></text>
+         x="982.93933"
+         y="-110.22438">InstallPrivateRegistry</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="729.84448"
-       y="93.135475"
+       x="982.41589"
+       y="-96.435928"
        id="text6212-3-7"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6214-3-3"
-         x="729.84448"
-         y="93.135475">InstallCA</tspan></text>
+         x="982.41589"
+         y="-96.435928">InstallCA</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1049,7 +1050,7 @@
          id="tspan4736-5-2">Update CiExe</tspan></text>
     <g
        id="g4267-4-0"
-       transform="translate(154.87812,180.90777)">
+       transform="translate(96.87812,180.90777)">
       <rect
          y="238.43542"
          x="250.04912"
@@ -1074,28 +1075,112 @@
        id="rect4644-5-5-9"
        width="164.04927"
        height="110"
-       x="221.42729"
+       x="163.42729"
        y="411.3414" />
     <rect
        style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:6, 6;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        id="rect4644-5-5-9-1"
        width="179.67691"
        height="109.19904"
-       x="387.15207"
+       x="329.15207"
        y="412.49948" />
     <rect
        style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:6, 6;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        id="rect4644-5-5-9-5"
        width="165.5645"
        height="108.98985"
-       x="222.49348"
+       x="164.49348"
        y="546.97339" />
     <rect
        style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:6, 6;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        id="rect4644-5-5-9-1-4"
        width="178.66673"
        height="111.21925"
-       x="389.22842"
+       x="331.22842"
        y="546.11121" />
+    <rect
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       id="rect4136-5-6-85-3"
+       width="494.66321"
+       height="26.605526"
+       x="708.27258"
+       y="-324.50183" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="718.00818"
+       y="-307.43774"
+       id="text4138-3-2-6-4-6"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4140-5-9-1-4-75"
+         x="718.00818"
+         y="-307.43774">IInfrastructure</tspan></text>
+    <g
+       id="g4364"
+       transform="translate(-602.05085,-84.852804)">
+      <rect
+         y="-565.21185"
+         x="1314.6986"
+         height="36.201916"
+         width="488.09717"
+         id="rect4136-5-6-85-3-3"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4138-3-2-6-4-6-5"
+         y="-548.14777"
+         x="1324.4342"
+         style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="-548.14777"
+           x="1324.4342"
+           id="tspan4140-5-9-1-4-75-6"
+           sodipodi:role="line">Git CI</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="862.91077"
+       y="-307.12067"
+       id="text4138-3-2-6-4-6-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4140-5-9-1-4-75-9"
+         x="862.91077"
+         y="-307.12067">IAAS</tspan></text>
+    <g
+       id="g5260-5-12"
+       transform="translate(103.42305,-668.71343)">
+      <rect
+         y="500.72021"
+         x="617.69739"
+         height="32.139271"
+         width="222.04465"
+         id="rect4136-5-6-85-4-9-70"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#002c40;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text4138-3-2-6-47-6-9"
+         y="518.83112"
+         x="693.35907"
+         style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           y="518.83112"
+           x="693.35907"
+           id="tspan4140-5-9-1-6-2-3"
+           sodipodi:role="line">DotNetSdk</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="312.14285"
+       y="-686.20923"
+       id="text4432"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4434"
+         x="312.14285"
+         y="-686.20923"></tspan></text>
   </g>
 </svg>

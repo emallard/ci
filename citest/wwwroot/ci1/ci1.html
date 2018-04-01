@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="ci1.js" type="text/javascript"></script>
+</head>
+<body>
+    
+    <div class="menu">
+        <button id="runButton">Run</button>
+    </div>
+
+    <div class="svg">
+        <svg src="ci1.svg"></svg>
+    </div>
+
+
+    <script type="text/javascript" src="../scripts/signalr.js"></script>
+    
+    
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Start the connection.
+            startConnection('/apiHub', function(connection) {
+                // Create a function that the hub can call to broadcast messages.
+                connection.on('logMessage', function (l) {
+                    
+                    console.log(l);
+
+                    // Add the message to the page.
+                    //var liElement = document.createElement('li');
+                    //liElement.innerHTML = '<strong>' + encodedName + '</strong>:&nbsp;&nbsp;' + encodedMsg;
+                    //document.getElementById('discussion').appendChild(liElement);
+                });
+            })
+            .then(function(connection) {
+                document.querySelector("#runButton").addEventListener("click", function f() {
+                    connection.invoke('RunDoc');
+                });
+            })
+            .catch(error => {
+                console.error(error.message);
+            });
+
+            // Starts a connection with transport fallback - if the connection cannot be started using
+            // the webSockets transport the function will fallback to the serverSentEvents transport and
+            // if this does not work it will try longPolling. If the connection cannot be started using
+            // any of the available transports the function will return a rejected Promise.
+            function startConnection(url, configureConnection) {
+                return function start(transport) {
+                    console.log(`Starting connection using ${signalR.TransportType[transport]} transport`)
+                    var connection = new signalR.HubConnection(url, {transport: transport});
+                    if (configureConnection && typeof configureConnection === 'function') {
+                        configureConnection(connection);
+                    }
+
+                    return connection.start()
+                        .then(function() {
+                            return connection;
+                        })
+                        .catch(function(error) {
+                            console.log(`Cannot start the connection use ${signalR.TransportType[transport]} transport. ${error.message}`);
+                            if (transport !== signalR.TransportType.LongPolling) {
+                                return start(transport + 1);
+                            }
+
+                            return Promise.reject(error);
+                        });
+                }(signalR.TransportType.WebSockets);
+            }
+        });
+    </script>
+    
+</body>
+</html>

@@ -6,25 +6,19 @@ using System.Linq;
 
 namespace citools
 {
-    public class JsonLogger : ILogger
+    public class ConsoleLogger : ILogger
     {
         private readonly JsonLoggerHelper helper;
-        Func<string, Task> func;
 
-        public JsonLogger(JsonLoggerHelper helper)
+        public ConsoleLogger(JsonLoggerHelper helper)
         {
             this.helper = helper;
         }
 
-        public JsonLogger SetFunc(Func<string, Task> func)
-        {
-            this.func = func;
-            return this;
-        }
-
         public async Task Log(object log)
         {
-            await this.func(helper.Serialize(log));
+            await Task.CompletedTask;
+            Console.WriteLine(helper.Serialize(log));
         }
     }
 }

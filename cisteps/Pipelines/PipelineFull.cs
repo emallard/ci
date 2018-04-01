@@ -22,6 +22,8 @@ namespace cisteps
                 await pipelineInit.Run();
                 await pipelineCreatePiloteVm.Run();
                 await pipelineInstallPiloteVm.Run();
+                //await pipelineCreateWebServerVm.Run();
+                //await pipelineInstallWebServerVm.Run();
             };
         }
         

@@ -9,10 +9,10 @@ namespace citools
     public class AskResource
     {
         IAsk ask;
-        private readonly IAskResourceLogger logger;
+        private readonly ILogger logger;
         string name;
 
-        public AskResource(IAsk ask, IAskResourceLogger logger)
+        public AskResource(IAsk ask, ILogger logger)
         {
             this.ask = ask;
             this.logger = logger;
@@ -31,7 +31,7 @@ namespace citools
 
         public async Task<string> Ask()
         {
-            logger.LogAskResource(this);
+            await logger.Log(new AskResourceLogDto(this));
             return await this.ask.GetValue(this.name);
         }
     }

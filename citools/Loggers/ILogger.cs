@@ -6,10 +6,8 @@ using System.Linq;
 
 namespace citools
 {
-    public interface IStoreResourceLogger 
+    public interface ILogger
     {
-        Task LogRead(string path);
-
-        Task LogWrite(string path);
+        Task Log(object log);
     }
 }

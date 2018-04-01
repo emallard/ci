@@ -9,12 +9,12 @@ namespace citools
     public class StoreResource
     {
         private readonly IStoreResolver storeResolver;
-        private readonly IStoreResourceLogger logger;
+        private readonly ILogger logger;
         private string path;
 
         public StoreResource(
             IStoreResolver storeResolver,
-            IStoreResourceLogger logger)
+            ILogger logger)
         {
             this.storeResolver = storeResolver;
             this.logger = logger;
@@ -26,9 +26,15 @@ namespace citools
             return this;
         }
 
+        public string Path()
+        {
+            return this.path;
+        }
+
         public async Task<string> Read(IAuthenticationInfo authenticationInfo)
         {
-            await logger.LogRead(path);
+            await logger.Log(new StoreResourceLogDto(this, StoreResourceLogDtoState.Read));
+
             var client = storeResolver.CreateClient(path, authenticationInfo);
 
             var result = await client.ReadSecretAsync(GetRelativePath(path));
@@ -37,7 +43,8 @@ namespace citools
 
         public async Task Write(IAuthenticationInfo authenticationInfo, string value)
         {
-            await logger.LogWrite(path);
+            await logger.Log(new StoreResourceLogDto(this, StoreResourceLogDtoState.Write));
+
             var client = storeResolver.CreateClient(path, authenticationInfo);
 
             await client.WriteSecretAsync(GetRelativePath(path), value);
