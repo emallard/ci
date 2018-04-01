@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build-ciexe",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/ciexe/bin/Debug/netcoreapp2.0/ciexe.dll",
+            "program": "${workspaceFolder}/ciexe/bin/Debug/netcoreapp2.1/ciexe.dll",
             "args": ["build"],
             "cwd": "${workspaceFolder}/ciexe",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
@@ -25,7 +25,7 @@
             "request": "launch",
             "preLaunchTask": "build-citest",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/citest/bin/Debug/netcoreapp2.0/citest.dll",
+            "program": "${workspaceFolder}/citest/bin/Debug/netcoreapp2.1/citest.dll",
             "args": [],
             "cwd": "${workspaceFolder}/citest",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
