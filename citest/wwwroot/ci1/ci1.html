@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <script src="ci1.js" type="text/javascript"></script>
+    <script type="text/javascript" src="ci1.js" ></script>
+    <script type="text/javascript" src="../scripts/signalr.js"></script>
+    <script type="text/javascript" src="../scripts/bower_components/d3/d3.js"></script>
 </head>
 <body>
     
@@ -12,12 +14,16 @@
         Logs : <button id="restart">&lt;&lt;</button><button id="next">&gt;</button>
     </div>
 
+    <!--
     <div class="svg">
         <svg id="svg" src="ci1.svg"></svg>
     </div>
+    -->
 
+    <svg width="800" height="800">
+    </svg>
 
-    <script type="text/javascript" src="../scripts/signalr.js"></script>
+    
     
     
     <script type="text/javascript">
@@ -35,13 +41,8 @@
             startConnection('/apiHub', function(connection) {
                 // Create a function that the hub can call to broadcast messages.
                 connection.on('logMessage', function (l) {
-                    
+                    //console.log(l);
                     logMessages.push(l);
-
-                    // Add the message to the page.
-                    //var liElement = document.createElement('li');
-                    //liElement.innerHTML = '<strong>' + encodedName + '</strong>:&nbsp;&nbsp;' + encodedMsg;
-                    //document.getElementById('discussion').appendChild(liElement);
                 });
             })
             .then(function(connection) {

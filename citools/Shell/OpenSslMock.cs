@@ -8,11 +8,8 @@ namespace citools
 {
     public class OpenSslMock : IOpenSsl
     {
-        private readonly ShellHelper shellHelper;
-
         public OpenSslMock()
         {
-            this.shellHelper = shellHelper;
         }
 
         public string generateCAKey(string domain)

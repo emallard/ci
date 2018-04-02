@@ -30,12 +30,27 @@ namespace cisteps
             LocalVaultDevopPassword = createAskResource().Name("devop password");
             //LocalVaultToken = createAskResource().Name("vault token");
 
+            CADomain = createAskResource().Name("CA domain");
 
             InfraApiKey = createAskResource().Name("apikey");
             PiloteRootPassword = createAskResource().Name("pilote root password");
             PiloteAdminUser = createAskResource().Name("pilote admin user");
             PiloteAdminPassword = createAskResource().Name("pilote admin password");
 
+
+            this.CheckNoNullField();
+
+        }
+
+        void CheckNoNullField()
+        {
+            foreach (var fi in this.GetType().GetFields())
+            {
+                if (fi.GetValue(this) == null)
+                {
+                    throw new Exception("You forget to assign field " + fi.Name);
+                }
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace citools
     {
         private readonly ShellHelper shellHelper;
 
-        public OpensslShell(ShellHelper shellHelper)
+        public OpenSslShell(ShellHelper shellHelper)
         {
             this.shellHelper = shellHelper;
         }

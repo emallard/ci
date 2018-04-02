@@ -26,9 +26,10 @@ namespace citest
             
             var logger = new FuncLogger().SetFunc(async o => await Clients.All.SendAsync("logMessage", new TypedLogDto(o)));
             builder.RegisterInstance(logger).As<ILogger>();
+            //builder.RegisterType<ConsoleLogger>().As<ILogger>();
 
             builder.RegisterModule<MockModule>();
-            builder.RegisterType<StepRunnerRunAll>().As<IStepRunner>();
+            builder.RegisterType<StepRunnerRunOnly>().As<IStepRunner>();
 
             var container = builder.Build();
             
@@ -37,7 +38,7 @@ namespace citest
 
             var pipeline = (IPipeline) container.Resolve<PipelineFull>();
             await pipeline.Run();
-
+            Console.WriteLine("end");
         }
 
 
