@@ -30,9 +30,14 @@ namespace citest
             if (key == listAsk.Value.LocalVaultDevopPassword.Name()) return "devoppass";
 
             if (key == listAsk.Value.InfraApiKey.Name()) return "infrapiKey";
-            if (key == listAsk.Value.PiloteRootPassword.Name()) return "rootpass";
+
+            if (key == listAsk.Value.PiloteRootPassword.Name()) return "piloterootpass";
             if (key == listAsk.Value.PiloteAdminUser.Name()) return "piloteadmin";
             if (key == listAsk.Value.PiloteAdminPassword.Name()) return "piloteadminpass";
+
+            if (key == listAsk.Value.WebServerRootPassword.Name()) return "webserverrootpass";
+            if (key == listAsk.Value.WebServerAdminUser.Name()) return "webserveradmin";
+            if (key == listAsk.Value.WebServerAdminPassword.Name()) return "webserveradminpass";
 
             throw new Exception("unknown ask in mock : " + key);
         }

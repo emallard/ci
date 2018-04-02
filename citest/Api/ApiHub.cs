@@ -19,7 +19,7 @@ namespace citest
             return base.OnConnectedAsync();
         }
 
-        public async Task RunDoc()
+        public async Task RunDoc(string pipelineTypeStr)
         {
             var builder = new ContainerBuilder();
             builder.RegisterModule<CommonModule>();
@@ -36,7 +36,8 @@ namespace citest
             //container.Resolve<PipelineInstallPiloteVm>();
             //container.Resolve<IStepRunner>();
 
-            var pipeline = (IPipeline) container.Resolve<PipelineFull>();
+            var pipelineType = typeof(CiStepsModule).Assembly.GetTypes().First(t => t.Name == pipelineTypeStr);
+            var pipeline = (IPipeline) container.Resolve(pipelineType);
             await pipeline.Run();
             Console.WriteLine("end");
         }

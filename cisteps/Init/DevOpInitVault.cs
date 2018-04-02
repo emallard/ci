@@ -78,6 +78,8 @@ namespace cisteps
         {   
             var vaultUri = new Uri(await listAsk.LocalVaultUri.Ask());
             var rootToken = await listAsk.LocalVaultRootToken.Ask();
+            
+            var devopUser = await listAsk.LocalVaultDevopUser.Ask();
             var devopPass = await listAsk.LocalVaultDevopPassword.Ask();
         
             // install vault
@@ -96,7 +98,7 @@ namespace cisteps
             await client.WritePolicyAsync(devopAdminPolicy);
 
             // create user devop
-            await client.WriteUser("devop", devopPass,"devop-policy");
+            await client.WriteUser(devopUser, devopPass,"devop-policy");
         }
 
         public Task Clean()

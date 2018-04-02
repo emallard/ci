@@ -22,6 +22,10 @@ namespace cisteps
         public AskResource PiloteAdminUser;
         public AskResource PiloteAdminPassword;
 
+        public AskResource WebServerRootPassword;
+        public AskResource WebServerAdminUser;
+        public AskResource WebServerAdminPassword;
+
         public ListAsk(Func<AskResource> createAskResource)
         {
             LocalVaultUri = createAskResource().Name("vault uri");
@@ -32,11 +36,14 @@ namespace cisteps
 
             CADomain = createAskResource().Name("CA domain");
 
-            InfraApiKey = createAskResource().Name("apikey");
+            InfraApiKey = createAskResource().Name("infrastructure apikey");
             PiloteRootPassword = createAskResource().Name("pilote root password");
             PiloteAdminUser = createAskResource().Name("pilote admin user");
             PiloteAdminPassword = createAskResource().Name("pilote admin password");
 
+            WebServerRootPassword = createAskResource().Name("webserver root password");
+            WebServerAdminUser = createAskResource().Name("webserver admin user");
+            WebServerAdminPassword = createAskResource().Name("webserver admin password");
 
             this.CheckNoNullField();
 

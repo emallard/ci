@@ -14,16 +14,25 @@
         Logs : <button id="restart">&lt;&lt;</button><button id="next">&gt;</button>
     </div>
 
-    <!--
-    <div class="svg">
-        <svg id="svg" src="ci1.svg"></svg>
+    <div class="svg-container" style="position:relative">
+        <div class="svg-inner1" style="position:absolute"></div>
+        <div class="svg-inner2" style="position:absolute">
+            <svg id="mysvg" width="1000" height="1000"></svg>
+        </div>
     </div>
-    -->
-
-    <svg width="800" height="800">
-    </svg>
-
     
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+
+            d3.xml("ci1placeholders.svg").then(function(documentFragment) {
+                console.log("coucou");
+                var svgNode = documentFragment
+                            .getElementsByTagName("svg")[0];
+            
+                document.querySelector('.svg-inner1').appendChild(svgNode);
+            });
+        });
+    </script>
     
     
     <script type="text/javascript">
@@ -41,13 +50,13 @@
             startConnection('/apiHub', function(connection) {
                 // Create a function that the hub can call to broadcast messages.
                 connection.on('logMessage', function (l) {
-                    //console.log(l);
+                    console.log(l);
                     logMessages.push(l);
                 });
             })
             .then(function(connection) {
                 document.querySelector("#runButton").addEventListener("click", function f() {
-                    connection.invoke('RunDoc');
+                    connection.invoke('RunDoc', 'PipelineWebServerOnlyFull');
                 });
             })
             .catch(error => {

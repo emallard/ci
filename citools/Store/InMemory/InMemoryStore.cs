@@ -37,7 +37,7 @@ namespace citools
             if (policies.TryGetValue(name, out found))
                 return found;
                 
-            return null;
+            throw new Exception("MemoryStore Policy not found");
         }
 
         public async Task<string> ReadSecretAsync(IAuthenticationInfo auth, string path)
@@ -47,8 +47,8 @@ namespace citools
             string found;
             if (secrets.TryGetValue(path, out found))
                 return found;
-                
-            return null;
+            
+            throw new Exception("MemoryStore Read not found");
         }
 
         public async Task WritePolicyAsync(IAuthenticationInfo auth, Policy policy)
