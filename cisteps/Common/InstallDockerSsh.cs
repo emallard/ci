@@ -9,17 +9,23 @@ using cilib;
 
 namespace cisteps
 {
-    public class WebServerInstallDocker : IStep
+    public class InstallDockerSsh : IStep
     {
-        private readonly WebServerStep pstep;
+        private readonly CommonStep pstep;
         private readonly SshDocker sshDocker;
+        private Func<Task<SshConnection>> getSshConnection;
 
-        public WebServerInstallDocker(
-            WebServerStep pstep,
+        public InstallDockerSsh(
+            CommonStep pstep,
             SshDocker sshDocker)
         {
             this.pstep = pstep;
             this.sshDocker = sshDocker;
+        }
+
+        public void SetSshConnectionFunc(Func<Task<SshConnection>> getSshConnection)
+        {
+            this.getSshConnection = getSshConnection;
         }
 
         public Task Clean()
@@ -29,12 +35,12 @@ namespace cisteps
 
         public async Task Run()
         {
-            sshDocker.InstallDocker(await pstep.GetWebServerSshConnection());
+            sshDocker.InstallDocker(await this.getSshConnection());
         }
 
         public async Task Check()
         {
-            pstep.sshClient.Connect(await pstep.GetWebServerSshConnection());
+            pstep.sshClient.Connect(await this.getSshConnection());
             var result = pstep.sshClient.Command("docker run --rm hello-world");
             StepAssert.Contains("Hello from Docker!", result);
             await Task.CompletedTask;

@@ -64,6 +64,13 @@ namespace citools
             secrets[path] = value ;
         }
 
+        public async Task DeleteSecretAsync(IAuthenticationInfo auth, string path)
+        {
+            await Task.CompletedTask;
+            CheckPathAndCapability(auth, path, "delete");
+            secrets.Remove(path);
+        }
+
         public async Task WriteUser(IAuthenticationInfo auth, string user, string password, string policy)
         {
             await Task.CompletedTask;

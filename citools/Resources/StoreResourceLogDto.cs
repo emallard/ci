@@ -10,7 +10,8 @@ namespace citools
     public enum StoreResourceLogDtoState
     {
         Read,
-        Write
+        Write,
+        Delete
     }
 
     public class StoreResourceLogDto

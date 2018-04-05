@@ -50,6 +50,15 @@ namespace citools
             await client.WriteSecretAsync(GetRelativePath(path), value);
         }
 
+        public async Task DeleteIfExists(IAuthenticationInfo authenticationInfo)
+        {
+            await logger.Log(new StoreResourceLogDto(this, StoreResourceLogDtoState.Delete));
+
+            var client = storeResolver.CreateClient(path, authenticationInfo);
+
+            await client.DeleteSecretAsync(GetRelativePath(path));
+        }
+
         private string GetRelativePath(string p)
         {
             var slash = p.IndexOf('/');

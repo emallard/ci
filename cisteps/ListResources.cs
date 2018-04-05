@@ -26,6 +26,9 @@ namespace cisteps
         public StoreResource WebServerPassword;
         public ReadResource<SshConnection> WebServerSshConnection;
 
+        public StoreResource GitUri;
+        public StoreResource GitDirectory;
+
         public ListResources(Func<StoreResource> createStoreResource)
         {
             CAKey = createStoreResource().Path("vault/secret/devop/CAKey");
@@ -44,6 +47,9 @@ namespace cisteps
             WebServerUser = createStoreResource().Path("vault/secret/devop/webserver/user");
             WebServerPassword = createStoreResource().Path("vault/secret/devop/webserver/password");
             WebServerSshConnection = new ReadResource<SshConnection>(GetWebServerSshConnection);
+
+            GitUri = createStoreResource().Path("vault/secret/devop/pilote/gitUri");
+            GitDirectory = createStoreResource().Path("vault/secret/devop/pilote/gitDirectory");
 
             this.CheckNoNullField();
         }

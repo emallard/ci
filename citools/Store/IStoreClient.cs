@@ -12,6 +12,7 @@ namespace citools
 
         Task WriteSecretAsync(string path, string value);
 
+        Task DeleteSecretAsync(string path);
         
         Task<Policy> GetPolicyAsync(string name);
 

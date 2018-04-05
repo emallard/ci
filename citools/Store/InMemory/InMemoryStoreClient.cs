@@ -51,5 +51,10 @@ namespace citools
         {
             await store.WriteUser(this.auth, user, password, policy);
         }
+
+        public async Task DeleteSecretAsync(string path)
+        {
+            await store.DeleteSecretAsync(this.auth, path);
+        }
     }
 }

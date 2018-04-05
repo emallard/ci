@@ -9,14 +9,14 @@ using ciexecommands;
 
 namespace cisteps
 {
-    public class WebServerStep
+    public class CommonStep
     {
         public readonly ListAsk listAsk;
         public readonly ListResources listResources;
         public readonly CiExeCommands ciExeCommands;
         public readonly ISshClient sshClient;
 
-        public WebServerStep(
+        public CommonStep(
             ListAsk listAsk,
             ListResources listResources,
             CiExeCommands ciExeCommands,
@@ -27,7 +27,7 @@ namespace cisteps
             this.sshClient = sshClient;
             this.listAsk = listAsk;
         }
-
+/*
         public async Task<SshConnection> GetWebServerSshConnection()
         {
             //IAuthenticationInfo auth = new TokenAuthenticationInfo(await listAsk.LocalVaultToken.Ask());
@@ -37,6 +37,6 @@ namespace cisteps
                 await listAsk.LocalVaultDevopPassword.Ask());
             return await listResources.WebServerSshConnection.Read(auth);
         }
-
+*/
     }
 }

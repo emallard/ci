@@ -15,15 +15,15 @@ namespace cisteps
             IStepRunner runner,
             PipelineDevopInit pipelineDevOpInit,
             InfraWebServerCreateVm infraWebServerCreateVm,
-            WebServerInstallDocker webServerInstallDocker,
-            WebServerInstallTraefikSsh webServerInstallTraefikSsh
+            InstallDockerSsh installDockerSsh,
+            InstallTraefikSsh installTraefikSsh
             )
         {
             this.run = async () => {
                 await pipelineDevOpInit.Run();
                 await runner.Run(infraWebServerCreateVm);
-                await runner.Run(webServerInstallDocker);
-                await runner.Run(webServerInstallTraefikSsh);
+                await runner.Run(installDockerSsh);
+                await runner.Run(installTraefikSsh);
             };
         }
         

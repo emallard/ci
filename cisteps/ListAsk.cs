@@ -26,6 +26,9 @@ namespace cisteps
         public AskResource WebServerAdminUser;
         public AskResource WebServerAdminPassword;
 
+        public AskResource GitUri;
+        public AskResource GitDirectory;
+
         public ListAsk(Func<AskResource> createAskResource)
         {
             LocalVaultUri = createAskResource().Name("vault uri");
@@ -44,6 +47,9 @@ namespace cisteps
             WebServerRootPassword = createAskResource().Name("webserver root password");
             WebServerAdminUser = createAskResource().Name("webserver admin user");
             WebServerAdminPassword = createAskResource().Name("webserver admin password");
+
+            GitUri = createAskResource().Name("git uri");
+            GitDirectory = createAskResource().Name("git directory");
 
             this.CheckNoNullField();
 

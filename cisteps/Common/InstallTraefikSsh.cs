@@ -9,17 +9,23 @@ using cilib;
 
 namespace cisteps
 {
-    public class WebServerInstallTraefikSsh : IStep
+    public class InstallTraefikSsh : IStep
     {
-        private readonly WebServerStep pstep;
+        private readonly CommonStep pstep;
         private readonly SshTraefik sshTraefik;
+        private Func<Task<SshConnection>> getSshConnection;
 
-        public WebServerInstallTraefikSsh(
-            WebServerStep pstep,
+        public InstallTraefikSsh(
+            CommonStep pstep,
             SshTraefik sshTraefik)
         {
             this.pstep = pstep;
             this.sshTraefik = sshTraefik;
+        }
+
+        public void SetSshConnectionFunc(Func<Task<SshConnection>> getSshConnection)
+        {
+            this.getSshConnection = getSshConnection;
         }
 
         public Task Clean()
@@ -29,7 +35,7 @@ namespace cisteps
 
         public async Task Run()
         {
-            sshTraefik.InstallTraefik(await pstep.GetWebServerSshConnection());
+            sshTraefik.InstallTraefik(await this.getSshConnection());
         }
 
         public async Task Check()

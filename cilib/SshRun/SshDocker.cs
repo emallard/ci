@@ -53,6 +53,11 @@ sudo apt-get -qq --yes install docker-ce
 
 sudo usermod -aG docker test
 ";
+
+        public void Build(SshConnection connection, string directory)
+        {
+            this.sshClient.Connect(connection).Command("docker build " + directory);
+        }
        
     }
 }

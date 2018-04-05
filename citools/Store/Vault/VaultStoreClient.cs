@@ -58,6 +58,13 @@ namespace citools
                     {{ "value", value }});
         }
 
+        public async Task DeleteSecretAsync(string path)
+        {
+            var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(uri, this.authenticationInfo);
+
+            await vaultClient.DeleteSecretAsync(path);
+        }
+
         public async Task EnableUsernamePassword()
         {
             var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(uri, this.authenticationInfo);
