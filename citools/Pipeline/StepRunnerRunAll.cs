@@ -19,6 +19,8 @@ namespace citools
 
         public async Task Run(IStep step)
         {
+            await logger.Enter(step);
+
             try {
                 await logger.LogCheck(step);
                 return;
@@ -29,6 +31,8 @@ namespace citools
                 await logger.LogRun(step);
             }
             catch (Exception) {}
+
+            await logger.Exit(step);
         }
     }
 }

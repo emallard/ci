@@ -8,6 +8,7 @@ namespace citools
 {
     public enum StepState
     {
+        Entered,
         Checking,
         CheckOk,
         CheckException,
@@ -16,7 +17,8 @@ namespace citools
         RunException,
         Cleaning,
         CleanOk,
-        CleanException
+        CleanException,
+        Exited
     }
 
     public class StepLogDto

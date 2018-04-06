@@ -19,9 +19,6 @@ namespace cilib
             execute.Command(commandline);
         }
 
-        public void Check(ICommandExecute execute)
-        {
-            
-        }
+        
     }
 }

@@ -19,10 +19,14 @@ namespace citools
 
         public async Task Run(IStep step)
         {
+            await logger.Enter(step);
+
             try { 
                 await logger.LogClean(step);
             }
             catch (Exception) {}
+
+            await logger.Exit(step);
         }
     }
 }

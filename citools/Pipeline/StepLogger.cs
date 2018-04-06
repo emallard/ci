@@ -15,6 +15,16 @@ namespace citools
             this.logger = logger;
         }
 
+        public async Task Enter(IStep step)
+        {
+            await logger.Log(new StepLogDto(step.GetType().Name, StepState.Entered));
+        }
+
+        public async Task Exit(IStep step)
+        {
+            await logger.Log(new StepLogDto(step.GetType().Name, StepState.Exited));
+        }
+
         public async Task LogRun(IStep step)
         {
             await logger.Log(new StepLogDto(step.GetType().Name, StepState.Running));

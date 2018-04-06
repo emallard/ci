@@ -42,11 +42,7 @@ namespace cisteps
         public async Task Check()
         {
             await Task.CompletedTask;
-            /*
-            pstep.sshClient.Connect(await pstep.GetWebServerSshConnection());
-            var result = pstep.sshClient.Command("docker run --rm hello-world");
-            StepAssert.Contains("Hello from Docker!", result);
-            */
+            StepAssert.Contains("{}", commandExecute.Command("curl http://127.0.0.1:8200"));
         }
     }
 }
