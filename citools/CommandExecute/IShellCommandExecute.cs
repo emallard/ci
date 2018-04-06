@@ -6,10 +6,7 @@ using System.Linq;
 
 namespace citools
 {
-    public interface ISshClient : ICommandExecute
+    public interface IShellCommandExecute : ICommandExecute
     {
-        ISshClient Connect(SshConnection sshConnection);
-
-        void SudoReboot();
     }
 }

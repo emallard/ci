@@ -47,13 +47,13 @@ curl \
 
 namespace cisteps
 {
-    public class DevOpInitVault : IStep
+    public class DevOpConfigureVault : IStep
     {
         private readonly ListAsk listAsk;
         private readonly IStoreResolver storeResolver;
         private readonly Installer installer;
 
-        public DevOpInitVault(
+        public DevOpConfigureVault(
             ListAsk listAsk,
             IStoreResolver storeResolver,
             Installer installer
@@ -83,7 +83,7 @@ namespace cisteps
             var devopPass = await listAsk.LocalVaultDevopPassword.Ask();
         
             // install vault
-            installer.Install("OpenSsl");
+            installer.Install("Vault");
 
             // log with root token
             var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));

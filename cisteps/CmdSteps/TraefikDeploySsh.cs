@@ -9,18 +9,18 @@ using cilib;
 
 namespace cisteps
 {
-    public class InstallTraefikSsh : IStep
+    public class TraefikDeploySsh : IStep
     {
-        private readonly CommonStep pstep;
-        private readonly SshTraefik sshTraefik;
+        private readonly SshStep pstep;
+        private readonly SshDocker sshDocker;
         private Func<Task<SshConnection>> getSshConnection;
 
-        public InstallTraefikSsh(
-            CommonStep pstep,
-            SshTraefik sshTraefik)
+        public TraefikDeploySsh(
+            SshStep pstep,
+            SshDocker sshDocker)
         {
             this.pstep = pstep;
-            this.sshTraefik = sshTraefik;
+            this.sshDocker = sshDocker;
         }
 
         public void SetSshConnectionFunc(Func<Task<SshConnection>> getSshConnection)
@@ -35,17 +35,17 @@ namespace cisteps
 
         public async Task Run()
         {
-            sshTraefik.InstallTraefik(await this.getSshConnection());
+            //sshDocker.Pull
+            //sshTraefik.Configure
+            await Task.CompletedTask;
         }
 
         public async Task Check()
         {
-            await Task.CompletedTask;
-            /*
-            pstep.sshClient.Connect(await pstep.GetWebServerSshConnection());
+            pstep.sshClient.Connect(await this.getSshConnection());
             var result = pstep.sshClient.Command("docker run --rm hello-world");
             StepAssert.Contains("Hello from Docker!", result);
-            */
+            await Task.CompletedTask;
         }
     }
 }

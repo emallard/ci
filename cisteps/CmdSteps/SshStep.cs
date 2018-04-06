@@ -9,21 +9,18 @@ using ciexecommands;
 
 namespace cisteps
 {
-    public class CommonStep
+    public class SshStep
     {
         public readonly ListAsk listAsk;
         public readonly ListResources listResources;
-        public readonly CiExeCommands ciExeCommands;
         public readonly ISshClient sshClient;
 
-        public CommonStep(
+        public SshStep(
             ListAsk listAsk,
             ListResources listResources,
-            CiExeCommands ciExeCommands,
             ISshClient sshClient)
         {
             this.listResources = listResources;
-            this.ciExeCommands = ciExeCommands;
             this.sshClient = sshClient;
             this.listAsk = listAsk;
         }

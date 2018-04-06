@@ -17,22 +17,23 @@ namespace cisteps
             IStepRunner runner,
             ListAsk listAsk,
             ListResources listResources,
-            InstallDockerSsh installDocker,
-            PipelineDevopInit pipelineDevOpInit,
+            IShellCommandExecute shellCommandExecute,
+            InstallVaultCmd installVaultCmd,
+            DevOpConfigureVault devOpConfigureVault,
             InstallTraefikSsh installTraefikSsh,
             AddGitToBuild addGitToBuild,
             DockerBuildSsh dockerBuildSsh
             )
         {
-            installDocker.SetSshConnectionFunc(this.GetDevOpSshConnection);
-            installTraefikSsh.SetSshConnectionFunc(this.GetDevOpSshConnection);
+            installVaultCmd.SetCommandExecute(shellCommandExecute);
+            installTraefikSsh.SetCommandExecute(shellCommandExecute);
 
             this.run = async () => {
-                await pipelineDevOpInit.Run();
-                await runner.Run(installDocker);
+                await runner.Run(installVaultCmd);
+                await runner.Run(devOpConfigureVault);
                 await runner.Run(installTraefikSsh);
-                await runner.Run(addGitToBuild);
-                await runner.Run(dockerBuildSsh);
+                //await runner.Run(addGitToBuild);
+                //await runner.Run(dockerBuildSsh);
             };
             this.listAsk = listAsk;
             this.listResources = listResources;
@@ -42,15 +43,6 @@ namespace cisteps
         {
             await this.run();
         }
-
-        private async Task<SshConnection> GetDevOpSshConnection()
-        {
-            //IAuthenticationInfo auth = new TokenAuthenticationInfo(await listAsk.LocalVaultToken.Ask());
-
-            IAuthenticationInfo auth = new UserPasswordAuthenticationInfo(
-                await listAsk.LocalVaultDevopUser.Ask(),
-                await listAsk.LocalVaultDevopPassword.Ask());
-            return await listResources.WebServerSshConnection.Read(auth);
-        }
+        
     }
 }

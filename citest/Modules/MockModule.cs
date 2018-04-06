@@ -27,6 +27,7 @@ namespace citest
             // Utils
             builder.RegisterType<OpenSslMock>().As<IOpenSsl>().SingleInstance();
             builder.RegisterType<GitMock>().As<IGit>().SingleInstance();
+            builder.RegisterType<ShellCommandExecuteMock>().As<IShellCommandExecute>();
         }
     }
 }

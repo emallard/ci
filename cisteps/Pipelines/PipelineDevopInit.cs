@@ -13,7 +13,7 @@ namespace cisteps
 
         public PipelineDevopInit(
             IStepRunner runner,
-            DevOpInitVault devopInitVault,
+            DevOpConfigureVault devopInitVault,
             DevOpInitSsl devopInitSsl )
         {
             this.run = async () => {

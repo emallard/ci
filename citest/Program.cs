@@ -14,9 +14,11 @@ namespace citest
 {
     class Program
     {
+        static bool www = false;
+
         static void Main(string[] args)
         {
-            if (args.Length == 0)
+            if (www && args.Length == 0)
             {
                 new ApiMain().Main(args);
                 return;

@@ -11,12 +11,12 @@ namespace cisteps
 {
     public class DockerBuildSsh : IStep
     {
-        private readonly CommonStep pstep;
+        private readonly SshStep pstep;
         private readonly SshDocker sshDocker;
         private Func<Task<SshConnection>> getSshConnection;
 
         public DockerBuildSsh(
-            CommonStep pstep,
+            SshStep pstep,
             SshDocker sshDocker)
         {
             this.pstep = pstep;

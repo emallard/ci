@@ -58,6 +58,8 @@ namespace citest
             var builder = new ContainerBuilder();
             builder.RegisterModule<CommonModule>();
 
+            builder.RegisterType<ConsoleLogger>().As<ILogger>();
+
             //builder.RegisterModule<LogRequestsModule>();
 
             var module =  (IModule)Activator.CreateInstance(moduleType);

@@ -59,7 +59,7 @@ curl \
     --header "X-Vault-Token: ..." \
     --request POST \
     --data '{"type": "userpass"}' \
-    http://127.0.0.1:8200//v1/sys/auth/userpass
+    http://127.0.0.1:8200/v1/sys/auth/userpass
 ```
 
 Création d'une policy devop-infra

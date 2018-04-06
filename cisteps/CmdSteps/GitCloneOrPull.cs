@@ -11,12 +11,12 @@ namespace cisteps
 {
     public class GitCloneOrPull : IStep
     {
-        private readonly CommonStep pstep;
+        private readonly SshStep pstep;
         private readonly IGit git;
         private Func<Task<SshConnection>> getSshConnection;
 
         public GitCloneOrPull(
-            CommonStep pstep,
+            SshStep pstep,
             IGit git)
         {
             this.pstep = pstep;

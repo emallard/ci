@@ -9,19 +9,13 @@ using citools;
 
 namespace cilib
 {
-    public class SshTraefik {
-
-        private readonly ISshClient sshClient;
+    public class SshTraefik 
+    {
         
-        public SshTraefik(ISshClient sshClient)
-        {
-            this.sshClient = sshClient;
-        }
-
-        public void InstallTraefik(SshConnection connection)
+        public void InstallTraefik(ICommandExecute commandExecute)
         {
             var commandline = "docker run -d -p 8080:8080 -p 80:80 -v $PWD/traefik.toml:/etc/traefik/traefik.toml traefik";
-            this.sshClient.Connect(connection).Command(commandline);
+            commandExecute.Command(commandline);
         }
 
         public async Task Clean() 
