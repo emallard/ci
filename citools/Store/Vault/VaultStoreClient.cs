@@ -82,7 +82,7 @@ namespace citools
         {
             var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(uri, this.authenticationInfo);
 
-            await vaultClient.WriteSecretAsync("auth/users/" + user, new Dictionary<string, object>
+            await vaultClient.WriteSecretAsync("auth/userpass/users/" + user, new Dictionary<string, object>
                     {
                         { "password", password },
                         { "policies", policy }

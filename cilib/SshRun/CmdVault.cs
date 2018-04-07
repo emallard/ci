@@ -7,6 +7,7 @@ using System.IO;
 using Docker.DotNet.Models;
 using citools;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace cilib
 {
@@ -28,25 +29,33 @@ namespace cilib
             Console.WriteLine(commandline);
             execute.Command(commandline);
             
-            var initResult = execute.Command("docker exec dev-vault vault operator init");
+            Thread.Sleep(1000);
 
-            var lines = initResult.Split(new string[]{"\n"}, StringSplitOptions.RemoveEmptyEntries);
+            var initResponse = execute.Command("curl --request PUT --data '{\"secret_shares\":5, \"secret_threshold\":3}' http://localhost:8200/v1/sys/init");
+           
+            dynamic initResult = JObject.Parse(initResponse);
+            //var lines = initResult.Split(new string[]{"\n"}, StringSplitOptions.RemoveEmptyEntries);
             
-            var sealkeysLines = lines.Where(l => l.StartsWith("Unseal Key")).ToList();
-            var sealkeys = sealkeysLines.Select(s => s.Substring("Unseal Key 1: ".Length)).ToList();
+            //var sealkeysLines = lines.Where(l => l.StartsWith("Unseal Key")).ToList();
+            //var sealkeys = sealkeysLines.Select(s => s.Substring("Unseal Key 1: ".Length)).ToList();
 
+            var sealkeys = new List<string>();
+            for (var i=0; i<5; ++i)
+                sealkeys.Add((string) initResult.keys[i]);
             vaultSealKeys.SetSealKeys(sealkeys);
 
-            var rootTokenLine = lines.First(l => l.StartsWith("Initial Root Token: "));
-            var rootToken = rootTokenLine.Substring("Initial Root Token: ".Length);
+            //var rootTokenLine = lines.First(l => l.StartsWith("Initial Root Token: "));
+            //var rootToken = rootTokenLine.Substring("Initial Root Token: ".Length);
 
+            var rootToken = (string) initResult.root_token;
             vaultSealKeys.SetRootToken(rootToken);
 
             string unseal = "";
             for (var i=0; i<3; ++i)
             {
-                var cmd = "docker exec dev-vault vault operator unseal " + sealkeys[i];
-                unseal = execute.Command(cmd);
+                //var cmd = "docker exec dev-vault vault operator unseal " + sealkeys[i];
+                var key = sealkeys[i];
+                unseal = execute.Command("curl --request PUT --data '{\"key\": \""+ key +"\"}' http://localhost:8200/v1/sys/unseal");
             }
 
             var header = " --header \"X-Vault-Token: " + rootToken + "\" ";

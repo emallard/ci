@@ -98,7 +98,7 @@ namespace cisteps
             var devopAdminPolicy = new Policy()
             {
                 Name = "devop-policy",
-                Rules = "path \"secret/devop/*\" { capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"]"
+                Rules = "path \"secret/devop/*\" { capabilities = [\"create\", \"read\", \"update\", \"delete\", \"list\"] }"
             };
             await client.WritePolicyAsync(devopAdminPolicy);
 
@@ -106,9 +106,9 @@ namespace cisteps
             await client.WriteUser(devopUser, devopPass,"devop-policy");
         }
 
-        public Task Clean()
+        public async Task Clean()
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
         }
     }
 }
