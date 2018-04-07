@@ -50,7 +50,7 @@ Unseal
 docker exec -it dev-vault vault operator unseal
 docker exec -it dev-vault vault operator unseal
 docker exec -it dev-vault vault operator unseal
-docker exec dev-vault vault auth enable userpass
+# docker exec dev-vault vault auth enable userpass
 ```
 
 Enable user/pass authentication

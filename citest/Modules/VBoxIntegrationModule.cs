@@ -14,11 +14,21 @@ namespace citest
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<StoreResolverVault>().As<IStoreResolver>();
-            builder.RegisterType<AskMock>().As<IAsk>();
-
-            builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>();
+            // Resources
+            builder.RegisterType<StoreResolverVault>().As<IStoreResolver>().SingleInstance();            
+            builder.RegisterType<AskMock>().As<IAsk>().SingleInstance();
+            
+            // Infrastructure
+            builder.RegisterType<VBoxInfrastructure>().As<IInfrastructure>().SingleInstance();
             builder.RegisterType<RenciSshClient>().As<ISshClient>();
+
+            // Utils
+            builder.RegisterType<OpenSslShell>().As<IOpenSsl>().SingleInstance();
+            builder.RegisterType<GitShell>().As<IGit>().SingleInstance();
+            builder.RegisterType<ShellCommandExecute>().As<IShellCommandExecute>();
+
+            // Vault seal keys
+            builder.RegisterType<VaultSealKeysFile>().As<IVaultSealKeys>().SingleInstance();
         }
     }
 }

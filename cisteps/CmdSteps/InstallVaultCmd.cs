@@ -13,14 +13,17 @@ namespace cisteps
     {
         private readonly SshStep pstep;
         private readonly CmdVault cmdVault;
+        private readonly IVaultSealKeys vaultSealKeys;
         private ICommandExecute commandExecute;
 
         public InstallVaultCmd(
             SshStep pstep,
-            CmdVault cmdVault)
+            CmdVault cmdVault,
+            IVaultSealKeys vaultSealKeys)
         {
             this.pstep = pstep;
             this.cmdVault = cmdVault;
+            this.vaultSealKeys = vaultSealKeys;
         }
 
         public void SetCommandExecute(ICommandExecute commandExecute)
@@ -28,21 +31,23 @@ namespace cisteps
             this.commandExecute = commandExecute;
         }
 
-        public Task Clean()
+        public async Task Clean()
         {
-            throw new NotImplementedException();
+            await Task.CompletedTask;
+            cmdVault.CleanVaultNoTls(commandExecute);
         }
 
         public async Task Run()
         {
             await Task.CompletedTask;
-            cmdVault.InstallVaultNoTls(commandExecute);
+            cmdVault.InstallVaultNoTls(commandExecute, vaultSealKeys);
         }
 
         public async Task Check()
         {
             await Task.CompletedTask;
-            StepAssert.Contains("{}", commandExecute.Command("curl http://127.0.0.1:8200"));
+            cmdVault.Check(commandExecute);
+            
         }
     }
 }

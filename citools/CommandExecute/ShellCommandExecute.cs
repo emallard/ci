@@ -12,6 +12,11 @@ namespace citools
             return this.Bash(command);
         }
 
+        public string CommandWithStdIn(string command, string stdIn)
+        {
+            return this.BashAndStdIn(command, stdIn);
+        }
+
         public string Script(string scriptContent, string scriptName)
         {
             File.WriteAllText(scriptName, scriptContent);
@@ -56,7 +61,7 @@ namespace citools
 
         private string Bash(string cmd)
         {
-            var escapedArgs = cmd.Replace("\"", "\\\"");
+            var escapedArgs = cmd.Replace("\\", "\\\\").Replace("\"", "\\\"");
             
             var process = new Process()
             {

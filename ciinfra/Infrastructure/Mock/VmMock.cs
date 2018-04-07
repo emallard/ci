@@ -29,6 +29,12 @@ namespace ciinfra
             this.commands.Add(command);
         }
 
+        public void CommandWithStdIn(string command, string stdIn)
+        {
+            vmMockLogger.LogCommand(Name, command + stdIn);
+            this.commands.Add(command + stdIn);
+        }
+
         public void Reboot()
         {
             vmMockLogger.LogReboot(Name);

@@ -62,7 +62,7 @@ namespace cilib
                 });
                 p.Env = new List<string>()
                 {
-                    "VAULT_DEV_ROOT_TOKEN_ID=myroot"
+                    "VAULT_DEV_ROOT_TOKEN_ID=myroottoken"
                 };
                 p.Name = containerName;
                 var containerResponse = await client.Containers.CreateContainerAsync(p);

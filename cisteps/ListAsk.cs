@@ -10,7 +10,6 @@ namespace cisteps
     public class ListAsk
     {
         public AskResource LocalVaultUri;
-        public AskResource LocalVaultRootToken;
         public AskResource LocalVaultDevopUser;
         public AskResource LocalVaultDevopPassword;
         //public AskResource LocalVaultToken;
@@ -32,7 +31,6 @@ namespace cisteps
         public ListAsk(Func<AskResource> createAskResource)
         {
             LocalVaultUri = createAskResource().Name("vault uri");
-            LocalVaultRootToken = createAskResource().Name("root token");
             LocalVaultDevopUser = createAskResource().Name("devop user");
             LocalVaultDevopPassword = createAskResource().Name("devop password");
             //LocalVaultToken = createAskResource().Name("vault token");

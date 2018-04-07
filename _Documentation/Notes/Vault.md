@@ -9,7 +9,7 @@ https://www.katacoda.com/courses/docker-production/vault-secrets
 
 Dev:
 ``` 
-$ docker run --cap-add=IPC_LOCK -d -e 'VAULT_DEV_ROOT_TOKEN_ID=myroot' -p 8200:8200 --name=dev-vault vault
+$ docker run --cap-add=IPC_LOCK -d -e 'VAULT_DEV_ROOT_TOKEN_ID=myroottoken' -p 8200:8200 --name=dev-vault vault
 ```
 
 Accéder à Vault via l'API :

@@ -1,4 +1,7 @@
 bin
 obj
 ciTestLastRun
+ciTestLog
+ciTestVaultRootToken
+ciTestVaultSealKeys
 bower_components

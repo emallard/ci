@@ -122,7 +122,7 @@ namespace cilib
     */
     /*
             var vaultAddress = "http://127.0.0.1:8200";
-            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo("myroot");
+            IAuthenticationInfo tokenAuthenticationInfo = new TokenAuthenticationInfo("myroottoken");
             var vaultClient = VaultSharp.VaultClientFactory.CreateVaultClient(new System.Uri(vaultAddress), tokenAuthenticationInfo);
     */
     /*

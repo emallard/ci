@@ -25,6 +25,12 @@ namespace ciinfra
             return "";
         }
 
+        public string CommandWithStdIn(string command, string stdIn)
+        {
+            GetVmMock().CommandWithStdIn(command, stdIn);
+            return "";
+        }
+
         public ISshClient Connect(SshConnection sshConnection)
         {
             this.sshConnection = sshConnection;

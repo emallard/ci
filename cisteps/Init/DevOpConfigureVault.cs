@@ -52,32 +52,37 @@ namespace cisteps
         private readonly ListAsk listAsk;
         private readonly IStoreResolver storeResolver;
         private readonly Installer installer;
+        private readonly IVaultSealKeys vaultSealKeys;
 
         public DevOpConfigureVault(
             ListAsk listAsk,
             IStoreResolver storeResolver,
-            Installer installer
+            Installer installer,
+            IVaultSealKeys vaultSealKeys
         )
         {
             this.listAsk = listAsk;
             this.storeResolver = storeResolver;
             this.installer = installer;
+            this.vaultSealKeys = vaultSealKeys;
         }
 
         public async Task Check()
         {
-            // log with root token
-            var rootToken = await listAsk.LocalVaultRootToken.Ask();
-            var client = storeResolver.CreateClient("vault", new TokenAuthenticationInfo(rootToken));
+            // Check that devopuser can write and read a secret
             var devopUser = await listAsk.LocalVaultDevopUser.Ask();
-            var policy = await client.GetPolicyAsync(devopUser);
-            StepAssert.IsTrue(policy != null);
+            var devopPass = await listAsk.LocalVaultDevopPassword.Ask();
+
+            var client = storeResolver.CreateClient("vault", new UserPasswordAuthenticationInfo(devopUser, devopPass));
+            var guid = Guid.NewGuid().ToString();
+            await client.WriteSecretAsync("secret/devop/test", guid);
+            StepAssert.AreEqual(guid, await client.ReadSecretAsync("secret/devop/test"));
         }
 
         public async Task Run()
         {   
             var vaultUri = new Uri(await listAsk.LocalVaultUri.Ask());
-            var rootToken = await listAsk.LocalVaultRootToken.Ask();
+            var rootToken = await vaultSealKeys.GetRootToken();
             
             var devopUser = await listAsk.LocalVaultDevopUser.Ask();
             var devopPass = await listAsk.LocalVaultDevopPassword.Ask();

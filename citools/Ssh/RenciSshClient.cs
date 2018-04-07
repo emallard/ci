@@ -24,6 +24,16 @@ namespace citools
             }
         }
 
+        public string CommandWithStdIn(string command, string stdIn)
+        {
+            using (var client = Ssh())
+            {
+                var wrapper = new SshClientWrapper(client);
+                var result = wrapper.RunWithStdIn(command, new string[] {stdIn});
+                return result;
+            }
+        }
+
         public ISshClient Connect(SshConnection sshConnection)
         {
             this.sshConnection = sshConnection;
@@ -123,5 +133,7 @@ namespace citools
                 new PasswordAuthenticationMethod(sshConnection.User, sshConnection.Password));
             return connectionInfo;
         }
+
+        
     }
 }

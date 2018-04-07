@@ -10,6 +10,8 @@ namespace citools
     {
         string Command(string command);
 
+        string CommandWithStdIn(string command, string stdIn);
+
         string SudoBash(string command);
 
         string Script(string scriptContent, string scriptName);

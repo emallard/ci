@@ -28,6 +28,9 @@ namespace citest
             builder.RegisterType<OpenSslMock>().As<IOpenSsl>().SingleInstance();
             builder.RegisterType<GitMock>().As<IGit>().SingleInstance();
             builder.RegisterType<ShellCommandExecuteMock>().As<IShellCommandExecute>();
+
+            // Vault seal keys
+            builder.RegisterType<VaultSealKeysFile>().As<IVaultSealKeys>().SingleInstance();
         }
     }
 }

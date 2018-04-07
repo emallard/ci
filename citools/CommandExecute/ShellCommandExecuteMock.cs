@@ -12,6 +12,11 @@ namespace citools
             return "";
         }
 
+        public string CommandWithStdIn(string command, string stdIn)
+        {
+            return "";
+        }
+
         public string Script(string scriptContent, string scriptName)
         {
             return "";
