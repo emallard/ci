@@ -23,6 +23,11 @@ namespace citools
             return this.ExecScript("/bin/bash", scriptName);
         }
 
+        public void WriteFile(string content, string filename)
+        {
+            File.WriteAllText(filename, content);
+        }
+
         public string ScriptWithStdIn(string scriptContent, string scriptName, string[] inputs)
         {
             throw new NotImplementedException();

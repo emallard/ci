@@ -22,14 +22,14 @@ namespace cilib
               + " -e 'VAULT_ADDR=http://127.0.0.1:8200'"
               + " -e 'VAULT_REDIRECT_ADDR=http://127.0.0.1:8201' ";
 
-            var volumes = " -v vault:/home/etienne/vault ";
+            var volumes = "";
 
             //var commandline = "docker run --cap-add=IPC_LOCK -d " + env + " -p 127.0.0.1:8200:8200 --name=dev-vault vault server";
             var commandline = "docker run --cap-add=IPC_LOCK -d " + env + volumes + " -p 8200:8200 --name=dev-vault vault server";
             Console.WriteLine(commandline);
             execute.Command(commandline);
             
-            Thread.Sleep(1000);
+            Thread.Sleep(3000);
 
             var initResponse = execute.Command("curl --request PUT --data '{\"secret_shares\":5, \"secret_threshold\":3}' http://localhost:8200/v1/sys/init");
            
@@ -87,6 +87,7 @@ namespace cilib
         {
             var commandline = "docker rm -f dev-vault";
             execute.Command(commandline);
+            Thread.Sleep(3000);
         }
         
         public void Check(ICommandExecute execute)

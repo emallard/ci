@@ -22,6 +22,10 @@ namespace citools
             return "";
         }
 
+        public void WriteFile(string content, string filename)
+        {
+        }
+
         public string ScriptWithStdIn(string scriptContent, string scriptName, string[] inputs)
         {
             return "";

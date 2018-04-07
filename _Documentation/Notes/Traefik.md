@@ -6,8 +6,13 @@
 curl https://raw.githubusercontent.com/containous/traefik/master/traefik.sample.toml
 docker run -d -p 8080:8080 -p 80:80 -v $PWD/traefik.toml:/etc/traefik/traefik.toml traefik
 ```
-8080 => admin
+http://127.0.0.1:8080 => admin
 
+
+ou:
+```
+docker run -d -p 8080:8080 -p 80:80 traefik --api
+```
 
 # file configuration
 
@@ -26,12 +31,12 @@ then in rules.toml:
     [frontends.frontend1.routes]
         [frontends.frontend1.routes.route0]
             rule = "Host:recette.myclient.com"
-
-[backends.backend1]
-    [backends.backend1.servers]
-      [backends.backend1.servers.server0]
-        url = "http://10.2.0.6:9001"
-        weight = 1
+[backends]
+  [backends.backend1]
+      [backends.backend1.servers]
+        [backends.backend1.servers.server0]
+          url = "http://10.2.0.6:9001"
+          weight = 1
 ```
 
 # docker configuration

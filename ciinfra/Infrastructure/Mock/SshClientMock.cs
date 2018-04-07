@@ -43,6 +43,11 @@ namespace ciinfra
             return "";
         }
 
+        public void WriteFile(string content, string filename)
+        {
+            GetVmMock().Command("write " + filename + "\n" + content);
+        }
+
         public string ScriptWithStdIn(string scriptContent, string scriptName, string[] inputs)
         {
             GetVmMock().Command(

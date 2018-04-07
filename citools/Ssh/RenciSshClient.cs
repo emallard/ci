@@ -57,6 +57,15 @@ namespace citools
             }
         }
 
+        public void WriteFile(string content, string filename)
+        {
+            using (var scpClient = Scp())
+            {
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
+                scpClient.Upload(stream, filename);
+            }
+        }
+
         public string ScriptWithStdIn(string scriptContent, string scriptName, string[] inputs)
         {
             using (var scpClient = Scp())

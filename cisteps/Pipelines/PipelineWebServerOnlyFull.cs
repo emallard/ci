@@ -16,7 +16,7 @@ namespace cisteps
             PipelineDevopInit pipelineDevOpInit,
             InfraWebServerCreateVm infraWebServerCreateVm,
             InstallDockerSsh installDockerSsh,
-            InstallTraefikSsh installTraefikSsh
+            InstallTraefikCmd installTraefikSsh
             )
         {
             this.run = async () => {

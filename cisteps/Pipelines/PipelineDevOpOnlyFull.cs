@@ -20,7 +20,7 @@ namespace cisteps
             IShellCommandExecute shellCommandExecute,
             InstallVaultCmd installVaultCmd,
             DevOpConfigureVault devOpConfigureVault,
-            InstallTraefikSsh installTraefikSsh,
+            InstallTraefikCmd installTraefikSsh,
             AddGitToBuild addGitToBuild,
             DockerBuildSsh dockerBuildSsh
             )

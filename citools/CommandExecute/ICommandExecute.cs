@@ -14,6 +14,8 @@ namespace citools
 
         string SudoBash(string command);
 
+        void WriteFile(string content, string filename);
+
         string Script(string scriptContent, string scriptName);
 
         string ScriptWithStdIn(string scriptContent, string scriptName, string[] inputs);
