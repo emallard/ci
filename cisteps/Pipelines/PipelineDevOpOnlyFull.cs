@@ -22,18 +22,26 @@ namespace cisteps
             DevOpConfigureVault devOpConfigureVault,
             InstallTraefikCmd installTraefikSsh,
             AddGitToBuild addGitToBuild,
-            DockerBuildSsh dockerBuildSsh
+            GitCloneOrPull gitCloneOrPull,
+            DockerBuildCmd dockerBuildCmd
+            //,
+            //DockerRunCmd dockerRunCmd,
+            //TraefikConfigure dockerRunCmd,  
             )
         {
             installVaultCmd.SetCommandExecute(shellCommandExecute);
             installTraefikSsh.SetCommandExecute(shellCommandExecute);
+            
+            gitCloneOrPull.SetCommandExecute(shellCommandExecute);
+            dockerBuildCmd.SetCommandExecute(shellCommandExecute);
 
             this.run = async () => {
                 await runner.Run(installVaultCmd);
                 await runner.Run(devOpConfigureVault);
                 await runner.Run(installTraefikSsh);
-                //await runner.Run(addGitToBuild);
-                //await runner.Run(dockerBuildSsh);
+                await runner.Run(addGitToBuild);
+                await runner.Run(gitCloneOrPull);
+                await runner.Run(dockerBuildCmd);
             };
             this.listAsk = listAsk;
             this.listResources = listResources;

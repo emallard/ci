@@ -12,14 +12,14 @@ namespace cisteps
     public class PiloteInstallDocker : IStep
     {
         private readonly PiloteStep pstep;
-        private readonly SshDocker sshDocker;
+        private readonly CmdDocker cmdDocker;
 
         public PiloteInstallDocker(
             PiloteStep pstep,
-            SshDocker sshDocker)
+            CmdDocker cmdDocker)
         {
             this.pstep = pstep;
-            this.sshDocker = sshDocker;
+            this.cmdDocker = cmdDocker;
         }
 
         public Task Clean()
@@ -29,7 +29,8 @@ namespace cisteps
 
         public async Task Run()
         {
-            sshDocker.InstallDocker(await pstep.GetPiloteSshConnection());
+            await Task.CompletedTask;
+            //sshDocker.InstallDocker(await pstep.GetPiloteSshConnection());
         }
 
         public async Task Check()

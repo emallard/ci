@@ -28,6 +28,8 @@ namespace cisteps
         public AskResource GitUri;
         public AskResource GitDirectory;
 
+        public AskResource TraefikConfigPath;
+
         public ListAsk(Func<AskResource> createAskResource)
         {
             LocalVaultUri = createAskResource().Name("vault uri");
@@ -48,6 +50,8 @@ namespace cisteps
 
             GitUri = createAskResource().Name("git uri");
             GitDirectory = createAskResource().Name("git directory");
+            
+            TraefikConfigPath = createAskResource().Name("traefik config path");
 
             this.CheckNoNullField();
 

@@ -38,6 +38,11 @@ namespace citest
             if (key == listAsk.Value.WebServerAdminUser.Name()) return "webserveradmin";
             if (key == listAsk.Value.WebServerAdminPassword.Name()) return "webserveradminpass";
 
+            if (key == listAsk.Value.GitUri.Name()) return "https://github.com/emallard/dotnetcore_0.git";
+            if (key == listAsk.Value.GitDirectory.Name()) return "/home/etienne/citest/git/dotnetcore_0";
+
+            if (key == listAsk.Value.TraefikConfigPath.Name()) return "/home/etienne/citest/traefik";
+
             throw new Exception("unknown ask in mock : " + key);
         }
     }

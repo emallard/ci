@@ -13,7 +13,6 @@ namespace cisteps
     {
         private readonly SshStep pstep;
         private readonly IGit git;
-        private Func<Task<SshConnection>> getSshConnection;
 
         public AddGitToBuild(
             SshStep pstep,
@@ -21,11 +20,6 @@ namespace cisteps
         {
             this.pstep = pstep;
             this.git = git;
-        }
-
-        public void SetSshConnectionFunc(Func<Task<SshConnection>> getSshConnection)
-        {
-            this.getSshConnection = getSshConnection;
         }
 
         public async Task Clean()

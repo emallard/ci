@@ -29,6 +29,8 @@ namespace cisteps
         public StoreResource GitUri;
         public StoreResource GitDirectory;
 
+        public StoreResource TraefikConfigPath;
+
         public ListResources(Func<StoreResource> createStoreResource)
         {
             CAKey = createStoreResource().Path("vault/secret/devop/CAKey");
@@ -50,6 +52,8 @@ namespace cisteps
 
             GitUri = createStoreResource().Path("vault/secret/devop/pilote/gitUri");
             GitDirectory = createStoreResource().Path("vault/secret/devop/pilote/gitDirectory");
+
+            TraefikConfigPath = createStoreResource().Path("vault/secret/devop/webserver/traefik");
 
             this.CheckNoNullField();
         }

@@ -9,18 +9,18 @@ using cilib;
 
 namespace cisteps
 {
-    public class InstallTraefikCmd : IStep
+    public class DockerBuildCmd : IStep
     {
         private readonly SshStep pstep;
-        private readonly CmdTraefik cmdTraefik;
+        private readonly CmdDocker cmdDocker;
         private ICommandExecute commandExecute;
 
-        public InstallTraefikCmd(
+        public DockerBuildCmd(
             SshStep pstep,
-            CmdTraefik cmdTraefik)
+            CmdDocker cmdDocker)
         {
             this.pstep = pstep;
-            this.cmdTraefik = cmdTraefik;
+            this.cmdDocker = cmdDocker;
         }
 
         public void SetCommandExecute(ICommandExecute commandExecute)
@@ -31,20 +31,19 @@ namespace cisteps
         public async Task Clean()
         {
             await Task.CompletedTask;
-            cmdTraefik.Clean(commandExecute);
         }
 
         public async Task Run()
         {
-            var traefikConfigPath = await pstep.listAsk.TraefikConfigPath.Ask();
-            await pstep.listResources.TraefikConfigPath.Write(await GetAuthentication(), traefikConfigPath);
-            cmdTraefik.InstallTraefik(commandExecute, traefikConfigPath);
+            cmdDocker.Build(commandExecute, await pstep.listResources.GitDirectory.Read(await GetAuthentication()));
+            // Add tag
         }
 
         public async Task Check()
         {
             await Task.CompletedTask;
-            cmdTraefik.Check(commandExecute);
+            //cmdDocker.ImageExists(name,tag)
+            StepAssert.IsTrue(false);
         }
 
         private async Task<IAuthenticationInfo> GetAuthentication()

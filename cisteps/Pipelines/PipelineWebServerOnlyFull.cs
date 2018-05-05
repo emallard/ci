@@ -15,7 +15,7 @@ namespace cisteps
             IStepRunner runner,
             PipelineDevopInit pipelineDevOpInit,
             InfraWebServerCreateVm infraWebServerCreateVm,
-            InstallDockerSsh installDockerSsh,
+            InstallDockerCmd installDockerSsh,
             InstallTraefikCmd installTraefikSsh
             )
         {
